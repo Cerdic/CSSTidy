@@ -724,7 +724,6 @@ function merge_selectors_and_their_properties_smart(&$selectorsArray)
  *
  * @param array $selectorsArray
  * @return array
- * @access private
  * @version 1.0
  * @author Thierry Charbonnel
  */
