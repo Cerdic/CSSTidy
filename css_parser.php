@@ -980,7 +980,7 @@ if($this->get_cfg('merge_selectors') > 1)
 	foreach($this->css as $medium => $value)
 	{
 		if($this->get_cfg('merge_selectors') == 2) csstidy::merge_selectors($this->css[$medium]);
-		if($this->get_cfg('merge_selectors') == 3) merge_selectors_and_their_properties_smart($this->css[$medium]);
+		//if($this->get_cfg('merge_selectors') == 3) merge_selectors_and_their_properties_smart($this->css[$medium]);
 	}
 }
 
@@ -999,6 +999,19 @@ if($this->get_cfg('optimise_shorthands'))
 		}
 	}
 }
+
+if($this->get_cfg('merge_selectors') == 3)
+{
+	foreach($this->css as $medium => $value)
+	{
+		if($this->get_cfg('merge_selectors') == 3) {
+			merge_selectors_and_their_properties_smart($this->css[$medium]);
+			csstidy::merge_selectors($this->css[$medium]);
+		}
+	}
+}
+
+
 return (empty($this->css) && empty($this->import) && empty($this->charset) && empty($this->namespace)) ? false : true;
 }
 
