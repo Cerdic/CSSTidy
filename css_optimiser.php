@@ -4,6 +4,11 @@ set_magic_quotes_runtime(0);
 require('css_parser.php');
 require('lang.inc.php');
 header('Content-Type:text/html; charset=utf-8');
+
+if (isset($_REQUEST['css_text']) && get_magic_quotes_gpc()) {
+ 	$_REQUEST['css_text'] = stripslashes($_REQUEST['css_text']);
+}
+
 function rmdirr($dirname,$oc=0)
 {
 	// Sanity check
