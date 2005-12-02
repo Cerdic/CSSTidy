@@ -526,128 +526,127 @@ function merge_bg($input_css)
  */
 function merge_selectors_and_their_properties_smart(&$selectorsArray)
 {
+	$attributesArray = tc_make_attributesArray($selectorsArray);
 	$newArray = array(); // returned array
 	$newAtTheEndArray = array();
 	
-	$attributesArray = tc_make_attributesArray($selectorsArray);
-
+	$population = array();
+	
 	$attributesSelectorsArray = array();
 	foreach($attributesArray as $key => $value)
 	{
 		if(count($value['s']) <= 1)
 		{
-			// remove artibutes with only one selectors.
-			if (strpos($value['a'][0],'border-width') !== false)
-			{
-				$newAtTheEndArray[$value['s'][0]][$value['a'][0]] = $value['a'][1]; // a = atribute s = selector
-			} else {
-				$newArray[$value['s'][0]][$value['a'][0]] = $value['a'][1]; // a = atribute s = selector
-			}
-			continue;
+		continue;
 		}
-		
 		$thisArray = array();
 		$thisArray['attributes'][$value['a'][0]] = $value['a'][1];
-		$thisArray['selectors'] = $value['s'];
-		$thisArray['intRank'] = 0;
+		$thisArray['selectors'] = $value['s'];		
+		sort($value['s']);
+		$popStr = implode(',',$value['s']);
+		$population[$popStr]['intArray'] = $value['s'];
+		$population[$popStr]['n'] = 1;
+		$population[$popStr]['attributes'][$value['a'][0]] = $value['a'][1];
+		$population[$popStr]['strlen'] = 0;
+		//$population[$popStr]['strlen'] = strlen($population[$popStr]['str']);
 		$attributesSelectorsArray[] = $thisArray;
-	}
+	}	
 	unset($attributesArray); // to relase memory
 	
-	$population = array();
 	foreach($attributesSelectorsArray as $key => $value)
 	{	
 		$attributesSelectorsArray[$key]['isparsed'] = true;		
+		
 		foreach($attributesSelectorsArray as $key1 => $value1)
 		{
-			unset($intersection);
-			if (!isset($attributesSelectorsArray[$key1]['isparsed']) || !$attributesSelectorsArray[$key1]['isparsed'])
-			{
-				$intersection = array_intersect($value['selectors'],$value1['selectors']);
-				if(count($intersection) >= 1) {
-					sort($intersection);
-					$intersectionStr = implode(',',$intersection);
-					if(!isset($population[$intersectionStr])) {
-						$population[$intersectionStr]['intArray'] = $intersection;
-						$population[$intersectionStr]['n'] = 1;
-						$population[$intersectionStr]['strlen'] = strlen(implode(';',$value['attributes'])) + strlen(implode(';',$value1['attributes'])) + 2;
+		unset($intersection);
+		if (!isset($attributesSelectorsArray[$key1]['isparsed']) || !$attributesSelectorsArray[$key1]['isparsed'])
+		{
+			$intersection = array_intersect($value['selectors'],$value1['selectors']);
+	
+			if(count($intersection) >= 1) {
+				sort($intersection);
+				$intersectionStr = implode(',',$intersection);
+				$tstr = '';
+				if(!isset($population[$intersectionStr])) {
+					$population[$intersectionStr]['intArray'] = $intersection;
+					$population[$intersectionStr]['n'] = 0;
+					$population[$intersectionStr]['attributes'] = array ();
+					foreach($value['attributes'] as $vkey => $vvalue){
+						$population[$intersectionStr]['attributes'][$vkey] = $vvalue;
 					}
-					else
-					{
-						$population[$intersectionStr]['intArray'] = array_merge($population[$intersectionStr]['intArray'], $intersection);
-						$population[$intersectionStr]['n']++;
-						$population[$intersectionStr]['strlen'] += strlen(implode(';',$value1['attributes'])) + 2;
+					foreach($value1['attributes'] as $vkey => $vvalue){
+						$population[$intersectionStr]['attributes'][$vkey] = $vvalue;
 					}
+				}
+				else
+				{
+					$population[$intersectionStr]['n'] += 1;
+					foreach($value1['attributes'] as $vkey => $vvalue){
+						$population[$intersectionStr]['attributes'][$vkey] = $vvalue;
+					}
+				}
+				$population[$intersectionStr]['strlen'] = strlen(implode(';',array_keys($population[$intersectionStr]['attributes'])).implode(';',$population[$intersectionStr]['attributes'])) - (count($population[$intersectionStr]['attributes'])*2);
 				}
 			}
 		}
 	}
 	
-	$populationIntRank = $population;
-	
-	foreach($populationIntRank as $key => $value)
+	$populationIntRank = array();	
+	foreach($population as $key => $value)
 	{
-		$intRank = (strlen($key) * ($value['n'] - 1)) - $value['strlen'];
-		$populationIntRank[$key] = $intRank;
+		$intRank = $value['strlen'] - (strlen($key) / count($value['intArray']));
+		if ($intRank >= 1) {
+			$populationIntRank[$key] = $intRank;
+			$population[$key]['intRank'] = $intRank;
+		} else {
+			unset($population[$key]);
+		}
 	}
+	
 	arsort($populationIntRank);
 	
 	$goodCombinationArray = array();
+	
 	foreach($populationIntRank as $key => $value)
 	{
-		if ($value >= 1)
+		$keyArray = $population[$key]['intArray'];
+		foreach($population as $key1 => $value1)
 		{
-			$keyArray = $population[$key]['intArray'];
-			foreach($goodCombinationArray as $key1 => $value1)
+			if(!isset($populationIntRank[$key1]))
 			{
-				if(count(array_intersect($keyArray,$value1)) < 1)
-				{
-					$goodCombinationArray[] = $keyArray;
-				}
+				continue;
+			}
+			$intersection = array_intersect($keyArray,$value1['intArray']);
+	
+			if(count($intersection) <= 2 || $key == $key1)
+			{
+				$goodCombinationArray[$key] = $keyArray;
+			} else {
+				unset($populationIntRank[$key1]);
 			}
 		}
 	}
 	
+	foreach($goodCombinationArray as $selStr => $selArray) {
+		foreach($selArray as $sk => $sv) {
+			foreach($population[$selStr]['attributes'] as $pk => $pv) {
+				unset($selectorsArray[$sv][$pk]);
+				$selectorsArray[$selStr][$pk] = $pv;
+			}
+		}
+	}
 	
+	$css = $selectorsArray;
 	
-	foreach($attributesSelectorsArray as $key => $value)
+	foreach($css as $key => $value)
 	{
-		$residualArray = $value['selectors'];
-		foreach($goodCombinationArray as $k => $v)
+		if(isset($css[$key]))
 		{
-			$intersection = array_intersect($residualArray,$v);
-			if (count($intersection) == count($v)) {
-				$str = implode(",", $intersection);
-				foreach($value['attributes'] as $keyAttributes => $valueAttributes)
-				{
-					if (strpos($keyAttributes,'border-width') !== false)
-					{
-						$newAtTheEndArray[$str][$keyAttributes] = $valueAttributes;
-					} else {
-						$newArray[$str][$keyAttributes] = $valueAttributes;
-					}
-				}
-				$residualArray = array_diff($residualArray,$v);
-			}
+			$selectorsArray[$key] = $value;
 		}
-		if(count($residualArray) >= 1)
-		{
-			$str = implode(",", $residualArray);
-			foreach($value['attributes'] as $keyAttributes => $valueAttributes)
-			{
-				if (strpos($keyAttributes,'border-width') !== false)
-				{
-					$newAtTheEndArray[$str][$keyAttributes] = $valueAttributes;
-				} else {
-					$newArray[$str][$keyAttributes] = $valueAttributes;
-				}
-			}
-		}
+		
 	}
-	
-	$newArray = array_merge($newArray, $newAtTheEndArray);
-	
-	$selectorsArray = $newArray;
 }
 
 /* converts this :
