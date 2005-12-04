@@ -595,7 +595,7 @@ function merge_selectors_and_their_properties_smart(&$selectorsArray)
 	$populationIntRank = array();	
 	foreach($population as $key => $value)
 	{
-		$intRank = $value['strlen'] - (strlen($key) / count($value['intArray']));
+		$intRank = $value['strlen'] - strlen($key);
 		if ($intRank >= 1) {
 			$populationIntRank[$key] = $intRank;
 			$population[$key]['intRank'] = $intRank;
