@@ -1,6 +1,5 @@
 <?php
 ini_set('display_errors','On');
-set_magic_quotes_runtime(0);
 require('css_parser.php');
 require('lang.inc.php');
 header('Content-Type:text/html; charset=utf-8');
