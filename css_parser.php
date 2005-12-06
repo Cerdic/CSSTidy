@@ -35,7 +35,7 @@
  *
  * @version 1.2
  */
-require("data.inc.php");
+require('data.inc.php');
 
 /**
  * All functions which are not directly related to the parser class
@@ -43,7 +43,7 @@ require("data.inc.php");
  * Not required. If this file is not included, csstidy does without these functions.
  * @version 1.2
  */
-@include("functions.inc.php");
+@include('functions.inc.php');
 
 /**
  * CSS Parser class
