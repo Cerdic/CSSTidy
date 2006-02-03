@@ -185,8 +185,6 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
                    <?php if($css->get_cfg('merge_selectors') == 1) echo 'checked="checked"'; ?>/><label for="ms1">1</label>
             <input type="radio" title="<?php echo $lang[$l][49]; ?>" name="merge_selectors" id="ms2" value="2"
                    <?php if($css->get_cfg('merge_selectors') == 2) echo 'checked="checked"'; ?>/><label for="ms2">2</label>
-            <input type="radio" title="<?php echo $lang[$l][50]; ?>" name="merge_selectors" id="ms3" value="3"
-                   <?php if($css->get_cfg('merge_selectors') == 3) echo 'checked="checked"'; ?>/><label for="ms3">3</label>
                    <a href="http://csstidy.sourceforge.net/merge_selectors.php" style="cursor:help;">(?)</a>
             </div>
              

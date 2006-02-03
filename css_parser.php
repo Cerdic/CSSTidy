@@ -55,7 +55,7 @@ require('data.inc.php');
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005
- * @version 1.1beta
+ * @version 1.1
  */
 class csstidy {
 
@@ -121,7 +121,7 @@ var $template = array();
  * @var string
  * @access private
  */
-var $version = '1.1beta';
+var $version = '1.1';
 
 /**
  * Stores comments
@@ -586,7 +586,7 @@ function is_token(&$string,$i)
  * @param string $string the CSS code
  * @access public
  * @return bool
- * @version 1.1beta
+ * @version 1.1
  */
 function parse($string) {
 
