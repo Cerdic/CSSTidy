@@ -37,7 +37,7 @@ $GLOBALS['csstidy']['whitespace'] = array(' ',"\n","\t","\r","\x0B");
  * @global array $GLOBALS['csstidy']['tokens']
  * @version 1.0
  */
-$GLOBALS['csstidy']['tokens'] = array('/','@','}','{',';',':','=','\'','"','(',',','\\','!','$','%','&',')','*','+','.','<','>','?','[',']','^','`','|','~');
+$GLOBALS['csstidy']['tokens'] = '/@}{;:=\'"(,\\!$%&)*+.<>?[]^`|~';
 
 /**
  * All CSS units (CSS 3 units included)

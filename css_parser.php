@@ -389,7 +389,7 @@ function unicode(&$string,&$i)
 		$i--;
 	}
 	
-	if($add != '\\' || !$this->get_cfg('remove_bslash') || in_array($string{$i+1},$tokens))
+	if($add != '\\' || !$this->get_cfg('remove_bslash') || strpos($tokens, $string{$i+1}) !== false)
 	{
 		return $add;
 	}
@@ -577,11 +577,7 @@ function parse_from_url($url)
 function is_token(&$string,$i)
 {
 	$tokens =& $GLOBALS['csstidy']['tokens'];
-	if(in_array($string{$i},$tokens) && !csstidy::escaped($string,$i))
-	{
-		return true;
-	}
-	return false;
+	return (strpos($tokens, $string{$i}) !== false && !csstidy::escaped($string,$i));
 }
 
 
@@ -975,12 +971,11 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 	}
 }
   
-if($this->get_cfg('merge_selectors') > 1)
+if($this->get_cfg('merge_selectors') == 2)
 {
 	foreach($this->css as $medium => $value)
 	{
-		if($this->get_cfg('merge_selectors') == 2) csstidy::merge_selectors($this->css[$medium]);
-		//if($this->get_cfg('merge_selectors') == 3) merge_selectors_and_their_properties_smart($this->css[$medium]);
+		csstidy::merge_selectors($this->css[$medium]);
 	}
 }
 
@@ -1000,18 +995,6 @@ if($this->get_cfg('optimise_shorthands'))
 	}
 }
 
-if($this->get_cfg('merge_selectors') == 3)
-{
-	foreach($this->css as $medium => $value)
-	{
-		if($this->get_cfg('merge_selectors') == 3) {
-			merge_selectors_and_their_properties_smart($this->css[$medium]);
-			csstidy::merge_selectors($this->css[$medium]);
-		}
-	}
-}
-
-
 return (empty($this->css) && empty($this->import) && empty($this->charset) && empty($this->namespace)) ? false : true;
 }
 
@@ -1023,7 +1006,7 @@ return (empty($this->css) && empty($this->import) && empty($this->charset) && em
 function explode_selectors()
 {
     // Explode multiple selectors
-    if($this->get_cfg('merge_selectors') == 1 || $this->get_cfg('merge_selectors') == 3)
+    if($this->get_cfg('merge_selectors') == 1)
     {
         $new_sels = array();
         $lastpos = 0;
@@ -1104,11 +1087,7 @@ function optimise_add_subvalue()
  */
 function escaped(&$string,$pos) 
 {
-	if(@($string{$pos-1} != '\\') || csstidy::escaped($string,$pos-1))
-	{
-		return false;
-	}
-	return true;
+	return !(@($string{$pos-1} != '\\') || csstidy::escaped($string,$pos-1));
 }
 
 /**
