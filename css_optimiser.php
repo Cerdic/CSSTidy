@@ -91,8 +91,22 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
     <meta http-equiv="Content-Type"
     content="application/xhtml+xml; charset=utf-8" />
     <link rel="stylesheet" href="cssparse.css" type="text/css" />
+    <script type="text/javascript">
+    function enable_disable_preserve()
+    {
+        var inputs = new Array('sort_sel', 'sort_de', 'optimise_shorthands', 'c1', 'c2', 'c3');
+        for(var i = 0; i < inputs.length; i++)
+        {
+            if(document.getElementById('preserve_css').checked)  {
+                document.getElementById(inputs[i]).disabled = true;
+            } else {
+                document.getElementById(inputs[i]).disabled = false;
+            }
+        }        
+    }
+    </script>
   </head>
-  <body>
+  <body onload="enable_disable_preserve()">
     <div><h1 style="display:inline">
       <?php echo $lang[$l][1]; ?>
     </h1>
@@ -157,7 +171,7 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
           <fieldset id="options">
          <legend><?php echo $lang[$l][19]; ?></legend>
          
-            <input type="checkbox" name="preserve_css" id="preserve_css"
+            <input onchange="enable_disable_preserve()" type="checkbox" name="preserve_css" id="preserve_css"
                    <?php if($css->get_cfg('preserve_css')) echo 'checked="checked"'; ?> />
             <label for="preserve_css" title="<?php echo $lang[$l][52]; ?>" class="help"><?php echo $lang[$l][51]; ?></label><br />
          
@@ -174,11 +188,11 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
             
             <label for="merge_selectors"><?php echo $lang[$l][22]; ?></label>
             <div id="merge_selectors">
-            <input type="radio" title="<?php echo $lang[$l][47]; ?>" name="merge_selectors" id="ms0" value="0"
+            <input id="c1" type="radio" title="<?php echo $lang[$l][47]; ?>" name="merge_selectors" id="ms0" value="0"
                    <?php if($css->get_cfg('merge_selectors') == 0) echo 'checked="checked"'; ?>/><label for="ms0">0</label>
-            <input type="radio" title="<?php echo $lang[$l][48]; ?>" name="merge_selectors" id="ms1" value="1"
+            <input id="c2" type="radio" title="<?php echo $lang[$l][48]; ?>" name="merge_selectors" id="ms1" value="1"
                    <?php if($css->get_cfg('merge_selectors') == 1) echo 'checked="checked"'; ?>/><label for="ms1">1</label>
-            <input type="radio" title="<?php echo $lang[$l][49]; ?>" name="merge_selectors" id="ms2" value="2"
+            <input id="c3" type="radio" title="<?php echo $lang[$l][49]; ?>" name="merge_selectors" id="ms2" value="2"
                    <?php if($css->get_cfg('merge_selectors') == 2) echo 'checked="checked"'; ?>/><label for="ms2">2</label>
                    <a href="http://csstidy.sourceforge.net/merge_selectors.php" style="cursor:help;">(?)</a>
             </div>

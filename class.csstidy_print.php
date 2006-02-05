@@ -176,22 +176,26 @@ class csstidy_print
         }
         
         $output .= $template[13];
-            
+        
+        $in_at = false;
         foreach ($css as $key => $token)
         {
             switch ($token[0])
             {
                 case AT_START: // FIXME: at-indentation
                     $output .= $template[0].$this->_htmlsp($token[1], $plain).$template[1];
+                    $in_at = true;
                     break;
                 
                 case SEL_START:
+                    $output .= ($in_at) ? $template[10] : '';
                     if($this->get_cfg('lowercase_s')) $token[1] = strtolower($token[1]);
                     $output .= ($token[1]{0} !== '@') ? $template[2].$this->_htmlsp($token[1], $plain) : $template[0].$this->_htmlsp($token[1], $plain);
                     $output .= $template[3];
                     break;
                     
                 case PROPERTY:
+                    $output .= ($in_at) ? $template[10] : '';
                     if($this->get_cfg('case_properties') == 2) $token[1] = strtoupper($token[1]);
                     if($this->get_cfg('case_properties') == 1) $token[1] = strtolower($token[1]);
                     $output .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
@@ -207,12 +211,14 @@ class csstidy_print
                     break;
                 
                 case SEL_END:
+                    $output .= ($in_at) ? $template[10] : '';
                     $output .= $template[7];
                     if($this->_seeknocomment($css, $key, 1) != AT_END) $output .= $template[8];
                     break;
                 
                 case AT_END:
                     $output .= $template[9];
+                    $in_at = false;
                     break;
 
                 case COMMENT:
