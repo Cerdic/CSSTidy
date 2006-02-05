@@ -1,10 +1,7 @@
-<?php
-if(isset($_GET['lang']))
-{
+﻿<?php
+if(isset($_GET['lang'])) {
 	$l = $_GET['lang'];
-}
-else
-{
+} else {
 	$l = getenv('HTTP_ACCEPT_LANGUAGE');
 	$l = strtolower(substr($l,0,2));
 }
@@ -19,12 +16,10 @@ $lang['en'][2] = '(based on';
 $lang['de'][2] = '(basierend auf';
 $lang['en'][3] = '(plaintext)';
 $lang['de'][3] = '(Textversion)';
-$lang['en'][4] = 'Important Notes:';
-$lang['de'][4] = 'Wichtige Hinweise:';
-$lang['en'][5] = 'the same selectors and properties are automatically merged';
-$lang['de'][5] = 'die gleichen Selektoren und Eigenschaften werden automatisch zusammengefasst';
-$lang['en'][6] = 'your code should be well-formed. This is <strong>no validator</strong> which points out errors in your CSS code. To make sure that your code is valid, use the <a href="http://jigsaw.w3.org/css-validator/">W3C Validator</a>.';
-$lang['de'][6] = 'der CSS Code sollte wohlgeformt sein. Der CSS Code wird <strong>nicht auf Gültigkeit überprüft</strong>. Um sicherzugehen dass dein Code valide ist, benutze den <a href="http://jigsaw.w3.org/css-validator/">W3C Validierungsservice</a>.';
+$lang['en'][4] = 'Important Note:';
+$lang['de'][4] = 'Wichtiger Hinweis:';
+$lang['en'][6] = 'Your code should be well-formed. This is <strong>no validator</strong> which points out errors in your CSS code. To make sure that your code is valid, use the <a href="http://jigsaw.w3.org/css-validator/">W3C Validator</a>.';
+$lang['de'][6] = 'Der CSS Code sollte wohlgeformt sein. Der CSS Code wird <strong>nicht auf Gültigkeit überprüft</strong>. Um sicherzugehen dass dein Code valide ist, benutze den <a href="http://jigsaw.w3.org/css-validator/">W3C Validierungsservice</a>.';
 $lang['en'][7] = 'all comments are removed';
 $lang['de'][7] = 'alle Kommentare werden entfernt';
 $lang['en'][8] = 'CSS Input:';
@@ -111,6 +106,12 @@ $lang['de'][47] = 'Nichts ändern';
 $lang['de'][48] = 'Selektoren nur trennen (am Komma)';
 $lang['de'][49] = 'Selektoren mit gleichen Eigenschaften zusammenfassen (schnell)';
 $lang['de'][50] = 'Selektoren intelligent zusammenfassen (langsam!)';
+$lang['en'][51] = 'Preserve CSS';
+$lang['de'][51] = 'CSS erhalten';
+$lang['en'][52] = 'Save comments, hacks, etc. Most optimisations can *not* be applied if this is enabled.';
+$lang['de'][52] = 'Kommentare, Hacks, etc. speichern. Viele Optimierungen sind dann aber nicht mehr möglich.';
+$lang['en'][53] = 'None';
+$lang['de'][53] = 'Keine';
 
 $lang['fr'][0] = 'CSS Formatteur et Optimiseur (basé sur CSSTidy  ';
 $lang['fr'][1] = 'CSS Formatteur et Optimiseur';
