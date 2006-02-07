@@ -96,10 +96,13 @@ class csstidy_print
      */
     function csstidy_print(&$css)
     {
-        $this->css      =& $css->css;
-        $this->settings =& $css->settings;
-        $this->template =& $css->template;
-        $this->tokens   =& $css->tokens;
+        $this->css       =& $css->css;
+        $this->settings  =& $css->settings;
+        $this->template  =& $css->template;
+        $this->tokens    =& $css->tokens;
+        $this->charset   =& $css->charset;
+        $this->import    =& $css->import;
+        $this->namespace =& $css->namespace;
     }
 
     /**
@@ -182,7 +185,7 @@ class csstidy_print
         {
             switch ($token[0])
             {
-                case AT_START: // FIXME: at-indentation
+                case AT_START:
                     $output .= $template[0].$this->_htmlsp($token[1], $plain).$template[1];
                     $in_at = true;
                     break;
@@ -222,7 +225,8 @@ class csstidy_print
                     break;
 
                 case COMMENT:
-                    $output .= $template[11] . ' /* ' . $this->_htmlsp($token[1], $plain) . ' */' . $template[12];
+                    $output .= ($in_at) ? $template[10] : '';
+                    $output .= $template[11] . '/*' . $this->_htmlsp($token[1], $plain) . '*/' . $template[12];
                     break;
             }
         }

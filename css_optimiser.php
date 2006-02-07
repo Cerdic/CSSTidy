@@ -72,7 +72,7 @@ if(isset($_REQUEST['lowercase'])) $css->set_cfg('lowercase_s',true);
 if(!isset($_REQUEST['compress_c']) && isset($_REQUEST['post'])) $css->set_cfg('compress_colors',false);
 if(!isset($_REQUEST['compress_fw']) && isset($_REQUEST['post'])) $css->set_cfg('compress_font-weight',false);
 if(isset($_REQUEST['merge_selectors'])) $css->set_cfg('merge_selectors', $_REQUEST['merge_selectors']);
-if(!isset($_REQUEST['optimise_shorthands']) && isset($_REQUEST['post'])) $css->set_cfg('optimise_shorthands',false);
+if(isset($_REQUEST['optimise_shorthands'])) $css->set_cfg('optimise_shorthands',true);
 if(!isset($_REQUEST['rbs']) && isset($_REQUEST['post'])) $css->set_cfg('remove_bslash',false);
 if(!isset($_REQUEST['preserve_css']) && isset($_REQUEST['post'])) $css->set_cfg('preserve_css',false);
 if(isset($_REQUEST['sort_sel'])) $css->set_cfg('sort_selectors',true);
@@ -88,19 +88,19 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
     <title>
       <?php echo $lang[$l][0]; echo $css->version; ?>)
     </title>
-    <meta http-equiv="Content-Type"
-    content="application/xhtml+xml; charset=utf-8" />
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
     <link rel="stylesheet" href="cssparse.css" type="text/css" />
     <script type="text/javascript">
     function enable_disable_preserve()
     {
-        var inputs = new Array('sort_sel', 'sort_de', 'optimise_shorthands', 'c1', 'c2', 'c3');
+        var inputs =   new Array('sort_sel', 'sort_de', 'optimise_shorthands', 'c1', 'c2', 'c3', 'none');
+        var inputs_v = new Array( true,       true,      true,                  true, true, true, false);
         for(var i = 0; i < inputs.length; i++)
         {
             if(document.getElementById('preserve_css').checked)  {
-                document.getElementById(inputs[i]).disabled = true;
+                document.getElementById(inputs[i]).disabled = inputs_v[i];
             } else {
-                document.getElementById(inputs[i]).disabled = false;
+                document.getElementById(inputs[i]).disabled = !inputs_v[i];
             }
         }        
     }

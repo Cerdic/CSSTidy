@@ -198,11 +198,11 @@ var $sub_value_arr = array();
 var $str_char = '';
 
 /**
- * Status where the string has been started (is or iv)
+ * Status from which the parser switched to ic or instr
  * @var string
  * @access private
  */
-var $str_from = '';
+var $from = '';
 
 /**
  * Variable needed to manage string-in-strings, for example url("foo.png")
@@ -224,13 +224,6 @@ var $invalid_at = false;
  * @access private
  */
 var $added = false;
-
-/**
- * Status where the comment has been started
- * @var string
- * @access private
- */
-var $comment_from = '';
 
 /**
  * Array which saves the message log
@@ -259,7 +252,7 @@ function csstidy()
 	$this->settings['lowercase_s'] = false;
 	$this->settings['optimise_shorthands'] = false;
 	$this->settings['remove_last_;'] = false;
-	$this->settings['case_properties'] = 0;
+	$this->settings['case_properties'] = 1;
 	$this->settings['sort_properties'] = false;
 	$this->settings['sort_selectors'] = false;
 	$this->settings['merge_selectors'] = 0;
@@ -537,7 +530,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 			if($string{$i} == '/' && @$string{$i+1} == '*')
 			{
 				$this->status = 'ic'; ++$i;
-				$this->comment_from = 'at';
+				$this->from = 'at';
 			}
 			elseif($string{$i} == '{')
 			{
@@ -570,7 +563,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 			if($string{$i} == '/' && @$string{$i+1} == '*' && trim($this->selector) == '')
 			{
 				$this->status = 'ic'; ++$i;
-				$this->comment_from = 'is';
+				$this->from = 'is';
 			}
 			elseif($string{$i} == '@' && trim($this->selector) == '')
 			{
@@ -589,7 +582,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 						
 				if($this->invalid_at)
 				{
-					$this->selector = '@'.$this->selector;
+					$this->selector = '@';
 					$invalid_at_name = '';
 					for($j = $i+1; $j < $size; ++$j)
 					{
@@ -607,7 +600,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 				$this->selector .= $string{$i};
 				$this->status = 'instr';
 				$this->str_char = $string{$i};
-				$this->str_from = 'is';
+				$this->from = 'is';
 			}
 			elseif($this->invalid_at && $string{$i} == ';')
 			{
@@ -662,14 +655,14 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 			elseif($string{$i} == '/' && @$string{$i+1} == '*' && $this->property == '')
 			{
 				$this->status = 'ic'; ++$i;
-				$this->comment_from = 'ip';
+				$this->from = 'ip';
 			}
 			elseif($string{$i} == '}')
 			{
                 $this->explode_selectors();
 				$this->status = 'is';
 				$this->invalid_at = false;
-				if($this->selector{0} != '@' && !$this->added)
+				if($this->selector{0} != '@' && !$this->added && !$this->get_cfg('preserve_css'))
 				{
 					$this->log('Removed empty selector: '.trim($this->selector),'Information');
 				}
@@ -700,14 +693,14 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 			if($string{$i} == '/' && @$string{$i+1} == '*')
 			{
 				$this->status = 'ic'; ++$i;
-				$this->comment_from = 'iv';
+				$this->from = 'iv';
 			}
 			elseif(($string{$i} == '"' || $string{$i} == "'" || $string{$i} == '('))
 			{
 				$this->sub_value .= $string{$i};
 				$this->str_char = ($string{$i} == '(') ? ')' : $string{$i};
 				$this->status = 'instr';
-				$this->str_from = 'iv';
+				$this->from = 'iv';
 			}
 			elseif($string{$i} == ',')
 			{
@@ -790,7 +783,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 				}
                 
 				$valid = csstidy::property_is_valid($this->property);
-				if(!$this->invalid_at && (!$this->get_cfg('discard_invalid_properties') || $valid))
+				if((!$this->invalid_at || $this->get_cfg('preserve_css')) && (!$this->get_cfg('discard_invalid_properties') || $valid))
 				{
 					$this->css_add_property($this->at,$this->selector,$this->property,$this->value);
                     $this->add_token(VALUE, $this->value);
@@ -831,7 +824,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
                 $this->explode_selectors();
                 $this->add_token(SEL_END, $this->selector);
 				$this->status = 'is';
-				if($this->selector{0} != '@' && !$this->added)
+				if($this->selector{0} != '@' && !$this->added && !$this->get_cfg('preserve_css'))
 				{
 					$this->log('Removed empty selector: '.trim($this->selector),'Information');
 				}
@@ -862,7 +855,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 		}
 		if($string{$i} == $this->str_char && !csstidy::escaped($string,$i) && !$this->str_in_str)
 		{
-			$this->status = $this->str_from;
+			$this->status = $this->from;
 		}
 		$temp_add = $string{$i};
 															// ...and no not-escaped backslash at the previous position
@@ -871,11 +864,11 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 			$temp_add = "\\A ";
 			$this->log('Fixed incorrect newline in string','Warning');
 		}
-		if($this->str_from == 'iv')
+		if($this->from == 'iv')
 		{
 			$this->sub_value .= $temp_add;
 		}
-		elseif($this->str_from == 'is')
+		elseif($this->from == 'is')
 		{
 			$this->selector .= $temp_add;
 		}
@@ -885,7 +878,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 		case 'ic':
 		if($string{$i} == '*' && $string{$i+1} == '/')
 		{
-			$this->status = $this->comment_from;
+			$this->status = $this->from;
 			$i++;
             $this->add_token(COMMENT, $cur_comment);
             $cur_comment = '';
@@ -924,7 +917,7 @@ if($this->get_cfg('optimise_shorthands'))
 
 $this->print->_reset();
 
-return !(empty($this->css) && empty($this->import) && empty($this->charset) && empty($this->namespace));
+return !(empty($this->css) && empty($this->import) && empty($this->charset) && empty($this->tokens) && empty($this->namespace));
 }
 
 /**
@@ -1032,7 +1025,7 @@ function css_add_property($media,$selector,$property,$new_val)
 {
 	$whitespace =& $GLOBALS['csstidy']['whitespace'];
     
-    if(!trim($new_val)) {
+    if($this->get_cfg('preserve_css') || !trim($new_val)) {
         return;
     }
 
