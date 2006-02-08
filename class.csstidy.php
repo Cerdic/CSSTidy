@@ -964,7 +964,7 @@ function optimise_add_subvalue()
 {
 	$replace_colors =& $GLOBALS['csstidy']['replace_colors'];
 	$this->sub_value = trim($this->sub_value);
-	if($this->sub_value != '')
+	if($this->sub_value != '') // caution : '0'
 	{
 		if(function_exists('compress_numbers'))
 		{

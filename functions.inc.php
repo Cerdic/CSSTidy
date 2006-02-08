@@ -55,8 +55,11 @@ function cut_color($color)
 		$color = '#';
 		for ($i = 0; $i < 3; $i++ )
 		{
-			if($color_tmp[$i]<16) $color .= '0'.dechex($color_tmp[$i]);
-				else $color .= dechex($color_tmp[$i]);
+			if($color_tmp[$i]<16) {
+                $color .= '0' . dechex($color_tmp[$i]);
+            } else {
+				$color .= dechex($color_tmp[$i]);
+            }
 		}
 	}
 	
@@ -105,7 +108,7 @@ function cut_color($color)
  * @param string $subvalue
  * @param string property needed to check wheter <number>-values are allowed or not
  * @return string
- * @version 1.1
+ * @version 1.2
  */
 function compress_numbers($subvalue, $property = NULL)
 {
@@ -125,45 +128,44 @@ function compress_numbers($subvalue, $property = NULL)
 	for ($l = 0; $l < count($temp); $l++)
 	{
 		// continue if no numeric value
-		if(!(strlen($temp[$l]) > 0 && ( is_numeric($temp[$l]{0}) || $temp[$l]{0} == "+" || $temp[$l]{0} == "-" ) ))
+		if (!(strlen($temp[$l]) > 0 && ( is_numeric($temp[$l]{0}) || $temp[$l]{0} == '+' || $temp[$l]{0} == '-' ) ))
 		{
 			continue;
 		}
 
 		// Fix bad colors
-		if(in_array($property,$color_values))
+		if (in_array($property, $color_values))
 		{
 			$temp[$l] = '#'.$temp[$l];
 		}
 	
-		if(floatval($temp[$l]) == 0 && ( is_numeric($temp[$l]{0}) || $temp[$l]{0} == "+" || $temp[$l]{0} == "-" ) )
+		if (floatval($temp[$l]) == 0)
 		{
 			$temp[$l] = 0;
 		}
-		elseif(is_numeric($temp[$l]{0}) || $temp[$l]{0} == "+" || $temp[$l]{0} == "-")
+		else
 		{
 			$unit_found = FALSE;
-			for( $m = 0, $size_4 = count($units); $m < $size_4; $m++ )
+			for ($m = 0, $size_4 = count($units); $m < $size_4; $m++)
 			{
-				if(strpos(strtolower($temp[$l]),$units[$m]) !== FALSE)
+				if (strpos(strtolower($temp[$l]),$units[$m]) !== FALSE)
 				{
 					$temp[$l] = floatval($temp[$l]).$units[$m];
 					$unit_found = TRUE;
 					break;
 				}
 			}
-			if(!$unit_found && !in_array($property,$number_values,TRUE))
+			if (!$unit_found && !in_array($property,$number_values,TRUE))
 			{
 				$temp[$l] = floatval($temp[$l]).'px';
 			}
-			else if(!$unit_found)
+			else if (!$unit_found)
 			{
 				$temp[$l] = floatval($temp[$l]);
 			}
 		}
 	}
-	$subvalue = (count($temp) > 1) ? $temp[0].'/'.$temp[1] : $temp[0];
-	return "$subvalue";
+	return ((count($temp) > 1) ? $temp[0].'/'.$temp[1] : $temp[0]);
 }
 
 /**
