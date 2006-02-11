@@ -165,6 +165,7 @@ function compress_numbers($subvalue, $property = NULL)
 			}
 		}
 	}
+
 	return ((count($temp) > 1) ? $temp[0].'/'.$temp[1] : $temp[0]);
 }
 

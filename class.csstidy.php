@@ -250,12 +250,12 @@ function csstidy()
 	$this->settings['compress_colors'] = true;
 	$this->settings['compress_font-weight'] = true;
 	$this->settings['lowercase_s'] = false;
-	$this->settings['optimise_shorthands'] = false;
+	$this->settings['optimise_shorthands'] = true;
 	$this->settings['remove_last_;'] = false;
 	$this->settings['case_properties'] = 1;
 	$this->settings['sort_properties'] = false;
 	$this->settings['sort_selectors'] = false;
-	$this->settings['merge_selectors'] = 0;
+	$this->settings['merge_selectors'] = 2;
 	$this->settings['discard_invalid_properties'] = false;
 	$this->settings['css_level'] = 'CSS2.1';
     $this->settings['preserve_css'] = true;
@@ -756,7 +756,7 @@ for ($i = 0, $size = strlen($string); $i < $size; $i++ )
 				$this->optimise_add_subvalue();
 					
 				$this->value = implode(' ',$this->sub_value_arr);
-			
+
 				$this->selector = trim($this->selector);
 				
 				// Remove whitespace at ! important
@@ -969,7 +969,7 @@ function optimise_add_subvalue()
 		if(function_exists('compress_numbers'))
 		{
 			$temp = compress_numbers($this->sub_value,$this->property);
-			if($temp != $this->sub_value)
+			if($temp !== $this->sub_value)
 			{
 				if(strlen($temp) > strlen($this->sub_value))
 				{
@@ -994,6 +994,7 @@ function optimise_add_subvalue()
 				$this->sub_value = $temp;
 			}
 		}
+    
 		$this->sub_value_arr[] = $this->sub_value;
 		$this->sub_value = '';
 	}
@@ -1025,7 +1026,7 @@ function css_add_property($media,$selector,$property,$new_val)
 {
 	$whitespace =& $GLOBALS['csstidy']['whitespace'];
     
-    if($this->get_cfg('preserve_css') || !trim($new_val)) {
+    if($this->get_cfg('preserve_css') || trim($new_val) == '') {
         return;
     }
 
