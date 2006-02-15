@@ -23,7 +23,7 @@
  *
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package csstidy
- * @author Florian Schmitz (floele at gmail dot com) 2005
+ * @author Florian Schmitz (floele at gmail dot com) 2005-2006
  */
  
 /**
@@ -38,35 +38,6 @@
  
 class csstidy_print
 {
-    /**
-     * Stores the settings
-     * @var array
-     * @access private
-     */
-    var $settings = array();
-    
-    /**
-     * Saves the parsed CSS
-     * @var array
-     * @access public
-     */
-    var $css = array();
-    
-    /**
-     * Saves the parsed CSS (raw)
-     * @var array
-     * @access private
-     */
-    var $tokens = array();
-
-    /**
-     * Saves the templates
-     * @var array
-     * @access private
-     * @see http://cdburnerxp.se/cssparse/template.htm
-     */
-    var $template = array();
-    
     /**
      * Saves the input CSS string
      * @var string
@@ -96,8 +67,8 @@ class csstidy_print
      */
     function csstidy_print(&$css)
     {
+        $this->parser    =& $css;
         $this->css       =& $css->css;
-        $this->settings  =& $css->settings;
         $this->template  =& $css->template;
         $this->tokens    =& $css->tokens;
         $this->charset   =& $css->charset;
@@ -154,7 +125,7 @@ class csstidy_print
         }
         
         $output = '';
-        if (!$this->get_cfg('preserve_css')) {
+        if (!$this->parser->get_cfg('preserve_css')) {
             $this->_convert_raw_css();
         }
 
@@ -192,21 +163,21 @@ class csstidy_print
                 
                 case SEL_START:
                     $output .= ($in_at) ? $template[10] : '';
-                    if($this->get_cfg('lowercase_s')) $token[1] = strtolower($token[1]);
+                    if($this->parser->get_cfg('lowercase_s')) $token[1] = strtolower($token[1]);
                     $output .= ($token[1]{0} !== '@') ? $template[2].$this->_htmlsp($token[1], $plain) : $template[0].$this->_htmlsp($token[1], $plain);
                     $output .= $template[3];
                     break;
                     
                 case PROPERTY:
                     $output .= ($in_at) ? $template[10] : '';
-                    if($this->get_cfg('case_properties') == 2) $token[1] = strtoupper($token[1]);
-                    if($this->get_cfg('case_properties') == 1) $token[1] = strtolower($token[1]);
+                    if($this->parser->get_cfg('case_properties') == 2) $token[1] = strtoupper($token[1]);
+                    if($this->parser->get_cfg('case_properties') == 1) $token[1] = strtolower($token[1]);
                     $output .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
                     break;
                 
                 case VALUE:
                     $output .= $this->_htmlsp($token[1], $plain);
-                    if($this->_seeknocomment($css, $key, 1) == SEL_END && $this->get_cfg('remove_last_;')) {
+                    if($this->_seeknocomment($css, $key, 1) == SEL_END && $this->parser->get_cfg('remove_last_;')) {
                         $output .= str_replace(';', '', $template[6]);
                     } else {
                         $output .= $template[6];
@@ -276,14 +247,14 @@ class csstidy_print
         
         foreach ($this->css as $medium => $val)
         {
-            if ($this->get_cfg('sort_selectors')) ksort($val);
+            if ($this->parser->get_cfg('sort_selectors')) ksort($val);
             if ($medium != DEFAULT_AT) {
                 $this->_add_token(AT_START, $medium, true);
             }
             
             foreach ($val as $selector => $vali)
             {
-                if ($this->get_cfg('sort_properties')) ksort($vali);
+                if ($this->parser->get_cfg('sort_properties')) ksort($vali);
                 $this->_add_token(SEL_START, $selector, true);
                 
                 foreach ($vali as $property => $valj)
@@ -327,27 +298,11 @@ class csstidy_print
      * @version 1.0
      */
     function _add_token($type, $data, $do = false) {
-        if ($this->get_cfg('preserve_css') || $do) {
+        if ($this->parser->get_cfg('preserve_css') || $do) {
             $this->tokens[] = array($type, trim($data));
         }
     }
-    
-    /**
-     * Get the value of a setting.
-     * @param string $setting 
-     * @access public
-     * @return mixed
-     * @version 1.0
-     */
-    function get_cfg($setting)
-    {
-        if (isset($this->settings[$setting]))
-        {
-            return $this->settings[$setting];
-        }
-        return false;
-    }
-    
+      
     /**
      * Get compression ratio
      * @access public

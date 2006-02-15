@@ -72,7 +72,7 @@ if(isset($_REQUEST['lowercase'])) $css->set_cfg('lowercase_s',true);
 if(!isset($_REQUEST['compress_c']) && isset($_REQUEST['post'])) $css->set_cfg('compress_colors',false);
 if(!isset($_REQUEST['compress_fw']) && isset($_REQUEST['post'])) $css->set_cfg('compress_font-weight',false);
 if(isset($_REQUEST['merge_selectors'])) $css->set_cfg('merge_selectors', $_REQUEST['merge_selectors']);
-if(isset($_REQUEST['optimise_shorthands'])) $css->set_cfg('optimise_shorthands',true);
+if(!isset($_REQUEST['optimise_shorthands']) && isset($_REQUEST['post'])) $css->set_cfg('optimise_shorthands',false);
 if(!isset($_REQUEST['rbs']) && isset($_REQUEST['post'])) $css->set_cfg('remove_bslash',false);
 if(!isset($_REQUEST['preserve_css']) && isset($_REQUEST['post'])) $css->set_cfg('preserve_css',false);
 if(isset($_REQUEST['sort_sel'])) $css->set_cfg('sort_selectors',true);
