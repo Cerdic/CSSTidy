@@ -249,25 +249,25 @@ class csstidy_print
         {
             if ($this->parser->get_cfg('sort_selectors')) ksort($val);
             if ($medium != DEFAULT_AT) {
-                $this->_add_token(AT_START, $medium, true);
+                $this->parser->_add_token(AT_START, $medium, true);
             }
             
             foreach ($val as $selector => $vali)
             {
                 if ($this->parser->get_cfg('sort_properties')) ksort($vali);
-                $this->_add_token(SEL_START, $selector, true);
+                $this->parser->_add_token(SEL_START, $selector, true);
                 
                 foreach ($vali as $property => $valj)
                 {
-                    $this->_add_token(PROPERTY, $property, true);
-                    $this->_add_token(VALUE, $valj, true);
+                    $this->parser->_add_token(PROPERTY, $property, true);
+                    $this->parser->_add_token(VALUE, $valj, true);
                 }
                 
-                $this->_add_token(SEL_END, $selector, true);
+                $this->parser->_add_token(SEL_END, $selector, true);
             }
             
             if ($medium != DEFAULT_AT) {
-                $this->_add_token(AT_END, $medium, true);
+                $this->parser->_add_token(AT_END, $medium, true);
             }
         }
     }
@@ -287,20 +287,6 @@ class csstidy_print
             return htmlspecialchars($string);
         }
         return $string;
-    }
-    
-    /**
-     * Adds a token to $this->tokens
-     * @param mixed $type
-     * @param string $data
-     * @param bool $do add a token even if preserve_css is off
-     * @access private
-     * @version 1.0
-     */
-    function _add_token($type, $data, $do = false) {
-        if ($this->parser->get_cfg('preserve_css') || $do) {
-            $this->tokens[] = array($type, trim($data));
-        }
     }
       
     /**

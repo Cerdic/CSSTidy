@@ -47,14 +47,6 @@ require('class.csstidy_print.php');
 require('class.csstidy_optimise.php');
 
 /**
- * All functions which are not directly related to the parser class
- *
- * Not required. If this file is not included, csstidy does without these functions.
- * @version 1.2
- */
-@include('functions.inc.php');
-
-/**
  * CSS Parser class
  *
  * This class represents a CSS parser which reads CSS code and saves it in an array.
@@ -322,7 +314,7 @@ function set_cfg($setting,$value)
  * @access private
  * @version 1.0
  */
-function add_token($type, $data, $do = false) {
+function _add_token($type, $data, $do = false) {
     if($this->get_cfg('preserve_css') || $do) {
         $this->tokens[] = array($type, ($type == COMMENT) ? $data : trim($data));
     }
@@ -492,7 +484,7 @@ function parse($string) {
                 elseif($string{$i} == '{')
                 {
                     $this->status = 'is';
-                    $this->add_token(AT_START, $this->at);
+                    $this->_add_token(AT_START, $this->at);
                 }
                 elseif($string{$i} == ',')
                 {
@@ -567,12 +559,12 @@ function parse($string) {
                 elseif($string{$i} == '{')
                 {
                     $this->status = 'ip';
-                    $this->add_token(SEL_START, $this->selector);
+                    $this->_add_token(SEL_START, $this->selector);
                     $this->added = false;
                 }
                 elseif($string{$i} == '}')
                 {
-                    $this->add_token(AT_END, $this->at);
+                    $this->_add_token(AT_END, $this->at);
                     $this->at = '';
                     $this->selector = '';
                     $this->sel_seperate = array();
@@ -606,7 +598,7 @@ function parse($string) {
                 {
                     $this->status = 'iv';
                     if(csstidy::property_is_valid($this->property) || !$this->get_cfg('discard_invalid_properties')) {
-                        $this->add_token(PROPERTY, $this->property);
+                        $this->_add_token(PROPERTY, $this->property);
                     }
                 }
                 elseif($string{$i} == '/' && @$string{$i+1} == '*' && $this->property == '')
@@ -623,7 +615,7 @@ function parse($string) {
                     {
                         $this->log('Removed empty selector: '.trim($this->selector),'Information');
                     }
-                    $this->add_token(SEL_END, $this->selector);
+                    $this->_add_token(SEL_END, $this->selector);
                     $this->selector = '';
                     $this->property = '';
                 }
@@ -726,7 +718,7 @@ function parse($string) {
                     if((!$this->invalid_at || $this->get_cfg('preserve_css')) && (!$this->get_cfg('discard_invalid_properties') || $valid))
                     {
                         $this->css_add_property($this->at,$this->selector,$this->property,$this->value);
-                        $this->add_token(VALUE, $this->value);
+                        $this->_add_token(VALUE, $this->value);
                         $this->optimise->shorthands();
                     }
                     if(!$valid)
@@ -748,7 +740,7 @@ function parse($string) {
                 if($string{$i} == '}')
                 {
                     $this->explode_selectors();
-                    $this->add_token(SEL_END, $this->selector);
+                    $this->_add_token(SEL_END, $this->selector);
                     $this->status = 'is';
                     if($this->selector{0} != '@' && !$this->added && !$this->get_cfg('preserve_css'))
                     {
@@ -810,7 +802,7 @@ function parse($string) {
             {
                 $this->status = $this->from;
                 $i++;
-                $this->add_token(COMMENT, $cur_comment);
+                $this->_add_token(COMMENT, $cur_comment);
                 $cur_comment = '';
             }
             else
