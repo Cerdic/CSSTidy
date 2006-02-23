@@ -306,10 +306,9 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
         $diff = $css->print->get_diff();
         if(isset($_REQUEST['file_output']))
         {
-            $filename = md5(mt_rand().mt_rand());
+            $filename = md5(mt_rand().time().mt_rand());
             $handle = fopen('temp/'.$filename.'.css','w');
             if($handle) {
-               
                 if(fwrite($handle,$css->print->plain()))
                 {
                     $file_ok = true;
