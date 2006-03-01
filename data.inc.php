@@ -449,7 +449,7 @@ $GLOBALS['csstidy']['predefined_templates']['highest_compression'][] = '<span cl
 $GLOBALS['csstidy']['predefined_templates']['highest_compression'][] = '';
 $GLOBALS['csstidy']['predefined_templates']['highest_compression'][] = '<span class="comment">'; // before comment
 $GLOBALS['csstidy']['predefined_templates']['highest_compression'][] = '</span>'; // after comment
-$GLOBALS['csstidy']['predefined_templates']['highest_compression'][] = ''; // between comments
+$GLOBALS['csstidy']['predefined_templates']['highest_compression'][] = '';
 
 $GLOBALS['csstidy']['predefined_templates']['low_compression'][] = '<span class="at">';
 $GLOBALS['csstidy']['predefined_templates']['low_compression'][] = '</span> <span class="format">{</span>'."\n";
@@ -464,6 +464,6 @@ $GLOBALS['csstidy']['predefined_templates']['low_compression'][] = "\n".'<span c
 $GLOBALS['csstidy']['predefined_templates']['low_compression'][] = '	';
 $GLOBALS['csstidy']['predefined_templates']['low_compression'][] = '<span class="comment">'; // before comment
 $GLOBALS['csstidy']['predefined_templates']['low_compression'][] = '</span>'."\n"; // after comment
-$GLOBALS['csstidy']['predefined_templates']['low_compression'][] = "\n"; // between comments
+$GLOBALS['csstidy']['predefined_templates']['low_compression'][] = "\n";
 
 ?>
