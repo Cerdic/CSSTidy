@@ -150,54 +150,53 @@ class csstidy_print
         }
         
         $output .= $template[13];
+        $in_at_out = '';
+        $out =& $output;
         
-        $in_at = false;
         foreach ($css as $key => $token)
         {
             switch ($token[0])
             {
                 case AT_START:
-                    $output .= $template[0].$this->_htmlsp($token[1], $plain).$template[1];
-                    $in_at = true;
+                    $out .= $template[0].$this->_htmlsp($token[1], $plain).$template[1];
+                    $out =& $in_at_out;
                     break;
                 
                 case SEL_START:
-                    $output .= ($in_at) ? $template[10] : '';
                     if($this->parser->get_cfg('lowercase_s')) $token[1] = strtolower($token[1]);
-                    $output .= ($token[1]{0} !== '@') ? $template[2].$this->_htmlsp($token[1], $plain) : $template[0].$this->_htmlsp($token[1], $plain);
-                    $output .= $template[3];
+                    $out .= ($token[1]{0} !== '@') ? $template[2].$this->_htmlsp($token[1], $plain) : $template[0].$this->_htmlsp($token[1], $plain);
+                    $out .= $template[3];
                     break;
                     
                 case PROPERTY:
-                    $output .= ($in_at) ? $template[10] : '';
                     if($this->parser->get_cfg('case_properties') == 2) $token[1] = strtoupper($token[1]);
                     if($this->parser->get_cfg('case_properties') == 1) $token[1] = strtolower($token[1]);
-                    $output .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
+                    $out .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
                     break;
                 
                 case VALUE:
-                    $output .= $this->_htmlsp($token[1], $plain);
+                    $out .= $this->_htmlsp($token[1], $plain);
                     if($this->_seeknocomment($css, $key, 1) == SEL_END && $this->parser->get_cfg('remove_last_;')) {
-                        $output .= str_replace(';', '', $template[6]);
+                        $out .= str_replace(';', '', $template[6]);
                     } else {
-                        $output .= $template[6];
+                        $out .= $template[6];
                     }
                     break;
                 
                 case SEL_END:
-                    $output .= ($in_at) ? $template[10] : '';
-                    $output .= $template[7];
-                    if($this->_seeknocomment($css, $key, 1) != AT_END) $output .= $template[8];
+                    $out .= $template[7];
+                    if($this->_seeknocomment($css, $key, 1) != AT_END) $out .= $template[8];
                     break;
                 
                 case AT_END:
-                    $output .= $template[9];
-                    $in_at = false;
+                    $out =& $output;
+                    $out .= $template[10] . str_replace("\n", "\n" . $template[10], $in_at_out);
+                    $in_at_out = '';
+                    $out .= $template[9];
                     break;
 
                 case COMMENT:
-                    $output .= ($in_at) ? $template[10] : '';
-                    $output .= $template[11] . '/*' . $this->_htmlsp($token[1], $plain) . '*/' . $template[12];
+                    $out .= $template[11] . '/*' . $this->_htmlsp($token[1], $plain) . '*/' . $template[12];
                     break;
             }
         }
