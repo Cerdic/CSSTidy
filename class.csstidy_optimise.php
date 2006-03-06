@@ -75,13 +75,18 @@ class csstidy_optimise
             }
         }
 
-        if ($this->parser->get_cfg('optimise_shorthands'))
+        if ($this->parser->get_cfg('optimise_shorthands') > 0)
         {
             foreach ($this->css as $medium => $value)
             {
                 foreach ($value as $selector => $value1)
                 {
                     $this->css[$medium][$selector] = csstidy_optimise::merge_4value_shorthands($this->css[$medium][$selector]);
+                    
+                    if ($this->parser->get_cfg('optimise_shorthands') < 2) {
+                        continue;
+                    }
+                    
                     $this->css[$medium][$selector] = csstidy_optimise::merge_bg($this->css[$medium][$selector]);
                     if (empty($this->css[$medium][$selector])) {
                         unset($this->css[$medium][$selector]);
@@ -131,7 +136,7 @@ class csstidy_optimise
             return;
         }
         
-        if($this->property == 'background' && !$this->parser->get_cfg('only_safe_optimisations'))
+        if($this->property == 'background' && $this->parser->get_cfg('optimise_shorthands') > 1)
         {
             unset($this->css[$this->at][$this->selector]['background']);
             $this->parser->merge_css_blocks($this->at,$this->selector,csstidy_optimise::dissolve_short_bg($this->value));

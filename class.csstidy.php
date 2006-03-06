@@ -257,7 +257,7 @@ function csstidy()
 	$this->settings['compress_colors'] = true;
 	$this->settings['compress_font-weight'] = true;
 	$this->settings['lowercase_s'] = false;
-	$this->settings['optimise_shorthands'] = true;
+	$this->settings['optimise_shorthands'] = 1;
 	$this->settings['remove_last_;'] = false;
 	$this->settings['case_properties'] = 1;
 	$this->settings['sort_properties'] = false;
@@ -265,7 +265,7 @@ function csstidy()
 	$this->settings['merge_selectors'] = 2;
 	$this->settings['discard_invalid_properties'] = false;
 	$this->settings['css_level'] = 'CSS2.1';
-    $this->settings['preserve_css'] = true;
+    $this->settings['preserve_css'] = false;
 
 	$this->load_template('default');
     $this->print = new csstidy_print($this);
@@ -878,9 +878,7 @@ function escaped(&$string,$pos)
  * @version 1.2
  */
 function css_add_property($media,$selector,$property,$new_val)
-{
-	$whitespace =& $GLOBALS['csstidy']['whitespace'];
-    
+{   
     if($this->get_cfg('preserve_css') || trim($new_val) == '') {
         return;
     }

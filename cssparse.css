@@ -41,6 +41,10 @@ display:block;
 margin:1em;
 }
 
+select {
+margin:2px 0 0;
+}
+
 label.block {
 display:block;
 }

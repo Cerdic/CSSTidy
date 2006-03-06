@@ -39,25 +39,34 @@ function rmdirr($dirname,$oc=0)
 	}
 }
 
-function options($array_options,$string_selected,$array_values = false)
+function options($options, $selected = null, $labelIsValue = false)
 {
-	$return = '';
-	foreach($array_options as $key => $option)
-	{
-		if($option === $string_selected)
-		{
-			$return .= '<option';
-			if($array_values !== false) $return .= ' value="'.$array_values[$key].'"';
-			$return .= ' selected="selected">'.$option.'</option>';
-		}
-		else
-		{
-			$return .= '<option';
-			if($array_values !== false) $return .= ' value="'.$array_values[$key].'" ';
-			$return .= '>'.$option.'</option>';
-		}
-	}
-	return $return;
+    $html = '';
+
+    settype($selected, 'array');
+    settype($options, 'array');
+
+    foreach ($options as $value=>$label)
+    {
+        if (is_array($label)) {
+            $value = $label[0];
+            $label = $label[1];
+        }
+        $label = htmlspecialchars($label, ENT_QUOTES, "utf-8");
+        $value = $labelIsValue ? $label
+                               : htmlspecialchars($value, ENT_QUOTES, "utf-8");
+
+        $html .= '<option value="'.$value.'"';
+        if (in_array($value, $selected)) {
+            $html .= ' selected="selected"';
+        }
+        $html .= '>'.$label.'</option>';
+    }
+    if (!$html) {
+        $html .= '<option value="0">---</option>';
+    }
+
+    return $html;
 }
 
 $css = new csstidy();
@@ -72,9 +81,9 @@ if(isset($_REQUEST['lowercase'])) $css->set_cfg('lowercase_s',true);
 if(!isset($_REQUEST['compress_c']) && isset($_REQUEST['post'])) $css->set_cfg('compress_colors',false);
 if(!isset($_REQUEST['compress_fw']) && isset($_REQUEST['post'])) $css->set_cfg('compress_font-weight',false);
 if(isset($_REQUEST['merge_selectors'])) $css->set_cfg('merge_selectors', $_REQUEST['merge_selectors']);
-if(!isset($_REQUEST['optimise_shorthands']) && isset($_REQUEST['post'])) $css->set_cfg('optimise_shorthands',false);
+if(isset($_REQUEST['optimise_shorthands'])) $css->set_cfg('optimise_shorthands',$_REQUEST['optimise_shorthands']);
 if(!isset($_REQUEST['rbs']) && isset($_REQUEST['post'])) $css->set_cfg('remove_bslash',false);
-if(!isset($_REQUEST['preserve_css']) && isset($_REQUEST['post'])) $css->set_cfg('preserve_css',false);
+if(isset($_REQUEST['preserve_css'])) $css->set_cfg('preserve_css',true);
 if(isset($_REQUEST['sort_sel'])) $css->set_cfg('sort_selectors',true);
 if(isset($_REQUEST['sort_de'])) $css->set_cfg('sort_properties',true);
 if(isset($_REQUEST['remove_last_sem'])) $css->set_cfg('remove_last_;',true);
@@ -93,8 +102,8 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
     <script type="text/javascript">
     function enable_disable_preserve()
     {
-        var inputs =   new Array('sort_sel', 'sort_de', 'optimise_shorthands', 'c1', 'c2', 'c3', 'none');
-        var inputs_v = new Array( true,       true,      true,                  true, true, true, false);
+        var inputs =   new Array('sort_sel', 'sort_de', 'optimise_shorthands', 'merge_selectors', 'none');
+        var inputs_v = new Array( true,       true,      true,                  true,              false);
         for(var i = 0; i < inputs.length; i++)
         {
             if(document.getElementById('preserve_css').checked)  {
@@ -134,29 +143,10 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
             <legend><?php echo $lang[$l][11]; ?></legend> <label for="template"
             class="block"><?php echo $lang[$l][12]; ?></label> <select
             id="template" name="template" style="margin-bottom:1em;">
-              <?php if(isset($_REQUEST['template']) &&
-              is_numeric($_REQUEST['template'])) $num = $_REQUEST['template']; else
-              $num = 1; ?>
-              <option value="3" <?php if($num==3) echo 'selected="selected"';
-              ?>>
-                <?php echo $lang[$l][13]; ?>
-              </option>
-              <option value="2" <?php if($num==2) echo 'selected="selected"';
-              ?>>
-              <?php echo $lang[$l][14]; ?>
-              </option>
-              <option value="1" <?php if($num==1) echo 'selected="selected"';
-              ?>>
-              <?php echo $lang[$l][15]; ?>
-              </option>
-              <option value="0" <?php if($num==0) echo 'selected="selected"';
-              ?>>
-              <?php echo $lang[$l][16]; ?>                
-              </option>
-              <option value="4" <?php if($num==4) echo 'selected="selected"';
-              ?>>
-              <?php echo $lang[$l][17]; ?> 
-              </option>
+              <?php
+                $num = ($_REQUEST['template']) ? intval($_REQUEST['template']) : 1; 
+                echo options(array(3 => $lang[$l][13], 2 => $lang[$l][14], 1 => $lang[$l][15], 0 => $lang[$l][16], 4 => $lang[$l][17]), $num);
+              ?>
             </select><br />
             <label for="custom" class="block">
             <?php echo $lang[$l][18]; ?> </label> <textarea id="custom"
@@ -187,20 +177,14 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
             
             
             <label for="merge_selectors"><?php echo $lang[$l][22]; ?></label>
-            <div id="merge_selectors">
-            <input id="c1" type="radio" title="<?php echo $lang[$l][47]; ?>" name="merge_selectors" id="ms0" value="0"
-                   <?php if($css->get_cfg('merge_selectors') == 0) echo 'checked="checked"'; ?>/><label for="ms0">0</label>
-            <input id="c2" type="radio" title="<?php echo $lang[$l][48]; ?>" name="merge_selectors" id="ms1" value="1"
-                   <?php if($css->get_cfg('merge_selectors') == 1) echo 'checked="checked"'; ?>/><label for="ms1">1</label>
-            <input id="c3" type="radio" title="<?php echo $lang[$l][49]; ?>" name="merge_selectors" id="ms2" value="2"
-                   <?php if($css->get_cfg('merge_selectors') == 2) echo 'checked="checked"'; ?>/><label for="ms2">2</label>
-                   <a href="http://csstidy.sourceforge.net/merge_selectors.php" style="cursor:help;">(?)</a>
-            </div>
-             
-             
-            <input type="checkbox" name="optimise_shorthands" id="optimise_shorthands"
-                   <?php if($css->get_cfg('optimise_shorthands')) echo 'checked="checked"'; ?> />
-            <label for="optimise_shorthands"><?php echo $lang[$l][23]; ?></label><br />
+            <select style="width:15em;" name="merge_selectors" id="merge_selectors">
+              <?php echo options(array('0' => $lang[$l][47], '1' => $lang[$l][48], '2' => $lang[$l][49]), $css->get_cfg('merge_selectors')); ?>
+            </select><br />             
+
+            <label for="optimise_shorthands"><?php echo $lang[$l][23]; ?></label>
+            <select name="optimise_shorthands" id="optimise_shorthands">
+            <?php echo options(array($lang[$l][54], $lang[$l][55], $lang[$l][56]), $css->get_cfg('optimise_shorthands')); ?>
+            </select><br />
             
             
             <input type="checkbox" name="compress_c" id="compress_c"
@@ -242,7 +226,7 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
             <input type="checkbox" id="discard" name="discard"
                    <?php if($css->get_cfg('discard_invalid_properties')) echo 'checked="checked"'; ?> />
             <label for="discard"><?php echo $lang[$l][43]; ?></label>
-            <select name="css_level"><?php echo options(array('CSS2.1','CSS2.0','CSS1.0'),$css->get_cfg('css_level')); ?></select><br />
+            <select name="css_level"><?php echo options(array('CSS2.1','CSS2.0','CSS1.0'),$css->get_cfg('css_level'), true); ?></select><br />
             
             <input type="checkbox" name="file_output" id="file_output" value="file_output"
                    <?php if(isset($_REQUEST['file_output'])) echo 'checked="checked"'; ?> />
@@ -344,8 +328,9 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
         echo '</code></pre>';
         echo '</fieldset>';
      }
-     elseif(isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) echo '<p
-    class="important">'.$lang[$l][28].'</p>';
+     elseif(isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) {
+        echo '<p class="important">'.$lang[$l][28].'</p>';
+     }
      ?>
     <p style="text-align:center;font-size:0.8em;clear:both;">
       For bugs and suggestions feel free to <a
