@@ -14,9 +14,6 @@ if($css->css === $xhtml_result) {
     echo '<div style="color:green">XHTML OK!</div>';
 } else {
     echo '<div style="color:red">XHTML failed!</div>';
-    print_r($css->css);
-    print_r($xhtml_result);
-    die();
 }
 flush();
 
@@ -42,7 +39,7 @@ flush();
 
 $css->set_cfg('optimise_shorthands',false);
 $css->set_cfg('only_safe_optimisations',false);
-//$css->set_cfg('merge_selectors',1); FIXME!
+$css->set_cfg('merge_selectors',1);
 
 $css->parse($css_code);
 

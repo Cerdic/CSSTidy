@@ -397,7 +397,7 @@ class csstidy_optimise
         
             if (floatval($temp[$l]) == 0)
             {
-                $temp[$l] = 0;
+                $temp[$l] = '0';
             }
             else
             {
