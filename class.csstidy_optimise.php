@@ -48,7 +48,6 @@ class csstidy_optimise
     {
         $this->parser    =& $css;
         $this->css       =& $css->css;
-        $this->line      =& $css->line;
         $this->sub_value =& $css->sub_value;
         $this->at        =& $css->at;
         $this->selector  =& $css->selector;
@@ -132,7 +131,7 @@ class csstidy_optimise
     {
         $shorthands =& $GLOBALS['csstidy']['shorthands'];
         
-        if(!$this->parser->get_cfg('optimise_shorthands')) {
+        if(!$this->parser->get_cfg('optimise_shorthands') || $this->parser->get_cfg('preserve_css')) {
             return;
         }
         

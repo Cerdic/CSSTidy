@@ -89,6 +89,7 @@ if(isset($_REQUEST['sort_de'])) $css->set_cfg('sort_properties',true);
 if(isset($_REQUEST['remove_last_sem'])) $css->set_cfg('remove_last_;',true);
 if(isset($_REQUEST['discard'])) $css->set_cfg('discard_invalid_properties',true);
 if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level']);
+
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">

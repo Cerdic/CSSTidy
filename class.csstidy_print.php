@@ -95,7 +95,7 @@ class csstidy_print
      */
     function plain()
     {
-        $this->_print($this->tokens, true);
+        $this->_print(true);
         return $this->output_css_plain;
     }
 
@@ -107,18 +107,17 @@ class csstidy_print
      */
     function formatted()
     {
-        $this->_print($this->tokens, false);
+        $this->_print(false);
         return $this->output_css;
     }
     
     /**
      * Returns the formatted CSS Code and saves it into $this->output_css and $this->output_css_plain
-     * @param array $css raw css data ($this->tokens usually)
      * @param bool $plain plain text or not
      * @access private
      * @version 2.0
      */
-    function _print(&$css, $plain = false)
+    function _print($plain = false)
     {
         if ($this->output_css && $this->output_css_plain) {
             return;
@@ -153,7 +152,7 @@ class csstidy_print
         $in_at_out = '';
         $out =& $output;
         
-        foreach ($css as $key => $token)
+        foreach ($this->tokens as $key => $token)
         {
             switch ($token[0])
             {
@@ -176,7 +175,7 @@ class csstidy_print
                 
                 case VALUE:
                     $out .= $this->_htmlsp($token[1], $plain);
-                    if($this->_seeknocomment($css, $key, 1) == SEL_END && $this->parser->get_cfg('remove_last_;')) {
+                    if($this->_seeknocomment($key, 1) == SEL_END && $this->parser->get_cfg('remove_last_;')) {
                         $out .= str_replace(';', '', $template[6]);
                     } else {
                         $out .= $template[6];
@@ -185,7 +184,7 @@ class csstidy_print
                 
                 case SEL_END:
                     $out .= $template[7];
-                    if($this->_seeknocomment($css, $key, 1) != AT_END) $out .= $template[8];
+                    if($this->_seeknocomment($key, 1) != AT_END) $out .= $template[8];
                     break;
                 
                 case AT_END:
@@ -205,7 +204,7 @@ class csstidy_print
         
         if (!$plain) {
             $this->output_css = $output;
-            $this->_print($css, true);
+            $this->_print(true);
         } else {
             $this->output_css_plain = $output;
         }
@@ -213,24 +212,23 @@ class csstidy_print
     
     /**
      * Gets the next token type which is $move away from $key, excluding comments
-     * @param array $css usually $this->tokens
      * @param integer $key current position
      * @param integer $move move this far
      * @return mixed a token type
      * @access private
      * @version 1.0
      */
-    function _seeknocomment(&$css, $key, $move) {
+    function _seeknocomment($key, $move) {
         $go = ($move > 0) ? 1 : -1;
         for ($i = $key + 1; abs($key-$i)-1 < abs($move); $i += $go) {
-            if (!isset($css[$i])) {
+            if (!isset($this->tokens[$i])) {
                 return;
             }
-            if ($css[$i][0] == COMMENT) {
+            if ($this->tokens[$i][0] == COMMENT) {
                 $move += 1;
                 continue;
             }
-            return $css[$i][0];
+            return $this->tokens[$i][0];
         }
     }
     
