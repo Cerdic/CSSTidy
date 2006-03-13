@@ -89,6 +89,7 @@ if(isset($_REQUEST['sort_de'])) $css->set_cfg('sort_properties',true);
 if(isset($_REQUEST['remove_last_sem'])) $css->set_cfg('remove_last_;',true);
 if(isset($_REQUEST['discard'])) $css->set_cfg('discard_invalid_properties',true);
 if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level']);
+if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -228,6 +229,12 @@ if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level
                    <?php if($css->get_cfg('discard_invalid_properties')) echo 'checked="checked"'; ?> />
             <label for="discard"><?php echo $lang[$l][43]; ?></label>
             <select name="css_level"><?php echo options(array('CSS2.1','CSS2.0','CSS1.0'),$css->get_cfg('css_level'), true); ?></select><br />
+            
+            
+            <input type="checkbox" id="timestamp" name="timestamp"
+                   <?php if($css->get_cfg('timestamp')) echo 'checked="checked"'; ?> />
+   			<label for="timestamp"><?php echo $lang[$l][57]; ?></label><br />
+            
             
             <input type="checkbox" name="file_output" id="file_output" value="file_output"
                    <?php if(isset($_REQUEST['file_output'])) echo 'checked="checked"'; ?> />

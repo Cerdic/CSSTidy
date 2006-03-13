@@ -118,7 +118,8 @@ $lang['en'][55] = 'Safe optimisations';
 $lang['de'][55] = 'Sichere Optimierungen';
 $lang['en'][56] = 'All optimisations';
 $lang['de'][56] = 'Alle Optimierungen';
-
+$lang['en'][57] = 'Add timestamp';
+$lang['de'][57] = 'Zeitstempel hinzufügen';
 
 $lang['fr'][0] = 'CSS Formatteur et Optimiseur (basé sur CSSTidy  ';
 $lang['fr'][1] = 'CSS Formatteur et Optimiseur';
@@ -176,4 +177,5 @@ $lang['fr'][53] = 'None';
 $lang['fr'][54] = 'Don\'t optimise';
 $lang['fr'][55] = 'Safe optimisations';
 $lang['fr'][56] = 'All optimisations';
+$lang['fr'][57] = 'Add timestamp';
 ?>

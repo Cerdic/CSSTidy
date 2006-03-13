@@ -168,7 +168,7 @@ var $property = '';
  * @var array
  * @access private
  */
-var $sel_seperate = array();
+var $sel_separate = array();
 
 /**
  * Saves the current value
@@ -266,6 +266,7 @@ function csstidy()
 	$this->settings['discard_invalid_properties'] = false;
 	$this->settings['css_level'] = 'CSS2.1';
     $this->settings['preserve_css'] = false;
+    $this->settings['timestamp'] = false;
 
 	$this->load_template('default');
     $this->print = new csstidy_print($this);
@@ -466,7 +467,7 @@ function parse($string) {
     $this->print->input_css = $string;
     $string = str_replace("\r\n","\n",$string) . ' ';
     $cur_comment = '';
-
+    
     for ($i = 0, $size = strlen($string); $i < $size; $i++ )
     {
         if($string{$i} == "\n" || $string{$i} == "\r")
@@ -571,12 +572,12 @@ function parse($string) {
                     $this->_add_token(AT_END, $this->at);
                     $this->at = '';
                     $this->selector = '';
-                    $this->sel_seperate = array();
+                    $this->sel_separate = array();
                 }
                 elseif($string{$i} == ',') 
                 {
                     $this->selector = trim($this->selector).',';
-                    $this->sel_seperate[] = strlen($this->selector);
+                    $this->sel_separate[] = strlen($this->selector);
                 }
                 elseif($string{$i} == '\\')
                 {
@@ -615,10 +616,6 @@ function parse($string) {
                     $this->explode_selectors();
                     $this->status = 'is';
                     $this->invalid_at = false;
-                    if($this->selector{0} != '@' && !$this->added && !$this->get_cfg('preserve_css'))
-                    {
-                        $this->log('Removed empty selector: '.trim($this->selector),'Information');
-                    }
                     $this->_add_token(SEL_END, $this->selector);
                     $this->selector = '';
                     $this->property = '';
@@ -640,7 +637,7 @@ function parse($string) {
             
             /* Case in-value */
             case 'iv':
-            $pn = (ctype_space($string{$i}) && $this->property_is_next($string,$i+1) || $i == strlen($string)-1);
+            $pn = (($string{$i} == "\n" || $string{$i} == "\r") && $this->property_is_next($string,$i+1) || $i == strlen($string)-1);
             if(csstidy::is_token($string,$i) || $pn)
             {
                 if($string{$i} == '/' && @$string{$i+1} == '*')
@@ -681,7 +678,7 @@ function parse($string) {
                         $this->sub_value_arr = array();
                         $this->sub_value = '';
                         $this->selector = '';
-                        $this->sel_seperate = array();
+                        $this->sel_separate = array();
                     }
                     else
                     {
@@ -746,10 +743,6 @@ function parse($string) {
                     $this->explode_selectors();
                     $this->_add_token(SEL_END, $this->selector);
                     $this->status = 'is';
-                    if($this->selector{0} != '@' && !$this->added && !$this->get_cfg('preserve_css'))
-                    {
-                        $this->log('Removed empty selector: '.trim($this->selector),'Information');
-                    }
                     $this->invalid_at = false;
                     $this->selector = '';
                 }	
@@ -836,10 +829,10 @@ function explode_selectors()
     {
         $new_sels = array();
         $lastpos = 0;
-        $this->sel_seperate[] = strlen($this->selector);
-        foreach($this->sel_seperate as $num => $pos)
+        $this->sel_separate[] = strlen($this->selector);
+        foreach($this->sel_separate as $num => $pos)
         {
-            if($num == count($this->sel_seperate)-1) {
+            if($num == count($this->sel_separate)-1) {
                 $pos += 1;
             }
             
@@ -856,7 +849,7 @@ function explode_selectors()
             unset($this->css[$this->at][$this->selector]);
         }
     }
-    $this->sel_seperate = array();
+    $this->sel_separate = array();
 }
 
 /**

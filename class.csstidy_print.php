@@ -134,6 +134,10 @@ class csstidy_print
             $template = array_map('strip_tags', $template);
         }
         
+        if ($this->parser->get_cfg('timestamp')) {
+            array_unshift($this->tokens, array(COMMENT, ' CSSTidy ' . $this->parser->version . ': ' . date('r') . ' '));
+        }
+        
         if (!empty($this->charset)) {
             $output .= $template[0].'@charset '.$template[5].$this->charset.$template[6];
         }
