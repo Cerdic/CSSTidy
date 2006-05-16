@@ -124,7 +124,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
     <?php echo $lang[$l][2]; ?> <a
       href="http://csstidy.sourceforge.net/">csstidy</a> <?php echo $css->version; ?>)
     </div><p>
-    <?php echo $lang[$l][39]; ?>: <a hreflang="en" href="?lang=en">English</a> <a hreflang="de" href="?lang=de">Deutsch</a> <a hreflang="fr" href="?lang=fr">French</a></p>
+    <?php echo $lang[$l][39]; ?>: <a hreflang="en" href="?lang=en">English</a> <a hreflang="de" href="?lang=de">Deutsch</a> <a hreflang="fr" href="?lang=fr">French</a> <a hreflang="zh" href="?lang=zh">Chinese</a></p>
     <p><?php echo $lang[$l][4]; ?>
       <?php echo $lang[$l][6]; ?>
     </p>

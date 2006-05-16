@@ -56,7 +56,7 @@ require('class.csstidy_optimise.php');
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.2beta
+ * @version 1.2
  */
 class csstidy {
 
@@ -116,7 +116,7 @@ var $namespace = '';
  * @var string
  * @access private
  */
-var $version = '1.2beta';
+var $version = '1.2';
 
 /**
  * Stores the settings

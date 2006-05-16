@@ -1,0 +1,95 @@
+=== css_optimiser.php
+==================================================================
+--- css_optimiser.php	(revision 1093)
++++ css_optimiser.php	(local)
+@@ -124,7 +124,7 @@
+     <?php echo $lang[$l][2]; ?> <a
+       href="http://csstidy.sourceforge.net/">csstidy</a> <?php echo $css->version; ?>)
+     </div><p>
+-    <?php echo $lang[$l][39]; ?>: <a hreflang="en" href="?lang=en">English</a> <a hreflang="de" href="?lang=de">Deutsch</a> <a hreflang="fr" href="?lang=fr">French</a></p>
++    <?php echo $lang[$l][39]; ?>: <a hreflang="en" href="?lang=en">English</a> <a hreflang="de" href="?lang=de">Deutsch</a> <a hreflang="fr" href="?lang=fr">French</a> <a hreflang="zh" href="?lang=zh">Chinese</a></p>
+     <p><?php echo $lang[$l][4]; ?>
+       <?php echo $lang[$l][6]; ?>
+     </p>
+=== lang.inc.php
+==================================================================
+--- lang.inc.php	(revision 1093)
++++ lang.inc.php	(local)
+@@ -1,11 +1,11 @@
+-﻿<?php
++<?php
+ if(isset($_GET['lang'])) {
+ 	$l = $_GET['lang'];
+ } else {
+ 	$l = getenv('HTTP_ACCEPT_LANGUAGE');
+ 	$l = strtolower(substr($l,0,2));
+ }
+-$l = ($l == 'de' || $l == 'fr') ? $l : 'en';
++$l = ($l == 'de' || $l == 'fr' || $l == 'zh') ? $l : 'en';
+ 
+ $lang = array();
+ $lang['en'][0] = 'CSS Formatter and Optimiser/Optimizer (based on CSSTidy ';
+@@ -178,4 +178,61 @@
+ $lang['fr'][55] = 'Safe optimisations';
+ $lang['fr'][56] = 'All optimisations';
+ $lang['fr'][57] = 'Add timestamp';
+-?>
+\ No newline at end of file
++
++$lang['zh'][0] = 'CSS整形與最佳化工具(使用 CSSTidy ';
++$lang['zh'][1] = 'CSS整形與最佳化工具';
++$lang['zh'][2] = '(使用';
++$lang['zh'][3] = '(純文字)';
++$lang['zh'][4] = '重要事項:';
++$lang['zh'][6] = '你的原始碼必須是良構的(well-formed). 這個工具<strong>沒有內建驗證器(validator)</strong>. 驗證器能夠指出你CSS原始碼裡的錯誤. 請使用 <a href="http://jigsaw.w3.org/css-validator/">W3C 驗證器</a>, 確保你的原始碼合乎規範.';
++$lang['zh'][7] = '所有註解都移除了';
++$lang['zh'][8] = 'CSS 輸入:';
++$lang['zh'][9] = 'CSS 原始碼:';
++$lang['zh'][10] = 'CSS 檔案網址(URL):';
++$lang['zh'][11] = '原始碼規劃:';
++$lang['zh'][12] = '壓縮程度(原始碼規劃):';
++$lang['zh'][13] = '最高 (沒有辦法讀, 檔案最小)';
++$lang['zh'][14] = '高 (適度的可讀性, 檔案小)';
++$lang['zh'][15] = '標準 (兼顧可讀性與檔案大小)';
++$lang['zh'][16] = '低 (注重可讀性)';
++$lang['zh'][17] = '自訂 (在下方設定)';
++$lang['zh'][18] = '自訂<a href="http://csstidy.sourceforge.net/templates.php">樣板</a>';
++$lang['zh'][19] = '選項';
++$lang['zh'][20] = '整理選擇符(請謹慎使用)';
++$lang['zh'][21] = '整理屬性';
++$lang['zh'][22] = '重組選擇符';
++$lang['zh'][23] = '速記法(shorthand)最佳化';
++$lang['zh'][24] = '壓縮色彩語法';
++$lang['zh'][25] = '改用小寫選擇符';
++$lang['zh'][26] = '屬性的字形:';
++$lang['zh'][27] = '小寫';
++$lang['zh'][28] = '沒有輸入CSS, 語法不符合規定, 或是網址錯誤!'; 
++$lang['zh'][29] = '大寫';
++$lang['zh'][30] = 'XHTML必須使用小寫的元素名稱';
++$lang['zh'][31] = '移除不必要的反斜線';
++$lang['zh'][32] = '轉換 !important-hack';
++$lang['zh'][33] = '輸出成檔案形式';
++$lang['zh'][34] = '由於比較少換行字元, 會有更大的壓縮比率(複製&amp;貼上沒有用)';
++$lang['zh'][35] = '執行';
++$lang['zh'][36] = '壓縮比率';
++$lang['zh'][37] = '輸入';
++$lang['zh'][38] = '輸出';
++$lang['zh'][39] = '語言';
++$lang['zh'][41] = '注意: 這或許會變更你CSS原始碼的行為!';
++$lang['zh'][42] = '除去最後一個分號';
++$lang['zh'][43] = '拋棄不符合規定的屬性';
++$lang['zh'][44] = '只安全地最佳化';
++$lang['zh'][45] = '壓縮 font-weight';
++$lang['zh'][46] = '保留註解';
++$lang['zh'][47] = '什麼都不要改';
++$lang['zh'][48] = '只分開原本用逗號分隔的選擇符';
++$lang['zh'][49] = '合併有相同屬性的選擇符(快速)';
++$lang['zh'][50] = '聰明地合併選擇符(慢速)';
++$lang['zh'][51] = '保護CSS';
++$lang['zh'][52] = '保留註解與 hack 等等. 如果啟用這個選項, 大多數的最佳化程序都不會執行.';
++$lang['zh'][53] = '不改變';
++$lang['zh'][54] = '不做最佳化';
++$lang['zh'][55] = '安全地最佳化';
++$lang['zh'][56] = '全部最佳化';
++$lang['zh'][57] = '加上時間戳記';
++?>

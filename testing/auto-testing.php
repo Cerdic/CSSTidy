@@ -38,7 +38,6 @@ if($css->print->formatted() === $ala_html) {
 flush();
 
 $css->set_cfg('optimise_shorthands',false);
-$css->set_cfg('only_safe_optimisations',false);
 $css->set_cfg('merge_selectors',1);
 
 $css->parse($css_code);
