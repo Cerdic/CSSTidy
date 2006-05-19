@@ -6,6 +6,5 @@
 |
 <span class="format">}</span>
 
-||</span> <span class="format">{</span>
-|<span class="comment">|</span>
+||<span class="comment">|</span>
 |
