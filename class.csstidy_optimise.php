@@ -418,6 +418,14 @@ class csstidy_optimise
                 {
                     $temp[$l] = floatval($temp[$l]);
                 }
+                // Remove leading zero
+                if (abs(floatval($temp[$l])) < 1) {
+                    if (floatval($temp[$l]) < 0) {
+                        $temp[$l] = '-' . substr($temp[$l], 2);
+                    } else {
+                        $temp[$l] = substr($temp[$l], 1);
+                    }
+                }                    
             }
         }
 
