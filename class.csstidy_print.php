@@ -25,7 +25,7 @@
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
  */
- 
+
 /**
  * CSS Printing class
  *
@@ -35,7 +35,7 @@
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
  * @version 1.0
  */
- 
+
 class csstidy_print
 {
     /**
@@ -110,7 +110,7 @@ class csstidy_print
         $this->_print(false);
         return $this->output_css;
     }
-    
+
     /**
      * Returns the formatted CSS Code and saves it into $this->output_css and $this->output_css_plain
      * @param bool $plain plain text or not
@@ -122,7 +122,7 @@ class csstidy_print
         if ($this->output_css && $this->output_css_plain) {
             return;
         }
-        
+
         $output = '';
         if (!$this->parser->get_cfg('preserve_css')) {
             $this->_convert_raw_css();
@@ -133,29 +133,29 @@ class csstidy_print
         if ($plain) {
             $template = array_map('strip_tags', $template);
         }
-        
+
         if ($this->parser->get_cfg('timestamp')) {
             array_unshift($this->tokens, array(COMMENT, ' CSSTidy ' . $this->parser->version . ': ' . date('r') . ' '));
         }
-        
+
         if (!empty($this->charset)) {
             $output .= $template[0].'@charset '.$template[5].$this->charset.$template[6];
         }
-        
+
         if (!empty($this->import)) {
             for ($i = 0, $size = count($this->import); $i < $size; $i ++) {
                 $output .= $template[0].'@import '.$template[5].$this->import[$i].$template[6];
             }
         }
-        
+
         if (!empty($this->namespace)) {
             $output .= $template[0].'@namespace '.$template[5].$this->namespace.$template[6];
         }
-        
+
         $output .= $template[13];
         $in_at_out = '';
         $out =& $output;
-        
+
         foreach ($this->tokens as $key => $token)
         {
             switch ($token[0])
@@ -164,19 +164,19 @@ class csstidy_print
                     $out .= $template[0].$this->_htmlsp($token[1], $plain).$template[1];
                     $out =& $in_at_out;
                     break;
-                
+
                 case SEL_START:
                     if($this->parser->get_cfg('lowercase_s')) $token[1] = strtolower($token[1]);
                     $out .= ($token[1]{0} !== '@') ? $template[2].$this->_htmlsp($token[1], $plain) : $template[0].$this->_htmlsp($token[1], $plain);
                     $out .= $template[3];
                     break;
-                    
+
                 case PROPERTY:
                     if($this->parser->get_cfg('case_properties') == 2) $token[1] = strtoupper($token[1]);
                     if($this->parser->get_cfg('case_properties') == 1) $token[1] = strtolower($token[1]);
                     $out .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
                     break;
-                
+
                 case VALUE:
                     $out .= $this->_htmlsp($token[1], $plain);
                     if($this->_seeknocomment($key, 1) == SEL_END && $this->parser->get_cfg('remove_last_;')) {
@@ -185,12 +185,12 @@ class csstidy_print
                         $out .= $template[6];
                     }
                     break;
-                
+
                 case SEL_END:
                     $out .= $template[7];
                     if($this->_seeknocomment($key, 1) != AT_END) $out .= $template[8];
                     break;
-                
+
                 case AT_END:
                     $out =& $output;
                     $out .= $template[10] . str_replace("\n", "\n" . $template[10], $in_at_out);
@@ -205,7 +205,7 @@ class csstidy_print
         }
 
         $output = trim($output);
-        
+
         if (!$plain) {
             $this->output_css = $output;
             $this->_print(true);
@@ -213,7 +213,7 @@ class csstidy_print
             $this->output_css_plain = $output;
         }
     }
-    
+
     /**
      * Gets the next token type which is $move away from $key, excluding comments
      * @param integer $key current position
@@ -235,7 +235,7 @@ class csstidy_print
             return $this->tokens[$i][0];
         }
     }
-    
+
     /**
      * Converts $this->css array to a raw array ($this->tokens)
      * @access private
@@ -244,35 +244,34 @@ class csstidy_print
     function _convert_raw_css()
     {
         $this->tokens = array();
-        ksort($this->css);
-        
+
         foreach ($this->css as $medium => $val)
         {
             if ($this->parser->get_cfg('sort_selectors')) ksort($val);
             if ($medium != DEFAULT_AT) {
                 $this->parser->_add_token(AT_START, $medium, true);
             }
-            
+
             foreach ($val as $selector => $vali)
             {
                 if ($this->parser->get_cfg('sort_properties')) ksort($vali);
                 $this->parser->_add_token(SEL_START, $selector, true);
-                
+
                 foreach ($vali as $property => $valj)
                 {
                     $this->parser->_add_token(PROPERTY, $property, true);
                     $this->parser->_add_token(VALUE, $valj, true);
                 }
-                
+
                 $this->parser->_add_token(SEL_END, $selector, true);
             }
-            
+
             if ($medium != DEFAULT_AT) {
                 $this->parser->_add_token(AT_END, $medium, true);
             }
         }
     }
-    
+
     /**
      * Same as htmlspecialchars, only that chars are not replaced if $plain !== true. This makes  print_code() cleaner.
      * @param string $string
@@ -289,7 +288,7 @@ class csstidy_print
         }
         return $string;
     }
-      
+
     /**
      * Get compression ratio
      * @access public
@@ -315,20 +314,20 @@ class csstidy_print
         if (!$this->output_css_plain) {
             $this->formatted();
         }
-        
+
         $diff = strlen($this->output_css_plain) - strlen($this->input_css);
-        
+
         if ($diff > 0) {
             return '+' . $diff;
         } elseif ($diff == 0) {
             return '+-' . $diff;
         }
-        
+
         return $diff;
     }
 
     /**
-     * Get the size of either input or output CSS in KB 
+     * Get the size of either input or output CSS in KB
      * @param string $loc default is "output"
      * @access public
      * @return integer
@@ -339,7 +338,7 @@ class csstidy_print
         if ($loc == 'output' && !$this->output_css) {
             $this->formatted();
         }
-        
+
         if ($loc == 'input') {
             return (strlen($this->input_css) / 1000);
         } else {
