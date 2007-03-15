@@ -113,7 +113,11 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
             } else {
                 document.getElementById(inputs[i]).disabled = !inputs_v[i];
             }
-        }        
+        }
+    }
+    function ClipBoard()
+    {
+        window.clipboardData.setData('Text',document.getElementById("copytext").innerText);
     }
     </script>
   </head>
@@ -146,7 +150,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
             class="block"><?php echo $lang[$l][12]; ?></label> <select
             id="template" name="template" style="margin-bottom:1em;">
               <?php
-                $num = ($_REQUEST['template']) ? intval($_REQUEST['template']) : 1; 
+                $num = ($_REQUEST['template']) ? intval($_REQUEST['template']) : 1;
                 echo options(array(3 => $lang[$l][13], 2 => $lang[$l][14], 1 => $lang[$l][15], 0 => $lang[$l][16], 4 => $lang[$l][17]), $num);
               ?>
             </select><br />
@@ -162,48 +166,48 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
           </fieldset>
           <fieldset id="options">
          <legend><?php echo $lang[$l][19]; ?></legend>
-         
+
             <input onchange="enable_disable_preserve()" type="checkbox" name="preserve_css" id="preserve_css"
                    <?php if($css->get_cfg('preserve_css')) echo 'checked="checked"'; ?> />
             <label for="preserve_css" title="<?php echo $lang[$l][52]; ?>" class="help"><?php echo $lang[$l][51]; ?></label><br />
-         
-         
+
+
             <input type="checkbox" name="sort_sel" id="sort_sel"
                    <?php if($css->get_cfg('sort_selectors')) echo 'checked="checked"'; ?> />
             <label for="sort_sel" title="<?php echo $lang[$l][41]; ?>" class="help"><?php echo $lang[$l][20]; ?></label><br />
-            
-            
+
+
             <input type="checkbox" name="sort_de" id="sort_de"
                    <?php if($css->get_cfg('sort_properties')) echo 'checked="checked"'; ?> />
             <label for="sort_de"><?php echo $lang[$l][21]; ?></label><br />
-            
-            
+
+
             <label for="merge_selectors"><?php echo $lang[$l][22]; ?></label>
             <select style="width:15em;" name="merge_selectors" id="merge_selectors">
               <?php echo options(array('0' => $lang[$l][47], '1' => $lang[$l][48], '2' => $lang[$l][49]), $css->get_cfg('merge_selectors')); ?>
-            </select><br />             
+            </select><br />
 
             <label for="optimise_shorthands"><?php echo $lang[$l][23]; ?></label>
             <select name="optimise_shorthands" id="optimise_shorthands">
             <?php echo options(array($lang[$l][54], $lang[$l][55], $lang[$l][56]), $css->get_cfg('optimise_shorthands')); ?>
             </select><br />
-            
-            
+
+
             <input type="checkbox" name="compress_c" id="compress_c"
                    <?php if($css->get_cfg('compress_colors')) echo 'checked="checked"';?> />
             <label for="compress_c"><?php echo $lang[$l][24]; ?></label><br />
-            
-            
+
+
             <input type="checkbox" name="compress_fw" id="compress_fw"
                    <?php if($css->get_cfg('compress_font-weight')) echo 'checked="checked"';?> />
             <label for="compress_fw"><?php echo $lang[$l][45]; ?></label><br />
-            
-            
+
+
             <input type="checkbox" name="lowercase" id="lowercase" value="lowercase"
                    <?php if($css->get_cfg('lowercase_s')) echo 'checked="checked"'; ?> />
             <label title="<?php echo $lang[$l][30]; ?>" class="help" for="lowercase"><?php echo $lang[$l][25]; ?></label><br />
-            
-            
+
+
             <?php echo $lang[$l][26]; ?><br />
             <input type="radio" name="case_properties" id="none" value="0"
                    <?php if($css->get_cfg('case_properties') == 0) echo 'checked="checked"'; ?> />
@@ -213,29 +217,29 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
             <label for="lower_yes"><?php echo $lang[$l][27]; ?></label>
             <input type="radio" name="case_properties" id="upper_yes" value="2"
                    <?php if($css->get_cfg('case_properties') == 2) echo 'checked="checked"'; ?> />
-            <label for="upper_yes"><?php echo $lang[$l][29]; ?></label><br />      
-            
+            <label for="upper_yes"><?php echo $lang[$l][29]; ?></label><br />
+
             <input type="checkbox" name="rbs" id="rbs"
                    <?php if($css->get_cfg('remove_bslash')) echo 'checked="checked"'; ?> />
             <label for="rbs"><?php echo $lang[$l][31]; ?></label><br />
-             
-            
+
+
             <input type="checkbox" id="remove_last_sem" name="remove_last_sem"
                    <?php if($css->get_cfg('remove_last_;')) echo 'checked="checked"'; ?> />
    			<label for="remove_last_sem"><?php echo $lang[$l][42]; ?></label><br />
-            
-           
+
+
             <input type="checkbox" id="discard" name="discard"
                    <?php if($css->get_cfg('discard_invalid_properties')) echo 'checked="checked"'; ?> />
             <label for="discard"><?php echo $lang[$l][43]; ?></label>
             <select name="css_level"><?php echo options(array('CSS2.1','CSS2.0','CSS1.0'),$css->get_cfg('css_level'), true); ?></select><br />
-            
-            
+
+
             <input type="checkbox" id="timestamp" name="timestamp"
                    <?php if($css->get_cfg('timestamp')) echo 'checked="checked"'; ?> />
    			<label for="timestamp"><?php echo $lang[$l][57]; ?></label><br />
-            
-            
+
+
             <input type="checkbox" name="file_output" id="file_output" value="file_output"
                    <?php if(isset($_REQUEST['file_output'])) echo 'checked="checked"'; ?> />
             <label class="help" title="<?php echo $lang[$l][34]; ?>" for="file_output">
@@ -264,21 +268,21 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 				$css->load_template($_REQUEST['custom'],false);
 			}
 			break;
-			
+
 			case 3:
 			$css->load_template('highest_compression');
 			break;
-		
+
 			case 2:
 			$css->load_template('high_compression');
 			break;
-		
+
 			case 0:
 			$css->load_template('low_compression');
 			break;
 		}
 	}
-      
+
     if($url)
     {
     	if(substr($_REQUEST['url'],0,7) != 'http://')
@@ -293,7 +297,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
     }
 
     if($result)
-    {     
+    {
         $ratio = $css->print->get_ratio();
         $diff = $css->print->get_diff();
         if(isset($_REQUEST['file_output']))
@@ -324,17 +328,18 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 			}
 			?></dl></div>
         </fieldset>
-        <?php endif;    
+        <?php endif;
         echo '<fieldset><legend>'.$lang[$l][37].': '.$css->print->size('input').'KB, '.$lang[$l][38].':'.$css->print->size('output').'KB, '.$lang[$l][36].': '.$ratio;
         if($file_ok)
         {
             echo ' - <a href="temp/'.$filename.'.css">Download</a>';
         }
+        echo ' - <a href="javascript:ClipBoard()">Copy to clipboard</a>';
         echo '</legend>';
-        echo '<pre><code>';
+        echo '<pre><code id="copytext">';
         echo $css->print->formatted();
         echo '</code></pre>';
-        echo '</fieldset>';
+        echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; Back to top</a></p>';
      }
      elseif(isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) {
         echo '<p class="important">'.$lang[$l][28].'</p>';
