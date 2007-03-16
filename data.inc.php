@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License
  * along with CSSTidy; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005
@@ -66,14 +66,18 @@ $GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%
 $GLOBALS['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'is','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at');
 
  /**
- * Properties that allow <number> as value
+ * Properties that need a value with unit
  *
  * @todo CSS3 properties
  * @see compress_numbers();
- * @global array $GLOBALS['csstidy']['number_values']
+ * @global array $GLOBALS['csstidy']['unit_values']
  * @version 1.2
  */
-$GLOBALS['csstidy']['number_values'] = array('line-height','pitch-range','richness','speech-rate','stress','volume','font','font-weight','z-index','counter-increment','counter-reset','orphans','widows');
+$GLOBALS['csstidy']['unit_values'] = array ('background', 'background-position', 'border', 'border-top', 'border-right', 'border-bottom', 'border-left', 'border-width',
+                                            'border-top-width', 'border-right-width', 'border-left-width', 'border-bottom-width', 'bottom', 'border-spacing', 'font-size',
+                                            'height', 'left', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'max-height', 'max-width',
+                                            'min-height', 'min-width', 'outline-width', 'padding', 'padding-top', 'padding-right', 'padding-bottom', 'padding-left',
+                                            'position', 'right', 'top', 'text-indent', 'letter-spacing', 'word-spacing', 'width');
 
 /**
  * Properties that allow <color> as value
