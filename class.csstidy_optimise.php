@@ -165,23 +165,24 @@ class csstidy_optimise
             return;
         }
 
+        $important = '';
+        if(csstidy::is_important($this->sub_value))
+        {
+            $important = '!important';
+        }
+        $this->sub_value = csstidy::gvw_important($this->sub_value);
+
         // Compress font-weight
         if($this->property == 'font-weight' && $this->parser->get_cfg('compress_font-weight'))
         {
-            $important = '';
-            if(csstidy::is_important($this->sub_value))
-            {
-                $important = ' !important';
-                $this->sub_value = csstidy::gvw_important($this->sub_value);
-            }
             if($this->sub_value == 'bold')
             {
-                $this->sub_value = '700'.$important;
+                $this->sub_value = '700';
                 $this->parser->log('Optimised font-weight: Changed "bold" to "700"','Information');
             }
             else if($this->sub_value == 'normal')
             {
-                $this->sub_value = '400'.$important;
+                $this->sub_value = '400';
                 $this->parser->log('Optimised font-weight: Changed "normal" to "400"','Information');
             }
         }
@@ -209,6 +210,7 @@ class csstidy_optimise
                 $this->sub_value = $temp;
             }
         }
+        $this->sub_value .= $important;
     }
 
     /**
@@ -224,7 +226,7 @@ class csstidy_optimise
         if(csstidy::is_important($value))
         {
             $values = csstidy::gvw_important($value);
-            $important = ' !important';
+            $important = '!important';
         }
         else $values = $value;
 
@@ -279,7 +281,7 @@ class csstidy_optimise
     {
         if(csstidy::is_important($string))
         {
-            $string = csstidy::gvw_important($string) . ' !important';
+            $string = csstidy::gvw_important($string) . '!important';
         }
         return $string;
     }
@@ -503,7 +505,7 @@ class csstidy_optimise
         if(csstidy::is_important($value))
         {
             $value = csstidy::gvw_important($value);
-            $important = ' !important';
+            $important = '!important';
         }
         $values = explode(' ',$value);
 
