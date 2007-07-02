@@ -583,7 +583,10 @@ function parse($string) {
                 {
                     $this->selector .= $this->_unicode($string,$i);
                 }
-                else $this->selector .= $string{$i};
+                // remove unnecessary universal selector,  FS#147
+                else if(!($string{$i} == '*' && @in_array($string{$i+1}, array('.', '#', '[', ':')))) {
+                    $this->selector .= $string{$i};
+                }
             }
             else
             {
