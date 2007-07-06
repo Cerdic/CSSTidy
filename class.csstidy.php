@@ -203,6 +203,7 @@ var $sub_value_arr = array();
  * @access private
  */
 var $str_char = '';
+var $cur_string = '';
 
 /**
  * Status from which the parser switched to ic or instr
@@ -551,7 +552,7 @@ function parse($string) {
                 }
                 elseif(($string{$i} == '"' || $string{$i} == "'"))
                 {
-                    $this->selector .= $string{$i};
+                    $this->cur_string = $string{$i};
                     $this->status = 'instr';
                     $this->str_char = $string{$i};
                     $this->from = 'is';
@@ -650,7 +651,7 @@ function parse($string) {
                 }
                 elseif(($string{$i} == '"' || $string{$i} == "'" || $string{$i} == '('))
                 {
-                    $this->sub_value .= $string{$i};
+                    $this->cur_string = $string{$i};
                     $this->str_char = ($string{$i} == '(') ? ')' : $string{$i};
                     $this->status = 'instr';
                     $this->from = 'iv';
@@ -767,32 +768,41 @@ function parse($string) {
 
             /* Case in string */
             case 'instr':
-            if($this->str_char == ')' && $string{$i} == '"' && !$this->str_in_str && !csstidy::escaped($string,$i))
+            if($this->str_char == ')' && ($string{$i} == '"' || $string{$i} == '\'') && !$this->str_in_str && !csstidy::escaped($string,$i))
             {
                 $this->str_in_str = true;
             }
-            elseif($this->str_char == ')' && $string{$i} == '"' && $this->str_in_str && !csstidy::escaped($string,$i))
+            elseif($this->str_char == ')' && ($string{$i} == '"' || $string{$i} == '\'') && $this->str_in_str && !csstidy::escaped($string,$i))
             {
                 $this->str_in_str = false;
             }
-            if($string{$i} == $this->str_char && !csstidy::escaped($string,$i) && !$this->str_in_str)
-            {
-                $this->status = $this->from;
-            }
-            $temp_add = $string{$i};
-                                                                // ...and no not-escaped backslash at the previous position
+            $temp_add = $string{$i};           // ...and no not-escaped backslash at the previous position
             if( ($string{$i} == "\n" || $string{$i} == "\r") && !($string{$i-1} == '\\' && !csstidy::escaped($string,$i-1)) )
             {
                 $temp_add = "\\A ";
                 $this->log('Fixed incorrect newline in string','Warning');
             }
-            if($this->from == 'iv')
-            {
-                $this->sub_value .= $temp_add;
+            if (!($this->str_char == ')' && in_array($string{$i}, $GLOBALS['csstidy']['whitespace']) && !$this->str_in_str)) {
+                $this->cur_string .= $temp_add;
             }
-            elseif($this->from == 'is')
+            if($string{$i} == $this->str_char && !csstidy::escaped($string,$i) && !$this->str_in_str)
             {
-                $this->selector .= $temp_add;
+                $this->status = $this->from;
+                if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string)) {
+                    if ($this->str_char == '"' || $this->str_char == '\'') {
+						$this->cur_string = substr($this->cur_string, 1, -1);
+					} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] == '"' || $this->cur_string[1] == '\'')) /* () */ {
+						$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
+					}
+                }
+                if($this->from == 'iv')
+                {
+                    $this->sub_value .= $this->cur_string;
+                }
+                elseif($this->from == 'is')
+                {
+                    $this->selector .= $this->cur_string;
+                }
             }
             break;
 
