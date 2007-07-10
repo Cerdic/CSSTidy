@@ -28,7 +28,7 @@
 /**
  * Various CSS data needed for correct optimisations etc.
  *
- * @version 1.2
+ * @version 1.3
  */
 require('data.inc.php');
 
@@ -56,7 +56,7 @@ require('class.csstidy_optimise.php');
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.2
+ * @version 1.3
  */
 class csstidy {
 
@@ -116,7 +116,7 @@ var $namespace = '';
  * @var string
  * @access private
  */
-var $version = '1.2';
+var $version = '1.3';
 
 /**
  * Stores the settings
@@ -250,7 +250,7 @@ var $line = 1;
 /**
  * Loads standard template and sets default settings
  * @access private
- * @version 1.2
+ * @version 1.3
  */
 function csstidy()
 {
@@ -788,7 +788,7 @@ function parse($string) {
             if($string{$i} == $this->str_char && !csstidy::escaped($string,$i) && !$this->str_in_str)
             {
                 $this->status = $this->from;
-                if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string)) {
+                if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string) && $this->property != 'content') {
                     if ($this->str_char == '"' || $this->str_char == '\'') {
 						$this->cur_string = substr($this->cur_string, 1, -1);
 					} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] == '"' || $this->cur_string[1] == '\'')) /* () */ {
