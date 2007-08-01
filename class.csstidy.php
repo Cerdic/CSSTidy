@@ -49,6 +49,7 @@ require('class.csstidy_optimise.php');
 /**
  * CSS Parser class
  *
+ 
  * This class represents a CSS parser which reads CSS code and saves it in an array.
  * In opposite to most other CSS parsers, it does not use regular expressions and
  * thus has full CSS2 support and a higher reliability.
@@ -290,6 +291,33 @@ function get_cfg($setting)
 	return false;
 }
 
+function _load_template($template)
+{
+	switch($template)
+		{
+			case 'default':
+			$this->load_template('default');
+			break;
+
+			case 'highest':
+			$this->load_template('highest_compression');
+			break;
+
+			case 'high':
+			$this->load_template('high_compression');
+			break;
+
+			case 'low':
+			$this->load_template('low_compression');
+			break;
+
+			default:
+			$this->load_template($template);
+			break;
+
+		}
+}
+
 /**
  * Set the value of a setting.
  * @param string $setting
@@ -298,11 +326,23 @@ function get_cfg($setting)
  * @return bool
  * @version 1.0
  */
-function set_cfg($setting,$value)
+function set_cfg($setting,$value=null)
 {
-	if(isset($this->settings[$setting]) && $value !== '')
+	if (is_array($setting) && $value === null) {
+		foreach($setting as $setprop => $setval) {
+			$this->settings[$setprop] = $setval;
+		}
+		if (array_key_exists('template', $setting)) {
+			$this->_load_template($this->settings['template']);
+		}
+		return true;
+	}
+	else if(isset($this->settings[$setting]) && $value !== '')
 	{
 		$this->settings[$setting] = $value;
+		if ($setting === 'template') {
+			$this->_load_template($this->settings['template']);
+		}
 		return true;
 	}
 	return false;
@@ -395,6 +435,49 @@ function _unicode(&$string, &$i)
 }
 
 /**
+ * Write formatted output to a file
+ * @param string $filename
+  * @param string $doctype when printing formatted, is a shorthand for the document type
+ * @param bool $externalcss when printing formatted, indicates whether styles to be attached internally or as an external stylesheet
+ * @param string $title when printing formatted, is the title to be added in the head of the document
+ * @param string $lang when printing formatted, gives a two-letter language code to be added to the output
+ * @access public
+  * @version 1.4
+ */
+function write_page($filename, $doctype='xhtml1.1', $externalcss=true, $title='', $lang='en')
+{
+	$this->write($filename, true);
+}
+
+/**
+ * Write plain output to a file
+ * @param string $filename
+ * @param bool $formatted whether to print formatted or not
+ * @param string $doctype when printing formatted, is a shorthand for the document type
+ * @param bool $externalcss when printing formatted, indicates whether styles to be attached internally or as an external stylesheet
+ * @param string $title when printing formatted, is the title to be added in the head of the document
+ * @param string $lang when printing formatted, gives a two-letter language code to be added to the output
+ * @param bool $pre_code whether to add pre and code tags around the code (for light HTML formatted templates)
+ * @access public
+  * @version 1.4
+ */
+function write($filename, $formatted=false, $doctype='xhtml1.1', $externalcss=true, $title='', $lang='en', $pre_code=true)
+{
+	$filename .= ($formatted) ? '.xhtml' : '.css';
+	
+	$handle = fopen($filename, 'w');
+	if($handle) {
+		if (!$formatted) {
+			fwrite($handle, $this->print->plain());
+		}
+		else {
+			fwrite($handle, $this->print->formatted_page($doctype, $externalcss, $title, $lang, $pre_code));
+		}
+	}
+	fclose($handle);
+}
+
+/**
  * Loads a new template
  * @param string $content either filename (if $from_file == true), content of a template file, "high_compression", "highest_compression", "low_compression", or "default"
  * @param bool $from_file uses $content as filename if true
@@ -410,6 +493,7 @@ function load_template($content, $from_file=true)
 		$this->template = $predefined_templates[$content];
 		return;
 	}
+
 
 	if($from_file)
 	{
@@ -994,6 +1078,7 @@ function property_is_valid($property) {
     $all_properties =& $GLOBALS['csstidy']['all_properties'];
     return (isset($all_properties[$property]) && strpos($all_properties[$property],strtoupper($this->get_cfg('css_level'))) !== false );
 }
+
 
 }
 ?>
