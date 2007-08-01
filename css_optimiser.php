@@ -1,4 +1,5 @@
 <?php
+
 header('Content-Type:text/html; charset=utf-8');
 require('class.csstidy.php');
 require('lang.inc.php');
@@ -70,9 +71,13 @@ function options($options, $selected = null, $labelIsValue = false)
 }
 
 $css = new csstidy();
-if(isset($_REQUEST['custom']) && !empty($_REQUEST['custom']))
+$is_custom = isset($_REQUEST['custom']) && !empty($_REQUEST['custom']) && isset($_REQUEST['template']) && ($_REQUEST['template'] === '4');
+if($is_custom)
 {
     setcookie ('custom_template', $_REQUEST['custom'], time()+360000);
+}
+else {
+	setcookie ('custom_template', $_REQUEST['custom'], time()-3600);
 }
 rmdirr('temp');
 
@@ -83,7 +88,9 @@ if(!isset($_REQUEST['compress_fw']) && isset($_REQUEST['post'])) $css->set_cfg('
 if(isset($_REQUEST['merge_selectors'])) $css->set_cfg('merge_selectors', $_REQUEST['merge_selectors']);
 if(isset($_REQUEST['optimise_shorthands'])) $css->set_cfg('optimise_shorthands',$_REQUEST['optimise_shorthands']);
 if(!isset($_REQUEST['rbs']) && isset($_REQUEST['post'])) $css->set_cfg('remove_bslash',false);
-if(isset($_REQUEST['preserve_css'])) $css->set_cfg('preserve_css',true);
+if(isset($_REQUEST['preserve_css'])) {$css->set_cfg('preserve_css',true);
+print 3;exit;
+}
 if(isset($_REQUEST['sort_sel'])) $css->set_cfg('sort_selectors',true);
 if(isset($_REQUEST['sort_de'])) $css->set_cfg('sort_properties',true);
 if(isset($_REQUEST['remove_last_sem'])) $css->set_cfg('remove_last_;',true);
@@ -94,7 +101,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $l; ?>" lang="<?php echo $l; ?>">
   <head>
     <title>
       <?php echo $lang[$l][0]; echo $css->version; ?>)
@@ -117,7 +124,12 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
     }
     function ClipBoard()
     {
-        window.clipboardData.setData('Text',document.getElementById("copytext").innerText);
+		if (window.clipboardData) { // Feature testing
+			window.clipboardData.setData('Text',document.getElementById("copytext").innerText);
+		}
+		else {
+			alert("<?php echo $lang[$l][60]; ?>");
+		}
     }
     </script>
   </head>
@@ -150,18 +162,18 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
             class="block"><?php echo $lang[$l][12]; ?></label> <select
             id="template" name="template" style="margin-bottom:1em;">
               <?php
-                $num = ($_REQUEST['template']) ? intval($_REQUEST['template']) : 1;
+                $num = (isset($_REQUEST['template'])) ? intval($_REQUEST['template']) : 1;
                 echo options(array(3 => $lang[$l][13], 2 => $lang[$l][14], 1 => $lang[$l][15], 0 => $lang[$l][16], 4 => $lang[$l][17]), $num);
               ?>
             </select><br />
             <label for="custom" class="block">
             <?php echo $lang[$l][18]; ?> </label> <textarea id="custom"
             name="custom" cols="33" rows="4"><?php
-               if(isset($_REQUEST['custom']) && !empty($_REQUEST['custom'])) echo
+               if($is_custom) echo
               htmlspecialchars($_REQUEST['custom']);
-               elseif(isset($_COOKIE['custom_template']) &&
-              !empty($_COOKIE['custom_template'])) echo
-              htmlspecialchars($_COOKIE['custom_template']);
+ //              elseif(isset($_COOKIE['custom_template']) &&
+  //            !empty($_COOKIE['custom_template'])) echo
+   //           htmlspecialchars($_COOKIE['custom_template']);
                ?></textarea>
           </fieldset>
           <fieldset id="options">
@@ -238,6 +250,10 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
             <input type="checkbox" id="timestamp" name="timestamp"
                    <?php if($css->get_cfg('timestamp')) echo 'checked="checked"'; ?> />
    			<label for="timestamp"><?php echo $lang[$l][57]; ?></label><br />
+			
+			<input type="checkbox" id="whole_file" name="whole_file"
+                   <?php if(isset($_REQUEST['whole_file'])) echo 'checked="checked"'; ?> />
+   			<label for="whole_file"><?php echo $lang[$l][63]; ?></label><br />
 
 
             <input type="checkbox" name="file_output" id="file_output" value="file_output"
@@ -263,7 +279,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 		switch($_REQUEST['template'])
 		{
 			case 4:
-			if(isset($_REQUEST['custom']) && !empty($_REQUEST['custom']))
+			if($is_custom)
 			{
 				$css->load_template($_REQUEST['custom'],false);
 			}
@@ -334,20 +350,43 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
         {
             echo ' - <a href="temp/'.$filename.'.css">Download</a>';
         }
-        echo ' - <a href="javascript:ClipBoard()">Copy to clipboard</a>';
+        echo ' - <a href="javascript:ClipBoard()">'.$lang[$l][58].'</a>';
         echo '</legend>';
-        echo '<pre><code id="copytext">';
+        echo '<code id="copytext">';
         echo $css->print->formatted();
-        echo '</code></pre>';
-        echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; Back to top</a></p>';
+        echo '</code></fieldset><br />';
+		
+		echo '<fieldset class="code_output"><legend>'.$lang[$l][64].'</legend>';
+        echo '<textarea rows="10" cols="80">';
+		
+		if(isset($_REQUEST['whole_file'])) {
+			echo htmlentities($css->print->formatted_page('xhtml1.1', false, '', 'en'));
+		}
+		else {
+			echo htmlentities('<code id="copytext">')."\n";
+			echo htmlentities($css->print->formatted());
+			echo "\n".htmlentities('</code>');
+		}
+		echo '</textarea></fieldset>';
+		echo '<fieldset class="code_output"><legend>'.$lang[$l][65].'</legend>';
+		echo '<textarea rows="10" cols="30">';
+		
+		ob_start();
+		include 'cssparsed.css';
+		$cssparsed = ob_get_clean();
+		echo $cssparsed;
+		echo '</textarea>';
+		
+		echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; '.$lang[$l][59].'</a></p>';
+		
      }
      elseif(isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) {
         echo '<p class="important">'.$lang[$l][28].'</p>';
      }
      ?>
     <p style="text-align:center;font-size:0.8em;clear:both;">
-      For bugs and suggestions feel free to <a
-      href="http://csstidy.sourceforge.net/contact.php">contact me</a>.
+      <?php echo $lang[$l][61] ?> <a
+      href="http://csstidy.sourceforge.net/contact.php"><?php echo $lang[$l][62] ?></a>.
     </p>
   </body>
 </html>
