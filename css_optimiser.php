@@ -77,7 +77,7 @@ if($is_custom)
     setcookie ('custom_template', $_REQUEST['custom'], time()+360000);
 }
 else {
-	setcookie ('custom_template', $_REQUEST['custom'], time()-3600);
+	setcookie ('custom_template', '', time()-3600);
 }
 rmdirr('temp');
 
