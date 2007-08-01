@@ -120,6 +120,22 @@ $lang['en'][56] = 'All optimisations';
 $lang['de'][56] = 'Alle Optimierungen';
 $lang['en'][57] = 'Add timestamp';
 $lang['de'][57] = 'Zeitstempel hinzufügen';
+$lang['en'][58] = 'Copy to clipboard';
+$lang['de'][58] = 'Copy to clipboard';
+$lang['en'][59] = 'Back to top';
+$lang['de'][59] = 'Back to top';
+$lang['en'][60] = 'Your browser doesn\'t support copy to clipboard.';
+$lang['de'][60] = 'Your browser doesn\'t support copy to clipboard.';
+$lang['en'][61] = 'For bugs and suggestions feel free to';
+$lang['de'][61] = 'For bugs and suggestions feel free to';
+$lang['en'][62] = 'contact me';
+$lang['de'][62] = 'contact me';
+$lang['en'][63] = 'Output CSS code as complete HTML document';
+$lang['de'][63] = 'Output CSS code as complete HTML document';
+$lang['en'][64] = 'Code';
+$lang['de'][64] = 'Code';
+$lang['en'][65] = 'CSS to style CSS output';
+$lang['de'][66] = 'CSS to style CSS output';
 
 $lang['fr'][0] = 'CSS Formatteur et Optimiseur (basé sur CSSTidy  ';
 $lang['fr'][1] = 'CSS Formatteur et Optimiseur';
@@ -178,6 +194,15 @@ $lang['fr'][54] = 'Don\'t optimise';
 $lang['fr'][55] = 'Safe optimisations';
 $lang['fr'][56] = 'All optimisations';
 $lang['fr'][57] = 'Add timestamp';
+$lang['fr'][58] = 'Copy to clipboard';
+$lang['fr'][59] = 'Back to top';
+$lang['fr'][60] = 'Your browser doesn\'t support copy to clipboard.';
+$lang['fr'][61] = 'For bugs and suggestions feel free to';
+$lang['fr'][62] = 'contact me';
+$lang['fr'][63] = 'Output CSS code as complete HTML document';
+$lang['fr'][64] = 'Code';
+$lang['fr'][65] = 'CSS to style CSS output';
+
 
 $lang['zh'][0] = 'CSS整形與最佳化工具(使用 CSSTidy ';
 $lang['zh'][1] = 'CSS整形與最佳化工具';
@@ -235,4 +260,13 @@ $lang['zh'][54] = '不做最佳化';
 $lang['zh'][55] = '安全地最佳化';
 $lang['zh'][56] = '全部最佳化';
 $lang['zh'][57] = '加上時間戳記';
+$lang['zh'][58] = '复制到剪贴板';
+$lang['zh'][59] = '回到页面上方';
+$lang['zh'][60] = '你的浏览器不支持复制到剪贴板。';
+$lang['zh'][61] = '如果程序有错误或你有建议，欢迎';
+$lang['zh'][62] = '和我联系';
+$lang['zh'][63] = 'Output CSS code as complete HTML document';
+$lang['zh'][64] = '代码';
+$lang['zh'][65] = 'CSS to style CSS output';
+
 ?>
