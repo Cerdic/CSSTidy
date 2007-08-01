@@ -111,6 +111,65 @@ class csstidy_print
         return $this->output_css;
     }
 
+	/**
+     * Returns the formatted CSS code to make a complete webpage
+     * @param string $doctype shorthand for the document type
+     * @param bool $externalcss indicates whether styles to be attached internally or as an external stylesheet
+     * @param string $title title to be added in the head of the document
+     * @param string $lang two-letter language code to be added to the output
+     * @return string
+     * @access public
+     * @version 1.4
+     */
+	function formatted_page($doctype='xhtml1.1', $externalcss=true, $title='', $lang='en')
+	{
+		switch ($doctype) {
+			case 'xhtml1.0strict':
+				$doctype_output = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+			"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+				break;
+			case 'xhtml1.1':
+			default:
+				$doctype_output = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+				"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">';
+				break;
+		}
+	
+		$output = $cssparsed = '';
+		$this->output_css_plain =& $output;
+		
+		$output .= $doctype_output."\n".'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="'.$lang.'"';
+		$output .= ($doctype === 'xhtml1.1') ? ">\n" : ' lang="'.$lang.'"'.">\n";
+		$output .= <<<HERE
+<head>
+    <title>$title</title>
+HERE;
+
+		if ($externalcss) {
+			$output .= <<<HERE
+<style type="text/css">
+
+HERE;
+			ob_start();
+			include 'cssparsed.css';
+			$cssparsed = ob_get_clean();
+			$output .= $cssparsed; // Adds an invisible BOM or something, but not in css_optimised.php
+			$output .= '</style>';
+		}
+		else {
+				$output .= "\n".'    <link rel="stylesheet" type="text/css" href="cssparsed.css" />';
+//			}
+		}
+		$output .= <<<HERE
+
+</head>
+<body><code id="copytext">
+HERE;
+		$output .= $this->formatted();
+		$output .= '</code>'."\n".'</body></html>';
+		return $this->output_css_plain;
+	}
+
     /**
      * Returns the formatted CSS Code and saves it into $this->output_css and $this->output_css_plain
      * @param bool $plain plain text or not
@@ -210,7 +269,8 @@ class csstidy_print
             $this->output_css = $output;
             $this->_print(true);
         } else {
-            $this->output_css_plain = $output;
+			// If using spaces in the template, don't want these to appear in the plain output
+            $this->output_css_plain = str_replace('&#160;', '', $output);
         }
     }
 
