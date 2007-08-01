@@ -76,9 +76,7 @@ if($is_custom)
 {
     setcookie ('custom_template', $_REQUEST['custom'], time()+360000);
 }
-else {
-	setcookie ('custom_template', '', time()-3600);
-}
+
 rmdirr('temp');
 
 if(isset($_REQUEST['case_properties'])) $css->set_cfg('case_properties',$_REQUEST['case_properties']);
@@ -88,9 +86,7 @@ if(!isset($_REQUEST['compress_fw']) && isset($_REQUEST['post'])) $css->set_cfg('
 if(isset($_REQUEST['merge_selectors'])) $css->set_cfg('merge_selectors', $_REQUEST['merge_selectors']);
 if(isset($_REQUEST['optimise_shorthands'])) $css->set_cfg('optimise_shorthands',$_REQUEST['optimise_shorthands']);
 if(!isset($_REQUEST['rbs']) && isset($_REQUEST['post'])) $css->set_cfg('remove_bslash',false);
-if(isset($_REQUEST['preserve_css'])) {$css->set_cfg('preserve_css',true);
-print 3;exit;
-}
+if(isset($_REQUEST['preserve_css'])) $css->set_cfg('preserve_css',true);
 if(isset($_REQUEST['sort_sel'])) $css->set_cfg('sort_selectors',true);
 if(isset($_REQUEST['sort_de'])) $css->set_cfg('sort_properties',true);
 if(isset($_REQUEST['remove_last_sem'])) $css->set_cfg('remove_last_;',true);
@@ -171,9 +167,9 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
             name="custom" cols="33" rows="4"><?php
                if($is_custom) echo
               htmlspecialchars($_REQUEST['custom']);
- //              elseif(isset($_COOKIE['custom_template']) &&
-  //            !empty($_COOKIE['custom_template'])) echo
-   //           htmlspecialchars($_COOKIE['custom_template']);
+               elseif(isset($_COOKIE['custom_template']) &&
+              !empty($_COOKIE['custom_template'])) echo
+				htmlspecialchars($_COOKIE['custom_template']);
                ?></textarea>
           </fieldset>
           <fieldset id="options">
