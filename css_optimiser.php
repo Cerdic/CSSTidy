@@ -1,12 +1,20 @@
 <?php
 
-header('Content-Type:text/html; charset=utf-8');
+header('Content-Type: text/html; charset=utf-8');
 require('class.csstidy.php');
 require('lang.inc.php');
 
 
-if (isset($_REQUEST['css_text']) && get_magic_quotes_gpc()) {
- 	$_REQUEST['css_text'] = stripslashes($_REQUEST['css_text']);
+if (get_magic_quotes_gpc()) {
+	if (isset($_REQUEST['css_text'])) {
+		$_REQUEST['css_text'] = stripslashes($_REQUEST['css_text']);
+	}
+	if (isset($_REQUEST['custom'])) {
+		$_REQUEST['custom'] = stripslashes($_REQUEST['custom']);
+	}
+	if (isset($_COOKIE['custom_template'])) {
+		$_COOKIE['custom_template'] = stripslashes($_COOKIE['custom_template']);
+	}
 }
 
 function rmdirr($dirname,$oc=0)
@@ -29,7 +37,7 @@ function rmdirr($dirname,$oc=0)
 		   continue;
 	   }
 	   // Recurse
-	   rmdirr("$dirname/$entry",$oc);
+	   rmdirr($dirname.'/'.$entry,$oc);
 	}
 	$dir->close();
 	}
@@ -53,9 +61,9 @@ function options($options, $selected = null, $labelIsValue = false)
             $value = $label[0];
             $label = $label[1];
         }
-        $label = htmlspecialchars($label, ENT_QUOTES, "utf-8");
+        $label = htmlspecialchars($label, ENT_QUOTES, 'utf-8');
         $value = $labelIsValue ? $label
-                               : htmlspecialchars($value, ENT_QUOTES, "utf-8");
+                               : htmlspecialchars($value, ENT_QUOTES, 'utf-8');
 
         $html .= '<option value="'.$value.'"';
         if (in_array($value, $selected)) {
@@ -99,10 +107,10 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $l; ?>" lang="<?php echo $l; ?>">
   <head>
+    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
     <title>
       <?php echo $lang[$l][0]; echo $css->version; ?>)
     </title>
-    <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
     <link rel="stylesheet" href="cssparse.css" type="text/css" />
     <script type="text/javascript">
     function enable_disable_preserve()
@@ -148,7 +156,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
           class="block"><?php echo $lang[$l][9]; ?></label><textarea id="css_text" name="css_text" rows="20" cols="35"><?php if(isset($_REQUEST['css_text'])) echo htmlspecialchars($_REQUEST['css_text'], ENT_QUOTES, "utf-8"); ?></textarea>
             <label for="url"><?php echo $lang[$l][10]; ?></label> <input type="text"
           name="url" id="url" <?php if(isset($_REQUEST['url']) &&
-          !empty($_REQUEST['url'])) echo 'value="'.$_REQUEST['url'].'"'; ?>
+          !empty($_REQUEST['url'])) echo 'value="',htmlspecialchars($_REQUEST['url'], ENT_QUOTES, 'utf-8'),'"'; ?>
           size="35" /><br />
           <input type="submit" value="<?php echo $lang[$l][35]; ?>" id="submit" />
         </fieldset>
@@ -166,10 +174,10 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
             <?php echo $lang[$l][18]; ?> </label> <textarea id="custom"
             name="custom" cols="33" rows="4"><?php
                if($is_custom) echo
-              htmlspecialchars($_REQUEST['custom'], ENT_QUOTES, "utf-8");
+              htmlspecialchars($_REQUEST['custom'], ENT_QUOTES, 'utf-8');
                elseif(isset($_COOKIE['custom_template']) &&
               !empty($_COOKIE['custom_template'])) echo
-				htmlspecialchars($_COOKIE['custom_template'], ENT_QUOTES, "utf-8");
+				htmlspecialchars($_COOKIE['custom_template'], ENT_QUOTES, 'utf-8');
                ?></textarea>
           </fieldset>
           <fieldset id="options">
@@ -297,7 +305,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 
     if($url)
     {
-    	if(substr($_REQUEST['url'],0,7) != 'http://')
+    	if(substr($_REQUEST['url'],0,7) !== 'http://')
 		{
 			$_REQUEST['url'] = 'http://'.$_REQUEST['url'];
 		}
@@ -339,51 +347,52 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 			<div><dl><?php
 			foreach($css->log as $line => $array)
 			{
-				echo '<dt>'.$line.'</dt>';
-				for($i = 0; $i < count($array); $i++)
+				echo '<dt>',$line,'</dt>';
+				$array_size = count($array);
+				for($i = 0; $i < $array_size; ++$i)
 				{
-					echo '<dd class="'.$array[$i]['t'].'">'.$array[$i]['m'].'</dd>';
+					echo '<dd class="',$array[$i]['t'],'">',$array[$i]['m'],'</dd>';
 				}
 			}
 			?></dl></div>
         </fieldset>
         <?php endif;
-        echo '<fieldset><legend>'.$lang[$l][37].': '.$css->print->size('input').'KB, '.$lang[$l][38].':'.$css->print->size('output').'KB, '.$lang[$l][36].': '.$ratio;
+        echo '<fieldset><legend>',$lang[$l][37],': ',$css->print->size('input'),'KB, ',$lang[$l][38],':',$css->print->size('output'),'KB, ',$lang[$l][36],': ',$ratio;
         if($file_ok)
         {
-            echo ' - <a href="temp/'.$filename.'.css">Download</a>';
+            echo ' - <a href="temp/',$filename,'.css">Download</a>';
         }
-        echo ' - <a href="javascript:ClipBoard()">'.$lang[$l][58].'</a>';
+        echo ' - <a href="javascript:ClipBoard()">',$lang[$l][58],'</a>';
         echo '</legend>';
         echo '<code id="copytext">';
         echo $css->print->formatted();
         echo '</code></fieldset><br />';
 		
-		echo '<fieldset class="code_output"><legend>'.$lang[$l][64].'</legend>';
+		echo '<fieldset class="code_output"><legend>',$lang[$l][64],'</legend>';
         echo '<textarea rows="10" cols="80">';
 		
 		if(isset($_REQUEST['whole_file'])) {
-			echo htmlspecialchars($css->print->formatted_page('xhtml1.1', false, '', 'en'), ENT_QUOTES, "utf-8");
+			echo htmlspecialchars($css->print->formatted_page('xhtml1.1', false, '', 'en'), ENT_QUOTES, 'utf-8');
 		}
 		else {
-			echo htmlspecialchars('<code id="copytext">', ENT_QUOTES, "utf-8")."\n";
-			echo htmlspecialchars($css->print->formatted()."\n".'</code>', ENT_QUOTES, "utf-8");
+			echo htmlspecialchars('<code id="copytext">', ENT_QUOTES, 'utf-8'),"\n";
+			echo htmlspecialchars($css->print->formatted()."\n".'</code>', ENT_QUOTES, 'utf-8');
 		}
 		echo '</textarea></fieldset>';
-		echo '<fieldset class="code_output"><legend>'.$lang[$l][65].'</legend>';
+		echo '<fieldset class="code_output"><legend>',$lang[$l][65],'</legend>';
 		echo '<textarea rows="10" cols="30">';
 		
 		echo file_get_contents('cssparsed.css');
 		echo '</textarea>';
 		
-		echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; '.$lang[$l][59].'</a></p>';
+		echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; ',$lang[$l][59],'</a></p>';
 		
      }
      elseif(isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) {
-        echo '<p class="important">'.$lang[$l][28].'</p>';
+        echo '<p class="important">',$lang[$l][28],'</p>';
      }
      ?>
-    <p style="text-align:center;font-size:0.8em;clear:both;">
+    <p style="text-align:center;font-size:.8em;clear:both;">
       <?php echo $lang[$l][61] ?> <a
       href="http://csstidy.sourceforge.net/contact.php"><?php echo $lang[$l][62] ?></a>.
     </p>
