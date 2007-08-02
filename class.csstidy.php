@@ -291,6 +291,12 @@ function get_cfg($setting)
 	return false;
 }
 
+/**
+ * Load a template
+ * @param string $template used by set_cfg to load a template via a configuration setting
+ * @access private
+ * @version 1.4
+ */
 function _load_template($template)
 {
 	switch($template)
