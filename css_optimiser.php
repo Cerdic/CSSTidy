@@ -25,7 +25,7 @@ function rmdirr($dirname,$oc=0)
 	$dir = dir($dirname);
 	while (false !== $entry = $dir->read()) {
 	   // Skip pointers
-	   if ($entry == '.' || $entry == '..') {
+	   if ($entry === '.' || $entry === '..') {
 		   continue;
 	   }
 	   // Recurse
@@ -145,7 +145,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
       <div>
         <fieldset id="field_input">
           <legend><?php echo $lang[$l][8]; ?></legend> <label for="css_text"
-          class="block"><?php echo $lang[$l][9]; ?></label><textarea id="css_text" name="css_text" rows="20" cols="35"><?php if(isset($_REQUEST['css_text'])) echo htmlspecialchars($_REQUEST['css_text']); ?></textarea>
+          class="block"><?php echo $lang[$l][9]; ?></label><textarea id="css_text" name="css_text" rows="20" cols="35"><?php if(isset($_REQUEST['css_text'])) echo htmlspecialchars($_REQUEST['css_text'], ENT_QUOTES, "utf-8"); ?></textarea>
             <label for="url"><?php echo $lang[$l][10]; ?></label> <input type="text"
           name="url" id="url" <?php if(isset($_REQUEST['url']) &&
           !empty($_REQUEST['url'])) echo 'value="'.$_REQUEST['url'].'"'; ?>
@@ -166,10 +166,10 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
             <?php echo $lang[$l][18]; ?> </label> <textarea id="custom"
             name="custom" cols="33" rows="4"><?php
                if($is_custom) echo
-              htmlspecialchars($_REQUEST['custom']);
+              htmlspecialchars($_REQUEST['custom'], ENT_QUOTES, "utf-8");
                elseif(isset($_COOKIE['custom_template']) &&
               !empty($_COOKIE['custom_template'])) echo
-				htmlspecialchars($_COOKIE['custom_template']);
+				htmlspecialchars($_COOKIE['custom_template'], ENT_QUOTES, "utf-8");
                ?></textarea>
           </fieldset>
           <fieldset id="options">
@@ -218,13 +218,13 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 
             <?php echo $lang[$l][26]; ?><br />
             <input type="radio" name="case_properties" id="none" value="0"
-                   <?php if($css->get_cfg('case_properties') == 0) echo 'checked="checked"'; ?> />
+                   <?php if($css->get_cfg('case_properties') === 0) echo 'checked="checked"'; ?> />
             <label for="none"><?php echo $lang[$l][53]; ?></label>
             <input type="radio" name="case_properties" id="lower_yes" value="1"
-                   <?php if($css->get_cfg('case_properties') == 1) echo 'checked="checked"'; ?> />
+                   <?php if($css->get_cfg('case_properties') === 1) echo 'checked="checked"'; ?> />
             <label for="lower_yes"><?php echo $lang[$l][27]; ?></label>
             <input type="radio" name="case_properties" id="upper_yes" value="2"
-                   <?php if($css->get_cfg('case_properties') == 2) echo 'checked="checked"'; ?> />
+                   <?php if($css->get_cfg('case_properties') === 2) echo 'checked="checked"'; ?> />
             <label for="upper_yes"><?php echo $lang[$l][29]; ?></label><br />
 
             <input type="checkbox" name="rbs" id="rbs"
@@ -315,6 +315,13 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
         if(isset($_REQUEST['file_output']))
         {
             $filename = md5(mt_rand().time().mt_rand());
+			if (!is_dir('temp')) {
+				$madedir = mkdir('temp');
+				if (!$madedir) {
+					print 'Could not make directory "temp" in '.dirname(__FILE__);
+					exit;
+				}
+			}
             $handle = fopen('temp/'.$filename.'.css','w');
             if($handle) {
                 if(fwrite($handle,$css->print->plain()))
@@ -356,21 +363,17 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
         echo '<textarea rows="10" cols="80">';
 		
 		if(isset($_REQUEST['whole_file'])) {
-			echo htmlentities($css->print->formatted_page('xhtml1.1', false, '', 'en'));
+			echo htmlspecialchars($css->print->formatted_page('xhtml1.1', false, '', 'en'), ENT_QUOTES, "utf-8");
 		}
 		else {
-			echo htmlentities('<code id="copytext">')."\n";
-			echo htmlentities($css->print->formatted());
-			echo "\n".htmlentities('</code>');
+			echo htmlspecialchars('<code id="copytext">', ENT_QUOTES, "utf-8")."\n";
+			echo htmlspecialchars($css->print->formatted()."\n".'</code>', ENT_QUOTES, "utf-8");
 		}
 		echo '</textarea></fieldset>';
 		echo '<fieldset class="code_output"><legend>'.$lang[$l][65].'</legend>';
 		echo '<textarea rows="10" cols="30">';
 		
-		ob_start();
-		include 'cssparsed.css';
-		$cssparsed = ob_get_clean();
-		echo $cssparsed;
+		echo file_get_contents('cssparsed.css');
 		echo '</textarea>';
 		
 		echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; '.$lang[$l][59].'</a></p>';
