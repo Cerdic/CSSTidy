@@ -66,7 +66,7 @@ class csstidy_optimise
             return;
         }
 
-        if ($this->parser->get_cfg('merge_selectors') == 2)
+        if ($this->parser->get_cfg('merge_selectors') === 2)
         {
             foreach ($this->css as $medium => $value)
             {
@@ -135,7 +135,7 @@ class csstidy_optimise
             return;
         }
 
-        if($this->property == 'background' && $this->parser->get_cfg('optimise_shorthands') > 1)
+        if($this->property === 'background' && $this->parser->get_cfg('optimise_shorthands') > 1)
         {
             unset($this->css[$this->at][$this->selector]['background']);
             $this->parser->merge_css_blocks($this->at,$this->selector,csstidy_optimise::dissolve_short_bg($this->value));
@@ -173,14 +173,14 @@ class csstidy_optimise
         $this->sub_value = csstidy::gvw_important($this->sub_value);
 
         // Compress font-weight
-        if($this->property == 'font-weight' && $this->parser->get_cfg('compress_font-weight'))
+        if($this->property === 'font-weight' && $this->parser->get_cfg('compress_font-weight'))
         {
-            if($this->sub_value == 'bold')
+            if($this->sub_value === 'bold')
             {
                 $this->sub_value = '700';
                 $this->parser->log('Optimised font-weight: Changed "bold" to "700"','Information');
             }
-            else if($this->sub_value == 'normal')
+            else if($this->sub_value === 'normal')
             {
                 $this->sub_value = '400';
                 $this->parser->log('Optimised font-weight: Changed "normal" to "400"','Information');
@@ -297,14 +297,14 @@ class csstidy_optimise
         $replace_colors =& $GLOBALS['csstidy']['replace_colors'];
 
         // rgb(0,0,0) -> #000000 (or #000 in this case later)
-        if(strtolower(substr($color,0,4)) == 'rgb(')
+        if(strtolower(substr($color,0,4)) === 'rgb(')
         {
             $color_tmp = substr($color,4,strlen($color)-5);
             $color_tmp = explode(',',$color_tmp);
             for ( $i = 0; $i < count($color_tmp); $i++ )
             {
                 $color_tmp[$i] = trim ($color_tmp[$i]);
-                if(substr($color_tmp[$i],-1) == '%')
+                if(substr($color_tmp[$i],-1) === '%')
                 {
                     $color_tmp[$i] = round((255*$color_tmp[$i])/100);
                 }
@@ -331,7 +331,7 @@ class csstidy_optimise
         if(strlen($color) == 7)
         {
             $color_temp = strtolower($color);
-            if($color_temp{0} == '#' && $color_temp{1} == $color_temp{2} && $color_temp{3} == $color_temp{4} && $color_temp{5} == $color_temp{6})
+            if($color_temp{0} === '#' && $color_temp{1} == $color_temp{2} && $color_temp{3} == $color_temp{4} && $color_temp{5} == $color_temp{6})
             {
                 $color = '#'.$color{1}.$color{3}.$color{5};
             }
@@ -374,7 +374,7 @@ class csstidy_optimise
         $color_values =& $GLOBALS['csstidy']['color_values'];
 
         // for font:1em/1em sans-serif...;
-        if($this->property == 'font')
+        if($this->property === 'font')
         {
             $temp = explode('/',$subvalue);
         }
@@ -385,7 +385,7 @@ class csstidy_optimise
         for ($l = 0; $l < count($temp); $l++)
         {
             // continue if no numeric value
-            if (!(strlen($temp[$l]) > 0 && ( is_numeric($temp[$l]{0}) || $temp[$l]{0} == '+' || $temp[$l]{0} == '-' ) ))
+            if (!(strlen($temp[$l]) > 0 && ( is_numeric($temp[$l]{0}) || $temp[$l]{0} === '+' || $temp[$l]{0} === '-' ) ))
             {
                 continue;
             }
@@ -402,17 +402,17 @@ class csstidy_optimise
             }
             else
             {
-                $unit_found = FALSE;
+                $unit_found = false;
                 for ($m = 0, $size_4 = count($units); $m < $size_4; $m++)
                 {
-                    if (strpos(strtolower($temp[$l]),$units[$m]) !== FALSE)
+                    if (strpos(strtolower($temp[$l]),$units[$m]) !== false)
                     {
                         $temp[$l] = floatval($temp[$l]).$units[$m];
-                        $unit_found = TRUE;
+                        $unit_found = true;
                         break;
                     }
                 }
-                if (!$unit_found && in_array($this->property,$unit_values,TRUE))
+                if (!$unit_found && in_array($this->property,$unit_values,true))
                 {
                     $temp[$l] = floatval($temp[$l]).'px';
                 }
@@ -566,10 +566,10 @@ class csstidy_optimise
                 {
                     ++$num;
                 }
-                elseif($string{$i} == '"' || $string{$i} == '\'' || $string{$i} == '(' && !csstidy::escaped($string,$i))
+                elseif($string{$i} === '"' || $string{$i} === '\'' || $string{$i} === '(' && !csstidy::escaped($string,$i))
                 {
                     $status = 'str';
-                    $to = ($string{$i} == '(') ? ')' : $string{$i};
+                    $to = ($string{$i} === '(') ? ')' : $string{$i};
                     (isset($output[$num])) ? $output[$num] .= $string{$i} : $output[$num] = $string{$i};
                 }
                 else
@@ -655,7 +655,7 @@ class csstidy_optimise
         $origin = array('border','padding','content');
         $pos = array('top','center','bottom','left','right');
         $important = '';
-        $return = array('background-image' => NULL,'background-size' => NULL,'background-repeat' => NULL,'background-position' => NULL,'background-attachment'=>NULL,'background-clip' => NULL,'background-origin' => NULL,'background-color' => NULL);
+        $return = array('background-image' => null,'background-size' => null,'background-repeat' => null,'background-position' => null,'background-attachment'=>null,'background-clip' => null,'background-origin' => null,'background-color' => null);
 
         if(csstidy::is_important($str_value))
         {
@@ -666,56 +666,56 @@ class csstidy_optimise
         $str_value = csstidy_optimise::explode_ws(',',$str_value);
         for($i = 0; $i < count($str_value); $i++)
         {
-            $have['clip'] = FALSE; $have['pos'] = FALSE;
-            $have['color'] = FALSE; $have['bg'] = FALSE;
+            $have['clip'] = false; $have['pos'] = false;
+            $have['color'] = false; $have['bg'] = false;
 
             $str_value[$i] = csstidy_optimise::explode_ws(' ',trim($str_value[$i]));
 
             for($j = 0; $j < count($str_value[$i]); $j++)
             {
-                if($have['bg'] === FALSE && (substr($str_value[$i][$j],0,4) == 'url(' || $str_value[$i][$j] === 'none'))
+                if($have['bg'] === false && (substr($str_value[$i][$j],0,4) === 'url(' || $str_value[$i][$j] === 'none'))
                 {
                     $return['background-image'] .= $str_value[$i][$j].',';
-                    $have['bg'] = TRUE;
+                    $have['bg'] = true;
                 }
-                elseif(in_array($str_value[$i][$j],$repeat,TRUE))
+                elseif(in_array($str_value[$i][$j],$repeat,true))
                 {
                     $return['background-repeat'] .= $str_value[$i][$j].',';
                 }
-                elseif(in_array($str_value[$i][$j],$attachment,TRUE))
+                elseif(in_array($str_value[$i][$j],$attachment,true))
                 {
                     $return['background-attachment'] .= $str_value[$i][$j].',';
                 }
-                elseif(in_array($str_value[$i][$j],$clip,TRUE) && !$have['clip'])
+                elseif(in_array($str_value[$i][$j],$clip,true) && !$have['clip'])
                 {
                     $return['background-clip'] .= $str_value[$i][$j].',';
-                    $have['clip'] = TRUE;
+                    $have['clip'] = true;
                 }
-                elseif(in_array($str_value[$i][$j],$origin,TRUE))
+                elseif(in_array($str_value[$i][$j],$origin,true))
                 {
                     $return['background-origin'] .= $str_value[$i][$j].',';
                 }
-                elseif($str_value[$i][$j]{0} == '(')
+                elseif($str_value[$i][$j]{0} === '(')
                 {
                     $return['background-size'] .= substr($str_value[$i][$j],1,-1).',';
                 }
-                elseif(in_array($str_value[$i][$j],$pos,TRUE) || is_numeric($str_value[$i][$j]{0}) || $str_value[$i][$j]{0} === NULL)
+                elseif(in_array($str_value[$i][$j],$pos,true) || is_numeric($str_value[$i][$j]{0}) || $str_value[$i][$j]{0} === null)
                 {
                     $return['background-position'] .= $str_value[$i][$j];
                     if(!$have['pos']) $return['background-position'] .= ' '; else $return['background-position'].= ',';
-                    $have['pos'] = TRUE;
+                    $have['pos'] = true;
                 }
                 elseif(!$have['color'])
                 {
                     $return['background-color'] .= $str_value[$i][$j].',';
-                    $have['color'] = TRUE;
+                    $have['color'] = true;
                 }
             }
         }
 
         foreach($background_prop_default as $bg_prop => $default_value)
         {
-            if($return[$bg_prop] !== NULL)
+            if($return[$bg_prop] !== null)
             {
                 $return[$bg_prop] = substr($return[$bg_prop],0,-1).$important;
             }
@@ -779,7 +779,7 @@ class csstidy_optimise
 
                 if(isset($temp[$i]))
                 {
-                    if($bg_property == 'background-size')
+                    if($bg_property === 'background-size')
                     {
                         $new_bg_value .= '('.$temp[$i].') ';
                     }
