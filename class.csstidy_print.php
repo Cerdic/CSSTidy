@@ -139,32 +139,20 @@ class csstidy_print
 		$this->output_css_plain =& $output;
 		
 		$output .= $doctype_output."\n".'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="'.$lang.'"';
-		$output .= ($doctype === 'xhtml1.1') ? ">\n" : ' lang="'.$lang.'"'.">\n";
-		$output .= <<<HERE
-<head>
-    <title>$title</title>
-HERE;
+		$output .= ($doctype === 'xhtml1.1') ? '>' : ' lang="'.$lang.'">';
+		$output .= "\n<head>\n    <title>$title</title>";
 
 		if ($externalcss) {
-			$output .= <<<HERE
-<style type="text/css">
-
-HERE;
-			ob_start();
-			include 'cssparsed.css';
-			$cssparsed = ob_get_clean();
+			$output .= "\n    <style type=\"text/css\">\n";
+			$cssparsed = file_get_contents('cssparsed.css');
 			$output .= $cssparsed; // Adds an invisible BOM or something, but not in css_optimised.php
-			$output .= '</style>';
+			$output .= "\n</style>";
 		}
 		else {
 				$output .= "\n".'    <link rel="stylesheet" type="text/css" href="cssparsed.css" />';
 //			}
 		}
-		$output .= <<<HERE
-
-</head>
-<body><code id="copytext">
-HERE;
+		$output .= "\n</head>\n<body><code id=\"copytext\">";
 		$output .= $this->formatted();
 		$output .= '</code>'."\n".'</body></html>';
 		return $this->output_css_plain;
@@ -231,8 +219,8 @@ HERE;
                     break;
 
                 case PROPERTY:
-                    if($this->parser->get_cfg('case_properties') == 2) $token[1] = strtoupper($token[1]);
-                    if($this->parser->get_cfg('case_properties') == 1) $token[1] = strtolower($token[1]);
+                    if($this->parser->get_cfg('case_properties') === 2) $token[1] = strtoupper($token[1]);
+                    if($this->parser->get_cfg('case_properties') === 1) $token[1] = strtolower($token[1]);
                     $out .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
                     break;
 
@@ -344,7 +332,7 @@ HERE;
     function _htmlsp($string, $plain)
     {
         if (!$plain) {
-            return htmlspecialchars($string);
+            return htmlspecialchars($string, ENT_QUOTES, 'utf-8');
         }
         return $string;
     }
@@ -395,11 +383,11 @@ HERE;
      */
     function size($loc = 'output')
     {
-        if ($loc == 'output' && !$this->output_css) {
+        if ($loc === 'output' && !$this->output_css) {
             $this->formatted();
         }
 
-        if ($loc == 'input') {
+        if ($loc === 'input') {
             return (strlen($this->input_css) / 1000);
         } else {
             return (strlen($this->output_css_plain) / 1000);
