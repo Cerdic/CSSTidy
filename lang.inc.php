@@ -5,7 +5,7 @@ if(isset($_GET['lang'])) {
 	$l = getenv('HTTP_ACCEPT_LANGUAGE');
 	$l = strtolower(substr($l,0,2));
 }
-$l = ($l == 'de' || $l == 'fr' || $l == 'zh') ? $l : 'en';
+$l = ($l === 'de' || $l === 'fr' || $l === 'zh') ? $l : 'en';
 
 $lang = array();
 $lang['en'][0] = 'CSS Formatter and Optimiser/Optimizer (based on CSSTidy ';
@@ -135,7 +135,7 @@ $lang['de'][63] = 'Output CSS code as complete HTML document';
 $lang['en'][64] = 'Code';
 $lang['de'][64] = 'Code';
 $lang['en'][65] = 'CSS to style CSS output';
-$lang['de'][66] = 'CSS to style CSS output';
+$lang['de'][65] = 'CSS to style CSS output';
 
 $lang['fr'][0] = 'CSS Formatteur et Optimiseur (basé sur CSSTidy  ';
 $lang['fr'][1] = 'CSS Formatteur et Optimiseur';
