@@ -893,7 +893,7 @@ function parse($string) {
                 $this->status = $this->from;
                 if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string) && $this->property !== 'content') {
                     if ($this->str_char === '"' || $this->str_char === '\'') {
-						// Temporarily disable this optimization to avoid problems with @charset rule, quote propertie...
+						// Temporarily disable this optimization to avoid problems with @charset rule, quote properties, and some attribute selectors...
 						//$this->cur_string = substr($this->cur_string, 1, -1);
 					} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] === '"' || $this->cur_string[1] === '\'')) /* () */ {
 						$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
