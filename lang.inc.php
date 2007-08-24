@@ -30,7 +30,7 @@
 if(isset($_GET['lang'])) {
 	$l = $_GET['lang'];
 } else {
-	$l = getenv('HTTP_ACCEPT_LANGUAGE');
+	$l = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 	$l = strtolower(substr($l,0,2));
 }
 $l = ($l === 'de' || $l === 'fr' || $l === 'zh') ? $l : 'en';
