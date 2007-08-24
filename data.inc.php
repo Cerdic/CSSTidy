@@ -57,7 +57,7 @@ $GLOBALS['csstidy']['tokens'] = '/@}{;:=\'"(,\\!$%&)*+.<>?[]^`|~';
  * @global array $GLOBALS['csstidy']['units']
  * @version 1.0
  */
-$GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','deg','grad','rad','ms','s','khz','hz');
+$GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','ch','deg','grad','rad','turn','ms','s','khz','hz');
 
 /**
  * Available at-rules
