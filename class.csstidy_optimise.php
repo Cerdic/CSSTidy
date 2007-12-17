@@ -396,6 +396,7 @@ class csstidy_optimise
             if (in_array($this->property, $color_values))
             {
                 $temp[$l] = '#'.$temp[$l];
+                continue;
             }
 
             if (floatval($temp[$l]) == 0)
