@@ -1,0 +1,11 @@
+--TEST--
+First child selector
+--CSS--
+p:first-child {display: none;}
+--EXPECT--
+array (
+  'p:first-child' => 
+  array (
+    'display' => 'none',
+  ),
+)

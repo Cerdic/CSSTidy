@@ -1,0 +1,11 @@
+--TEST--
+Type selector
+--CSS--
+a {display: none;}
+--EXPECT--
+array (
+  'a' => 
+  array (
+    'display' => 'none',
+  ),
+)

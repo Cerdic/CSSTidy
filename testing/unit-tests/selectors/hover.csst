@@ -1,0 +1,11 @@
+--TEST--
+Dynamic hover selector
+--CSS--
+a:hover {display: none;}
+--EXPECT--
+array (
+  'a:hover' => 
+  array (
+    'display' => 'none',
+  ),
+)

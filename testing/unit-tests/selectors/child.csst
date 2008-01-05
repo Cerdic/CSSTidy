@@ -1,0 +1,11 @@
+--TEST--
+Child selector
+--CSS--
+table > tr {display: none;}
+--EXPECT--
+array (
+  'table > tr' => 
+  array (
+    'display' => 'none',
+  ),
+)

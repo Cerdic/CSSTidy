@@ -1,0 +1,11 @@
+--TEST--
+Language selector
+--CSS--
+div:lang(en) {display: none;}
+--EXPECT--
+array (
+  'div:lang(en)' => 
+  array (
+    'display' => 'none',
+  ),
+)

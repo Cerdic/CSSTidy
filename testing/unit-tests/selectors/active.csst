@@ -1,0 +1,11 @@
+--TEST--
+Dynamic active selector
+--CSS--
+a:active {display: none;}
+--EXPECT--
+array (
+  'a:active' => 
+  array (
+    'display' => 'none',
+  ),
+)

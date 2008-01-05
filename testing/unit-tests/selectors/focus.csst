@@ -1,0 +1,11 @@
+--TEST--
+Dynamic focus selector
+--CSS--
+a:focus {display: none;}
+--EXPECT--
+array (
+  'a:focus' => 
+  array (
+    'display' => 'none',
+  ),
+)

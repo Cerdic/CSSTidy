@@ -1,0 +1,11 @@
+--TEST--
+Not-visited link selector
+--CSS--
+a:link {display: none;}
+--EXPECT--
+array (
+  'a:link' => 
+  array (
+    'display' => 'none',
+  ),
+)
