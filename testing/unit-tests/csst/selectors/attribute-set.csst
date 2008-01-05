@@ -1,10 +1,10 @@
 --TEST--
-Language selector
+Attribute selector
 --CSS--
-div:lang(en) {display: none;}
+a[foo] {display: none;}
 --EXPECT--
 array (
-  'div:lang(en)' => 
+  'a[foo]' => 
   array (
     'display' => 'none',
   ),

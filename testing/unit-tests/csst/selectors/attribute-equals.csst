@@ -1,0 +1,11 @@
+--TEST--
+Attribute equals selector
+--CSS--
+a[foo="warning"] {display: none;}
+--EXPECT--
+array (
+  'a[foo="warning"]' => 
+  array (
+    'display' => 'none',
+  ),
+)

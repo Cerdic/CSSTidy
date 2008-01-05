@@ -1,10 +1,10 @@
 --TEST--
-Language selector
+Adjacent selector
 --CSS--
-div:lang(en) {display: none;}
+a + b {display: none;}
 --EXPECT--
 array (
-  'div:lang(en)' => 
+  'a + b' => 
   array (
     'display' => 'none',
   ),
