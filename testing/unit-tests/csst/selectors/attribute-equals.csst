@@ -1,11 +1,11 @@
 --TEST--
 Attribute equals selector
 --CSS--
-a[foo="warning"] {display: none;}
+a[foo="warning"] {display: inherit;}
 --EXPECT--
 array (
   'a[foo="warning"]' => 
   array (
-    'display' => 'none',
+    'display' => 'inherit',
   ),
 )

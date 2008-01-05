@@ -1,11 +1,11 @@
 --TEST--
 Universal selector
 --CSS--
-* {display: none;}
+* {display: inherit;}
 --EXPECT--
 array (
   '*' => 
   array (
-    'display' => 'none',
+    'display' => 'inherit',
   ),
 )

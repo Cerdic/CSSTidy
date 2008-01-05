@@ -1,11 +1,11 @@
 --TEST--
 Type selector
 --CSS--
-a {display: none;}
+a {display: inherit;}
 --EXPECT--
 array (
   'a' => 
   array (
-    'display' => 'none',
+    'display' => 'inherit',
   ),
 )

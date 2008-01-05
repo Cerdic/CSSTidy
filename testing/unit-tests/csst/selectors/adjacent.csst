@@ -1,11 +1,11 @@
 --TEST--
 Adjacent selector
 --CSS--
-a + b {display: none;}
+a + b {display: inherit;}
 --EXPECT--
 array (
   'a + b' => 
   array (
-    'display' => 'none',
+    'display' => 'inherit',
   ),
 )

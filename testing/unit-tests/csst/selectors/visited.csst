@@ -1,11 +1,11 @@
 --TEST--
 Visited link selector
 --CSS--
-a:visited {display: none;}
+a:visited {display: inherit;}
 --EXPECT--
 array (
   'a:visited' => 
   array (
-    'display' => 'none',
+    'display' => 'inherit',
   ),
 )

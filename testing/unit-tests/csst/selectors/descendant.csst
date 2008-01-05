@@ -1,11 +1,11 @@
 --TEST--
 Descendant selector
 --CSS--
-table tr {display: none;}
+table tr {display: inherit;}
 --EXPECT--
 array (
   'table tr' => 
   array (
-    'display' => 'none',
+    'display' => 'inherit',
   ),
 )

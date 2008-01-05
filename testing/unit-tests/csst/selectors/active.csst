@@ -1,11 +1,11 @@
 --TEST--
 Dynamic active selector
 --CSS--
-a:active {display: none;}
+a:active {display: inherit;}
 --EXPECT--
 array (
   'a:active' => 
   array (
-    'display' => 'none',
+    'display' => 'inherit',
   ),
 )
