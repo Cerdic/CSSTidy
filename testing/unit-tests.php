@@ -8,11 +8,18 @@
 
 error_reporting(E_ALL);
 
-require('../class.csstidy.php');
+require_once '../class.csstidy.php';
 
-// require PEAR class Text_Diff for nice fail messages
+$simpletest_location = 'simpletest/';
+if (file_exists('../test-settings.php')) include_once '../test-settings.php';
+
+// PEAR
 require_once 'Text/Diff.php';
 require_once 'Text/Diff/Renderer.php';
+
+require_once $simpletest_location . 'unit_tester.php';
+require_once $simpletest_location . 'reporter.php';
+// require_once $simpletest_location . 'mock_objects.php'; // we don't need it yet
 
 require_once 'unit-tests.inc';
 
@@ -37,7 +44,7 @@ ins {background: green; color: white; font-weight: bold;}
 <?php
 
 // allow only one directory deep, I guess otherwise, we need a recursive glob
-foreach (globr('unit-tests', '*.csst') as $filename) {
+foreach (globr('unit-tests/csst', '*.csst') as $filename) {
     $test = new csstidy_test_csst();
     $test->load($filename);
     if (!$test->run()) $failed_tests++;
