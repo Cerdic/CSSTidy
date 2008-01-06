@@ -1,0 +1,19 @@
+--TEST--
+Tests numeric values: Missing unit
+--CSS--
+a { 
+font-size:1.0;
+line-height:1.0;
+color:123456;
+font:verdana 1em/1.0;
+}
+--EXPECT--
+array (
+  'a' => 
+  array (
+    'font-size' => '1px',
+    'line-height' => '1',
+    'color' => '#123456',
+    'font' => 'verdana 1em/1',
+  ),
+)

@@ -20,3 +20,4 @@ Changelog
 - Fixed bug with non-functioning getenv in ASAPI
 - Fixed bug with bad hexadecimal syntax recovery
 - At-selectors optimized by removing unnecessary url()
+- Fixed optimisation: 1.0 was not optimised to 1

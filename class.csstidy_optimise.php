@@ -197,7 +197,7 @@ class csstidy_optimise
         }
 
         $temp = $this->compress_numbers($this->sub_value);
-        if($temp != $this->sub_value)
+        if(strcasecmp($temp, $this->sub_value) !== 0)
         {
             if(strlen($temp) > strlen($this->sub_value)) {
                 $this->parser->log('Fixed invalid number: Changed "'.$this->sub_value.'" to "'.$temp.'"','Warning');
