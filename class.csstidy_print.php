@@ -9,9 +9,9 @@
  *
  * This file is part of CSSTidy.
  *
- *  CSSTidy is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published by
- *  the Free Software Foundation; either version 2.1 of the License, or
+ *   CSSTidy is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU Lesser General Public License as published by
+ *   the Free Software Foundation; either version 2.1 of the License, or
  *   (at your option) any later version.
  *
  *   CSSTidy is distributed in the hope that it will be useful,
@@ -25,7 +25,7 @@
  * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser General Public License
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
-  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
+ * @author Brett Zamir (brettz9 at yahoo dot com) 2007
  */
 
 /**

@@ -11,6 +11,8 @@ Changelog
 ! cssparsed.css created, contains just the CSS for formatted CSS output
 ! New CSS 3 units "ch" and "turn" added
 ! Unit tests added, requires Text_Diff (PEAR) and SimpleTest
+! Some invalid selectors are now removed during optimization, this can
+  be turned off by setting 'discard_invalid_selectors' to false
 - Added localizations for css_optimiser.php
 - Fixed bug with cookie setting for custom templates
 - Minor security problem in css_optimiser.php fixed

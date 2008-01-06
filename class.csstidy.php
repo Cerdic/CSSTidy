@@ -8,9 +8,9 @@
  *
  * This file is part of CSSTidy.
  *
- *  CSSTidy is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published by
- *  the Free Software Foundation; either version 2.1 of the License, or
+ *   CSSTidy is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU Lesser General Public License as published by
+ *   the Free Software Foundation; either version 2.1 of the License, or
  *   (at your option) any later version.
  *
  *   CSSTidy is distributed in the hope that it will be useful,
@@ -24,7 +24,7 @@
  * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser General Public License
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
-  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
+ * @author Brett Zamir (brettz9 at yahoo dot com) 2007
  */
 
 /**
@@ -64,7 +64,7 @@ require('class.csstidy_optimise.php');
 class csstidy {
 
 /**
- * Saves the parsed CSS
+ * Saves the parsed CSS. This array is empty if preserve_css is on.
  * @var array
  * @access public
  */
@@ -267,6 +267,7 @@ function csstidy()
 	$this->settings['sort_properties'] = false;
 	$this->settings['sort_selectors'] = false;
 	$this->settings['merge_selectors'] = 2;
+    $this->settings['discard_invalid_selectors'] = true;
 	$this->settings['discard_invalid_properties'] = false;
 	$this->settings['css_level'] = 'CSS2.1';
     $this->settings['preserve_css'] = false;
@@ -917,7 +918,8 @@ function parse($string) {
 
     $this->print->_reset();
 
-	setlocale(LC_ALL, $old); // Set locale back to original setting
+    setlocale(LC_ALL, $old); // Set locale back to original setting
+
     return !(empty($this->css) && empty($this->import) && empty($this->charset) && empty($this->tokens) && empty($this->namespace));
 }
 

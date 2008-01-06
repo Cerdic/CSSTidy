@@ -22,7 +22,7 @@
  * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser General Public License
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
-  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
+ * @author Brett Zamir (brettz9 at yahoo dot com) 2007
  */
 
 define('AT_START',    1);

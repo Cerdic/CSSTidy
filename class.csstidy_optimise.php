@@ -9,9 +9,9 @@
  *
  * This file is part of CSSTidy.
  *
- *  CSSTidy is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published by
- *  the Free Software Foundation; either version 2.1 of the License, or
+ *   CSSTidy is free software; you can redistribute it and/or modify
+ *   it under the terms of the GNU Lesser General Public License as published by
+ *   the Free Software Foundation; either version 2.1 of the License, or
  *   (at your option) any later version.
  *
  *   CSSTidy is distributed in the hope that it will be useful,
@@ -25,7 +25,7 @@
  * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser General Public License
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
-  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
+ * @author Brett Zamir (brettz9 at yahoo dot com) 2007
  */
 
 /**
@@ -73,6 +73,13 @@ class csstidy_optimise
             foreach ($this->css as $medium => $value)
             {
                 $this->merge_selectors($this->css[$medium]);
+            }
+        }
+        
+        if ($this->parser->get_cfg('discard_invalid_selectors')) {
+            foreach ($this->css as $medium => $value)
+            {
+                $this->discard_invalid_selectors($this->css[$medium]);
             }
         }
 
@@ -485,6 +492,30 @@ class csstidy_optimise
             }
         }
         $array = $css;
+    }
+    
+    /**
+     * Removes invalid selectors and their corresponding rule-sets as
+     * defined by 4.1.7 in REC-CSS2. This is a very rudimentary check
+     * and should be replaced by a full-blown parsing algorithm or
+     * regular expression
+     * @version 1.4
+     */
+    function discard_invalid_selectors(&$array) {
+        $invalid = array('+' => true, '~' => true, ',' => true, '>' => true);
+        foreach ($array as $selector => $decls) {
+            $ok = true;
+            $selectors = array_map('trim', explode(',', $selector));
+            foreach ($selectors as $s) {
+                $simple_selectors = preg_split('/\s*[+>~\s]\s*/', $s);
+                foreach ($simple_selectors as $ss) {
+                    if ($ss === '') $ok = false;
+                    // could also check $ss for internal structure,
+                    // but that probably would be too slow
+                }
+            }
+            if (!$ok) unset($array[$selector]);
+        }
     }
 
     /**

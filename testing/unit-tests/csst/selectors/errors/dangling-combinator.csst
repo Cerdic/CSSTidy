@@ -1,0 +1,9 @@
+--TEST--
+Dangling combinator selector
+--CSS--
++ b {display: inherit;}
+b > {font-family: inherit;}
+<b>asdf</b> {font-size: inherit;}
+--EXPECT--
+array (
+)

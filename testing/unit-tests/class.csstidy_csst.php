@@ -13,11 +13,14 @@ class csstidy_csst extends SimpleExpectation
     /** CSS for test to parse */
     var $css = '';
     
+    /** Settings for csstidy */
+    var $settings = array();
+    
     /** Expected var_export() output of $css->css[41] (no at block) */
     var $expect = '';
     
-    /** Expected var_export() output of $css->css (with at block) */
-    var $fullexpect = '';
+    /** Boolean whether or not to use $css->css instead for $expect */
+    var $fullexpect = false;
     
     /** Actual result */
     var $actual;
@@ -28,7 +31,7 @@ class csstidy_csst extends SimpleExpectation
     function load($filename) {
         $this->filename = $filename;
         $fh = fopen($filename, 'r');
-        $state = null;
+        $state = '';
         while (($line = fgets($fh)) !== false) {
             $line = rtrim($line, "\n\r"); // normalize newlines
             if (substr($line, 0, 2) == '--') {
@@ -40,16 +43,20 @@ class csstidy_csst extends SimpleExpectation
             switch ($state) {
                 case '--TEST--':
                     $this->test    = trim($line);
-                    continue;
+                    break;
                 case '--CSS--':
                     $this->css    .= $line . "\n";
-                    continue;
+                    break;
+                case '--FULLEXPECT--':
+                    $this->fullexpect = true; // no break!
                 case '--EXPECT--':
                     $this->expect .= $line . "\n";
-                    continue;
-                case '--FULLEXPECT--':
-                    $this->fullexpect .= $line . "\n";
-                    continue;
+                    break;
+                case '--SETTINGS--':
+                    list($n, $v) = array_map('trim',explode('=', $line, 2));
+                    $v = eval("return $v;");
+                    $this->settings[$n] = $v;
+                    break;
             }
         }
         $this->expect = trim($this->expect, "\n"); // trim trailing/leading newlines
@@ -59,8 +66,15 @@ class csstidy_csst extends SimpleExpectation
     function test($filename) {
         $this->load($filename);
         $css = new csstidy();
+        $css->set_cfg($this->settings);
         $css->parse($this->css);
-        $this->actual = var_export($css->css[41], true);
+        if ($this->fullexpect) {
+            $this->actual = var_export($css->css, true);
+        } elseif (isset($css->css[41])) {
+            $this->actual = var_export($css->css[41], true);
+        } else {
+            $this->actual = 'Key 41 does not exist';
+        }
         return $this->expect === $this->actual;
     }
     

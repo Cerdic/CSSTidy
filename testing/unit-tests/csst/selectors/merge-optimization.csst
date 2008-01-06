@@ -1,5 +1,5 @@
 --TEST--
-Group selectors optimization
+Merge selectors optimization
 --CSS--
 h1 {display: inherit;}
 h2 {display: inherit;}
