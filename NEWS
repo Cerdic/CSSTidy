@@ -21,3 +21,4 @@ Changelog
 - Fixed bug with bad hexadecimal syntax recovery
 - At-selectors optimized by removing unnecessary url()
 - Fixed optimisation: 1.0 was not optimised to 1
+- Fixed incorrect parsing of !imporant close to numbers

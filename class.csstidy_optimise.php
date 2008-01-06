@@ -378,7 +378,6 @@ class csstidy_optimise
      */
     function compress_numbers($subvalue)
     {
-        $units =& $GLOBALS['csstidy']['units'];
         $unit_values =& $GLOBALS['csstidy']['unit_values'];
         $color_values =& $GLOBALS['csstidy']['color_values'];
 
@@ -393,10 +392,11 @@ class csstidy_optimise
         }
         for ($l = 0; $l < count($temp); $l++)
         {
-            // continue if no numeric value
-            if (!(strlen($temp[$l]) > 0 && ( is_numeric($temp[$l]{0}) || $temp[$l]{0} === '+' || $temp[$l]{0} === '-' ) ))
+            // if we are not dealing with a number at this point, do not optimise anything
+			$number = $this->AnalyseCssNumber($temp[$l]);
+			if ($number === false)
             {
-                continue;
+                return $subvalue;
             }
 
             // Fix bad colors
@@ -405,44 +405,64 @@ class csstidy_optimise
                 $temp[$l] = '#'.$temp[$l];
                 continue;
             }
-
-            if (floatval($temp[$l]) == 0)
-            {
-                $temp[$l] = '0';
-            }
-            else
-            {
-                $unit_found = false;
-                for ($m = 0, $size_4 = count($units); $m < $size_4; $m++)
-                {
-                    if (strpos(strtolower($temp[$l]),$units[$m]) !== false)
-                    {
-                        $temp[$l] = floatval($temp[$l]).$units[$m];
-                        $unit_found = true;
-                        break;
-                    }
-                }
-                if (!$unit_found && in_array($this->property,$unit_values,true))
-                {
-                    $temp[$l] = floatval($temp[$l]).'px';
-                }
-                else if (!$unit_found)
-                {
-                    $temp[$l] = floatval($temp[$l]);
-                }
-                // Remove leading zero
-                if (abs(floatval($temp[$l])) < 1) {
-                    if (floatval($temp[$l]) < 0) {
-                        $temp[$l] = '-' . substr($temp[$l], 2);
-                    } else {
-                        $temp[$l] = substr($temp[$l], 1);
-                    }
-                }
-            }
+			
+			if (abs($number[0]) > 0) {
+				if ($number[1] == '' && in_array($this->property,$unit_values,true))
+				{
+					$number[1] = 'px';
+				}
+			} else {
+				$number[1] = '';
+			}
+			
+			$temp[$l] = $number[0] . $number[1];
         }
 
         return ((count($temp) > 1) ? $temp[0].'/'.$temp[1] : $temp[0]);
     }
+	
+	/**
+	 * Checks if a given string is a CSS valid number. If it is,
+	 * an array containing the value and unit is returned
+	 * @param string $string
+	 * @return array ('unit' if unit is found or '' if no unit exists, number value) or false if no number
+	 */
+	function AnalyseCssNumber($string)
+	{
+		// most simple checks first
+		if (strlen($string) == 0 || ctype_alpha($string{0})) {
+			return false;
+		}
+		
+		$units =& $GLOBALS['csstidy']['units'];
+		$return = array(0, '');
+		
+		$return[0] = floatval($string);
+		if (abs($return[0]) > 0 && abs($return[0]) < 1) {
+			if ($return[0] < 0) {
+				$return[0] = '-' . ltrim(substr($return[0], 1), '0');
+			} else {
+				$return[0] = ltrim($return[0], '0');
+			}
+		}
+		
+		// Look for unit and split from value if exists
+		foreach ($units as $unit)
+		{
+			$expectUnitAt = strlen($string) - strlen($unit);
+			$actualPosition = strpos($string, stristr( $string, $unit ));
+			if ($expectUnitAt === $actualPosition)
+			{
+				$return[1] = $unit;
+				$string = substr($string, 0, - strlen($unit));
+				break;
+			}
+		}
+		if (!is_numeric($string)) {
+			return false;
+		}
+		return $return;
+	}
 
     /**
      * Merges selectors with same properties. Example: a{color:red} b{color:red} -> a,b{color:red}
