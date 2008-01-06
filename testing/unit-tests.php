@@ -19,6 +19,7 @@ require_once 'Text/Diff/Renderer.php';
 require_once $simpletest_location . 'unit_tester.php';
 require_once $simpletest_location . 'reporter.php';
 require_once 'unit-tests/class.csstidy_reporter.php';
+require_once 'unit-tests/class.csstidy_harness.php';
 require_once 'unit-tests.inc';
 
 // Test files

@@ -556,7 +556,7 @@ function is_token(&$string, $i)
  * @version 1.1
  */
 function parse($string) {
-	// Temporarily set locale to en_US in order to handle floats properly
+    // Temporarily set locale to en_US in order to handle floats properly
     $old = setlocale(LC_ALL, 0);
     setlocale(LC_ALL, 'en_US');
 
@@ -618,13 +618,10 @@ function parse($string) {
             case 'is':
             if(csstidy::is_token($string,$i))
             {
-                if($string{$i} === '/' && @$string{$i+1} === '*' && trim($this->selector) == '')
-                {
+                if($string{$i} === '/' && @$string{$i+1} === '*' && trim($this->selector) == '') {
                     $this->status = 'ic'; ++$i;
                     $this->from = 'is';
-                }
-                elseif($string{$i} === '@' && trim($this->selector) == '')
-                {
+                } elseif($string{$i} === '@' && trim($this->selector) == '') {
                     // Check for at-rule
                     $this->invalid_at = true;
                     foreach($at_rules as $name => $type)
@@ -652,45 +649,34 @@ function parse($string) {
                         }
                         $this->log('Invalid @-rule: '.$invalid_at_name.' (removed)','Warning');
                     }
-                }
-                elseif(($string{$i} === '"' || $string{$i} === "'"))
-                {
+                } elseif(($string{$i} === '"' || $string{$i} === "'")) {
                     $this->cur_string = $string{$i};
                     $this->status = 'instr';
                     $this->str_char = $string{$i};
                     $this->from = 'is';
-                }
-                elseif($this->invalid_at && $string{$i} === ';')
-                {
+                } elseif($this->invalid_at && $string{$i} === ';') {
                     $this->invalid_at = false;
                     $this->status = 'is';
-                }
-                elseif($string{$i} === '{')
-                {
+                } elseif($string{$i} === '{') {
                     $this->status = 'ip';
                     $this->_add_token(SEL_START, $this->selector);
                     $this->added = false;
-                }
-                elseif($string{$i} === '}')
-                {
+                } elseif($string{$i} === '}') {
                     $this->_add_token(AT_END, $this->at);
                     $this->at = '';
                     $this->selector = '';
                     $this->sel_separate = array();
-                }
-                elseif($string{$i} === ',')
-                {
+                } elseif($string{$i} === ',') {
                     $this->selector = trim($this->selector).',';
                     $this->sel_separate[] = strlen($this->selector);
-                }
-                elseif($string{$i} === '\\')
-                {
+                } elseif($string{$i} === '\\') {
                     $this->selector .= $this->_unicode($string,$i);
-                }
-                // remove unnecessary universal selector,  FS#147
-                else if(!($string{$i} === '*' && @in_array($string{$i+1}, array('.', '#', '[', ':')))) {
+                } elseif($string{$i} === '*' && @in_array($string{$i+1}, array('.', '#', '[', ':'))) {
+                    // remove unnecessary universal selector, FS#147
+                } else {
                     $this->selector .= $string{$i};
                 }
+                
             }
             else
             {
@@ -1102,4 +1088,3 @@ function property_is_valid($property) {
 
 
 }
-?>
