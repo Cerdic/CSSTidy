@@ -13,7 +13,8 @@ class csstidy_test_csst extends csstidy_harness
             $expectation = new csstidy_csst();
             $result = $this->assert($expectation, $filename, '%s');
             // this is necessary because SimpleTest doesn't support
-            // HTML messages; this probably should be in the reporter
+            // HTML messages; this probably should be in the reporter.
+            // This is *not* compatible with XmlReporter
             if (!$result) echo $expectation->render();
         }
     }

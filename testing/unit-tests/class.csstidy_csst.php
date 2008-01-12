@@ -2,6 +2,9 @@
 
 require_once 'class.Text_Diff_Renderer_parallel.php';
 
+/**
+ * CSSTidy CSST expectation, for testing CSS parsing.
+ */
 class csstidy_csst extends SimpleExpectation
 {
     /** Filename of test */
@@ -26,7 +29,8 @@ class csstidy_csst extends SimpleExpectation
     var $actual;
     
     /**
-     * Loads this class from a file
+     * Loads this class from a file.
+     * @param $filename String filename to load
      */
     function load($filename) {
         $this->filename = $filename;
@@ -63,8 +67,12 @@ class csstidy_csst extends SimpleExpectation
         fclose($fh);
     }
     
-    function test($filename) {
-        $this->load($filename);
+    /**
+     * Implements SimpleExpectation::test().
+     * @param $filename Filename of test file to test.
+     */
+    function test($filename = false) {
+        if ($filename) $this->load($filename);
         $css = new csstidy();
         $css->set_cfg($this->settings);
         $css->parse($this->css);
@@ -78,13 +86,16 @@ class csstidy_csst extends SimpleExpectation
         return $this->expect === $this->actual;
     }
     
+    /**
+     * Implements SimpleExpectation::testMessage().
+     */
     function testMessage() {
         $message = $this->test . ' test at '. htmlspecialchars($this->filename);
         return $message;
     }
     
     /**
-     * Renders the test
+     * Renders the test with an HTML diff table.
      */
     function render() {
         $message = '<pre>'. htmlspecialchars($this->css) .'</pre>';
