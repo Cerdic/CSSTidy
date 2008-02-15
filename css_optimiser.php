@@ -157,8 +157,18 @@ else {
 
 header('Content-Type: '.$http_accept.'; charset=utf-8');
 
+if ($http_accept === 'text/html') {
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php
+}
+else {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<?php
+}
+?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $l; ?>">
   <head>
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
