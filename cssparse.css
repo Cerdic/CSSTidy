@@ -1,6 +1,6 @@
 @import url("cssparsed.css");
 
-body {
+html, body {
 font:0.8em Verdana,Helvetica,sans-serif;
 background:#F8F8F6;
 }
