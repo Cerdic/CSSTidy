@@ -22,3 +22,5 @@ Changelog
 - At-selectors optimized by removing unnecessary url()
 - Fixed optimisation: 1.0 was not optimised to 1
 - Fixed incorrect parsing of !imporant close to numbers
+- Allowed Copy to Clipboard for Firefox if preference set (if not, gives 
+  instructions on how to add and warning re: security)
