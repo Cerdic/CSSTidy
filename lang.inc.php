@@ -43,7 +43,7 @@ $lang['en'][1] = 'CSS Formatter and Optimiser';
 $lang['en'][2] = '(based on';
 $lang['en'][3] = '(plaintext)';
 $lang['en'][4] = 'Important Note:';
-$lang['en'][6] = 'Your code should be well-formed. This is <strong>no validator</strong> which points out errors in your CSS code. To make sure that your code is valid, use the <a href="http://jigsaw.w3.org/css-validator/">W3C Validator</a>.';
+$lang['en'][6] = 'Your code should be well-formed. This is <strong>not a validator</strong> which points out errors in your CSS code. To make sure that your code is valid, use the <a href="http://jigsaw.w3.org/css-validator/">W3C Validator</a>.';
 $lang['en'][7] = 'all comments are removed';
 $lang['en'][8] = 'CSS Input:';
 $lang['en'][9] = 'CSS-Code:';
