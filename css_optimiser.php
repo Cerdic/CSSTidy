@@ -27,8 +27,6 @@
  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
  */
 
-header('Content-Type: text/html; charset=utf-8');
-
 require('class.csstidy.php');
 require('lang.inc.php');
 
@@ -130,17 +128,45 @@ if(isset($_REQUEST['discard'])) $css->set_cfg('discard_invalid_properties',true)
 if(isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level']);
 if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 
+
+// This by itself is enough since our scripts don't use DOM to create elements (in which case the namespace aware ones
+// should be used when serving as application/xhtml+xml but not when served as text/html ; 
+// also, case will be different when retrieving element names, as HTML DOM returns in upper case, 
+// genuine XHTML DOM (when XHTML served as such) as lower
+if (stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml')) {
+	$http_accept = 'application/xhtml+xml';
+}
+elseif (stristr($_SERVER['HTTP_ACCEPT'], 'application/xml')) {
+	$http_accept = 'application/xml';
+}
+elseif (stristr($_SERVER['HTTP_ACCEPT'], 'text/xml')) {
+	$http_accept = 'text/xml';
+}
+elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'Opera ') || stristr($_SERVER['HTTP_USER_AGENT'], 'Opera/')) {
+	preg_match('@Opera/(\d)@', $_SERVER['HTTP_USER_AGENT'], $matches);
+	if (isset($matches[1]) && $matches[1] >= 7) {
+		$http_accept = 'application/xhtml+xml';
+	}
+	else {
+		$http_accept = 'text/html';
+	}
+}
+else {
+	$http_accept = 'text/html';
+}
+
+header('Content-Type: '.$http_accept.'; charset=utf-8');
+
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $l; ?>" lang="<?php echo $l; ?>">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $l; ?>">
   <head>
     <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
     <title>
       <?php echo $lang[$l][0]; echo $css->version; ?>)
     </title>
     <link rel="stylesheet" href="cssparse.css" type="text/css" />
-    <script type="text/javascript">
+    <script type="text/javascript"><!--/*--><![CDATA[/*><!--*/
     function enable_disable_preserve()
     {
         var inputs =   new Array('sort_sel', 'sort_de', 'optimise_shorthands', 'merge_selectors', 'none');
@@ -176,6 +202,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 			alert("<?php echo $lang[$l][60]; ?>");
 		}
     }
+	/*]]>*/-->
     </script>
   </head>
   <body onload="enable_disable_preserve()">
