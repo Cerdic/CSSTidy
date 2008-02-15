@@ -159,6 +159,19 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 		if (window.clipboardData) { // Feature testing
 			window.clipboardData.setData('Text',document.getElementById("copytext").innerText);
 		}
+		else if (navigator.userAgent.indexOf('Gecko') != -1 
+					&& navigator.userAgent.indexOf('Apple') == -1
+					) {
+			try {
+				netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+				const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].
+                                    getService(Components.interfaces.nsIClipboardHelper);
+									gClipboardHelper.copyString(document.getElementById("copytext").innerHTML);
+			}
+			catch (e) {
+				alert(e+"\n\n"+"<?php echo $lang[$l][66] ?>");
+			}
+		}
 		else {
 			alert("<?php echo $lang[$l][60]; ?>");
 		}
@@ -394,7 +407,7 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
         echo '</legend>';
         echo '<code id="copytext">';
         echo $css->print->formatted();
-        echo '</code></fieldset><br />';
+        echo '</code></fieldset><div><br /></div>';
 		
 		echo '<fieldset class="code_output"><legend>',$lang[$l][64],'</legend>';
         echo '<textarea rows="10" cols="80">';
