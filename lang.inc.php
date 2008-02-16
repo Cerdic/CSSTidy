@@ -28,11 +28,16 @@
 
 
 if(isset($_GET['lang'])) {
-	$l = $_GET['lang'];
-} else {
-	$l = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
-	$l = strtolower(substr($l,0,2));
+    $l = $_GET['lang'];
 }
+else if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+    $l = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+    $l = strtolower(substr($l, 0, 2));
+}
+else {
+    $l = '';
+}
+
 $l = (in_array($l, array('de', 'fr', 'zh'))) ? $l : 'en';
 
 // note 5 in all but French, and 40 in all are orphaned
@@ -177,7 +182,6 @@ $lang['fr'][1] = 'CSS Formatteur et Optimiseur';
 $lang['fr'][2] = '(basé sur ';
 $lang['fr'][3] = '(Version texte)';
 $lang['fr'][4] = 'Note Importante&#160;:';
-$lang['fr'][5] = 'les mêmes sélecteurs et les propriétés sont automatiquement fusionnés';
 $lang['fr'][6] = 'Votre code doit être valide. Ce n’est <strong>pas un validateur</strong> qui signale les erreurs dans votre code CSS. Pour être sûr que votre code est correct, utilisez le validateur&#160;: <a href="http://jigsaw.w3.org/css-validator/">W3C Validator</a>.';
 $lang['fr'][7] = 'tous les commentaires sont enlevés';
 $lang['fr'][8] = 'Champ CSS&#160;:';
@@ -237,7 +241,7 @@ $lang['fr'][62] = 'contactez-moi';
 $lang['fr'][63] = 'Sauver le code CSS comme document complet HTML';
 $lang['fr'][64] = 'Code';
 $lang['fr'][65] = 'CSS pour colorier la sortie CSS';
-$lang['fr'][66] = 'You need to go to about:config in your URL bar, select \'signed.applets.codebase_principal_support\' in the filter field, and set its value to true in order to use this feature; however, be aware that doing so increases security risks.';
+$lang['fr'][66] = 'Vous devez aller dans about:config dans votre barre d’adresse, selectionner \'signed.applets.codebase_principal_support\' dans le champ Filtre et attribuez-lui la valeur \'true\' pour utiliser cette fonctionnalité; toutefois, soyez conscient que cela augmente les risques de sécurité.';
 
 
 $lang['zh'][0] = 'CSS整形與最佳化工具(使用 CSSTidy ';
