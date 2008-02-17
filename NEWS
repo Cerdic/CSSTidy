@@ -1,5 +1,7 @@
 Changelog
 
+Key: # = backwards incompatible change, ! = new feature, - = bugfix.
+
 1.4, unknown release date
 # CSSTidy is now licensed under LGPL!
 ! csstidy->set_cfg now accept a single parameter, an associative array, to
