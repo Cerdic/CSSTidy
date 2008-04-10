@@ -950,7 +950,9 @@ function explode_selectors()
         {
             foreach($new_sels as $selector)
             {
-                $this->merge_css_blocks($this->at,$selector,$this->css[$this->at][$this->selector]);
+				if (isset($this->css[$this->at][$this->selector])) {
+					$this->merge_css_blocks($this->at,$selector,$this->css[$this->at][$this->selector]);
+				}
             }
             unset($this->css[$this->at][$this->selector]);
         }
