@@ -662,6 +662,8 @@ function parse($string) {
                     $this->status = 'instr';
                     $this->str_char = $string{$i};
                     $this->from = 'is';
+					/* fixing CSS3 attribute selectors, i.e. a[href$=".mp3" */
+					$this->quoted_string = ($string{$i-1} == '=' );
                 } elseif($this->invalid_at && $string{$i} === ';') {
                     $this->invalid_at = false;
                     $this->status = 'is';
@@ -765,7 +767,8 @@ function parse($string) {
                 {
                     if($this->selector{0} === '@' && isset($at_rules[substr($this->selector,1)]) && $at_rules[substr($this->selector,1)] === 'iv')
                     {
-                        $this->sub_value_arr[] = trim($this->sub_value);
+						/* adding quotes to charset, import, namespace */
+						$this->sub_value_arr[] = '"' . trim($this->sub_value) . '"';
 
                         $this->status = 'is';
 
@@ -886,11 +889,16 @@ function parse($string) {
             {
                 $this->status = $this->from;
                 if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string) && $this->property !== 'content') {
-                    if ($this->str_char === '"' || $this->str_char === '\'') {
-						// Temporarily disable this optimization to avoid problems with @charset rule, quote properties, and some attribute selectors...
-						//$this->cur_string = substr($this->cur_string, 1, -1);
-					} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] === '"' || $this->cur_string[1] === '\'')) /* () */ {
-						$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
+					if (!$this->quoted_string) {
+						if ($this->str_char === '"' || $this->str_char === '\'') {
+							// Temporarily disable this optimization to avoid problems with @charset rule, quote properties, and some attribute selectors...
+							// Attribute selectors fixed, added quotes to @chartset, no problems with properties detected. Enabled
+							$this->cur_string = substr($this->cur_string, 1, -1);
+						} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] === '"' || $this->cur_string[1] === '\'')) /* () */ {
+							$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
+						}
+					} else {
+						$this->quoted_string = false;
 					}
                 }
                 if($this->from === 'iv')
