@@ -450,7 +450,11 @@ class csstidy_optimise
 		foreach ($units as $unit)
 		{
 			$expectUnitAt = strlen($string) - strlen($unit);
-			$actualPosition = strpos($string, stristr( $string, $unit ));
+			if( ! ($unitInString = stristr( $string, $unit )) )
+			{ // mb_strpos() fails with "false"
+				continue;
+			}
+			$actualPosition = strpos($string, $unitInString);
 			if ($expectUnitAt === $actualPosition)
 			{
 				$return[1] = $unit;
