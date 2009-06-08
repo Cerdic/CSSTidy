@@ -28,6 +28,13 @@
  */
 
 /**
+ * Defines ctype functions if required
+ *
+ * @version 1.0
+ */
+require_once('class.csstidy_ctype.php');
+
+/**
  * Various CSS data needed for correct optimisations etc.
  *
  * @version 1.3
