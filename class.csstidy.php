@@ -25,6 +25,7 @@
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
+ * @author Nikolay Matsievsky (speed at webo dot name) 2009
  */
 
 /**
@@ -256,6 +257,13 @@ var $log = array();
  * @access private
  */
 var $line = 1;
+
+/**
+ * Marks if we need to leave quotes for a string
+ * @var string
+ * @access private
+ */
+var $quoted_string = false;
 
 /**
  * Loads standard template and sets default settings
