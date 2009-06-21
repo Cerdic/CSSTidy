@@ -1,0 +1,16 @@
+--TEST--
+Test general font optimization
+--CSS--
+a { 
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 2em;
+    font-family: Arial;
+}
+--EXPECT--
+array (
+  'a' => 
+  array (
+    'font' => '700 12px/2em Arial',
+  ),
+)
