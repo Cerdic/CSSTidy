@@ -757,7 +757,7 @@ class csstidy_optimise
                 {
                     $return['background-size'] .= substr($str_value[$i][$j],1,-1).',';
                 }
-                elseif(in_array($str_value[$i][$j],$pos,true) || is_numeric($str_value[$i][$j]{0}) || $str_value[$i][$j]{0} === null)
+                elseif(in_array($str_value[$i][$j],$pos,true) || is_numeric($str_value[$i][$j]{0}) || $str_value[$i][$j]{0} === null || $str_value[$i][$j]{0} === '-')
                 {
                     $return['background-position'] .= $str_value[$i][$j];
                     if(!$have['pos']) $return['background-position'] .= ' '; else $return['background-position'].= ',';
