@@ -5,7 +5,7 @@ a {
 font-size:1.0;
 line-height:1.0;
 color:123456;
-font:verdana 1em/1.0;
+font:1em/1.0 verdana;
 }
 --EXPECT--
 array (
@@ -14,6 +14,8 @@ array (
     'font-size' => '1px',
     'line-height' => '1',
     'color' => '#123456',
-    'font' => 'verdana 1em/1',
+    'font' => '1em/1 verdana',
   ),
 )
+--SETTINGS--
+optimise_shorthands=0

@@ -5,3 +5,5 @@ div + + b {display: inherit;}
 --EXPECT--
 array (
 )
+--SETTINGS--
+discard_invalid_selectors=1

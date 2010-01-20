@@ -5,7 +5,7 @@ a {
     font-weight: bold;
     font-size: 12px;
     line-height: 2em;
-    font-family: Arial;
+    font-family: Arial, sans-serif;
 }
 --EXPECT--
 array (
@@ -14,8 +14,8 @@ array (
     'font-weight' => '700',
     'font-size' => '12px',
     'line-height' => '2em',
-    'font-family' => 'Arial',
+    'font-family' => 'Arial,sans-serif',
   ),
 )
 --SETTINGS--
-optimise_shorthands=1
+optimise_shorthands=0

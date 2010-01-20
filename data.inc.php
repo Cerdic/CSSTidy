@@ -2,27 +2,26 @@
 /**
  * Various CSS Data for CSSTidy
  *
- * Copyright 2005, 2006, 2007 Florian Schmitz
- *
  * This file is part of CSSTidy.
  *
- *  CSSTidy is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU Lesser General Public License as published by
- *  the Free Software Foundation; either version 2.1 of the License, or
- *   (at your option) any later version.
+ * CSSTidy is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
  *
- *   CSSTidy is distributed in the hope that it will be useful,
- *   but WITHOUT ANY WARRANTY; without even the implied warranty of
- *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *   GNU Lesser General Public License for more details.
- * 
- *   You should have received a copy of the GNU Lesser General Public License
- *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * CSSTidy is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * @license http://opensource.org/licenses/lgpl-license.php GNU Lesser General Public License
+ * You should have received a copy of the GNU General Public License
+ * along with CSSTidy; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package csstidy
- * @author Florian Schmitz (floele at gmail dot com) 2005-2007
- * @author Brett Zamir (brettz9 at yahoo dot com) 2007
+ * @author Florian Schmitz (floele at gmail dot com) 2005
+ * @author Nikolay Matsievsky (speed at webo dot name) 2010
  */
 
 define('AT_START',    1);
@@ -57,7 +56,7 @@ $GLOBALS['csstidy']['tokens'] = '/@}{;:=\'"(,\\!$%&)*+.<>?[]^`|~';
  * @global array $GLOBALS['csstidy']['units']
  * @version 1.0
  */
-$GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','ch','deg','grad','rad','turn','ms','s','khz','hz');
+$GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','ex','gd','vw','vh','vm','deg','grad','rad','ms','s','khz','hz');
 
 /**
  * Available at-rules
@@ -76,10 +75,10 @@ $GLOBALS['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'is','char
  * @version 1.2
  */
 $GLOBALS['csstidy']['unit_values'] = array ('background', 'background-position', 'border', 'border-top', 'border-right', 'border-bottom', 'border-left', 'border-width',
-                                            'border-top-width', 'border-right-width', 'border-left-width', 'border-bottom-width', 'bottom', 'border-spacing', 'font-size',
-                                            'height', 'left', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'max-height', 'max-width',
-                                            'min-height', 'min-width', 'outline', 'outline-width', 'padding', 'padding-top', 'padding-right', 'padding-bottom',
-                                            'padding-left', 'right', 'top', 'text-indent', 'letter-spacing', 'word-spacing', 'width');
+                                            'border-top-width', 'border-right-width', 'border-left-width', 'border-bottom-width', 'bottom', 'border-spacing',
+											'font-size', 'height', 'left', 'margin', 'margin-top', 'margin-right', 'margin-bottom', 'margin-left', 'max-height',
+											'max-width', 'min-height', 'min-width', 'outline', 'outline-width', 'padding', 'padding-top', 'padding-right', 
+											'padding-bottom', 'padding-left', 'right', 'top', 'text-indent', 'letter-spacing', 'word-spacing', 'width');
 
 /**
  * Properties that allow <color> as value
@@ -99,7 +98,6 @@ $GLOBALS['csstidy']['color_values'][] = 'border-left-color';
 $GLOBALS['csstidy']['color_values'][] = 'color';
 $GLOBALS['csstidy']['color_values'][] = 'outline-color';
 
-
 /**
  * Default values for the background properties
  *
@@ -118,6 +116,21 @@ $GLOBALS['csstidy']['background_prop_default']['background-attachment'] = 'scrol
 $GLOBALS['csstidy']['background_prop_default']['background-clip'] = 'border';
 $GLOBALS['csstidy']['background_prop_default']['background-origin'] = 'padding';
 $GLOBALS['csstidy']['background_prop_default']['background-color'] = 'transparent';
+
+/**
+ * Default values for the font properties
+ *
+ * @global array $GLOBALS['csstidy']['font_prop_default']
+ * @see merge_fonts()
+ * @version 1.3
+ */
+$GLOBALS['csstidy']['font_prop_default'] = array();
+$GLOBALS['csstidy']['font_prop_default']['font-style'] = 'normal';
+$GLOBALS['csstidy']['font_prop_default']['font-variant'] = 'normal';
+$GLOBALS['csstidy']['font_prop_default']['font-weight'] = 'normal';
+$GLOBALS['csstidy']['font_prop_default']['font-size'] = '';
+$GLOBALS['csstidy']['font_prop_default']['line-height'] = '';
+$GLOBALS['csstidy']['font_prop_default']['font-family'] = '';
 
 /**
  * A list of non-W3C color names which get replaced by their hex-codes
@@ -144,7 +157,7 @@ $GLOBALS['csstidy']['replace_colors']['coral'] = '#ff7f50';
 $GLOBALS['csstidy']['replace_colors']['cornflowerblue'] = '#6495ed';
 $GLOBALS['csstidy']['replace_colors']['cornsilk'] = '#fff8dc';
 $GLOBALS['csstidy']['replace_colors']['crimson'] = '#dc143c';
-$GLOBALS['csstidy']['replace_colors']['cyan'] = '#0ff';
+$GLOBALS['csstidy']['replace_colors']['cyan'] = '#00ffff';
 $GLOBALS['csstidy']['replace_colors']['darkblue'] = '#00008b';
 $GLOBALS['csstidy']['replace_colors']['darkcyan'] = '#008b8b';
 $GLOBALS['csstidy']['replace_colors']['darkgoldenrod'] = '#b8860b';
@@ -201,7 +214,7 @@ $GLOBALS['csstidy']['replace_colors']['lightsteelblue'] = '#b0c4de';
 $GLOBALS['csstidy']['replace_colors']['lightyellow'] = '#ffffe0';
 $GLOBALS['csstidy']['replace_colors']['limegreen'] = '#32cd32';
 $GLOBALS['csstidy']['replace_colors']['linen'] = '#faf0e6';
-$GLOBALS['csstidy']['replace_colors']['magenta'] = '#f0f';
+$GLOBALS['csstidy']['replace_colors']['magenta'] = '#ff00ff';
 $GLOBALS['csstidy']['replace_colors']['mediumaquamarine'] = '#66cdaa';
 $GLOBALS['csstidy']['replace_colors']['mediumblue'] = '#0000cd';
 $GLOBALS['csstidy']['replace_colors']['mediumorchid'] = '#ba55d3';
@@ -253,7 +266,6 @@ $GLOBALS['csstidy']['replace_colors']['violetred'] = '#d02090';
 $GLOBALS['csstidy']['replace_colors']['wheat'] = '#f5deb3';
 $GLOBALS['csstidy']['replace_colors']['whitesmoke'] = '#f5f5f5';
 $GLOBALS['csstidy']['replace_colors']['yellowgreen'] = '#9acd32';
-
 
 /**
  * A list of all shorthand properties that are devided into four properties and/or have four subvalues

@@ -10,3 +10,5 @@ array (
     'font-size' => '.1em',
   ),
 )
+--SETTINGS--
+merge_selectors=2

@@ -7,3 +7,6 @@ b > {font-family: inherit;}
 --EXPECT--
 array (
 )
+--SETTINGS--
+optimise_shorthands=0
+discard_invalid_selectors=1

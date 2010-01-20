@@ -11,3 +11,5 @@ array (
     'display' => 'inherit',
   ),
 )
+--SETTINGS--
+merge_selectors=2

@@ -5,12 +5,12 @@ a {
     font-weight: bold;
     font-size: 12px;
     line-height: 2em;
-    font-family: Arial;
+    font-family: Arial, "Trebuchet MS", serif;
 }
 --EXPECT--
 array (
   'a' => 
   array (
-    'font' => '700 12px/2em Arial',
+    'font' => '700 12px/2em Arial,"Trebuchet MS",serif',
   ),
 )

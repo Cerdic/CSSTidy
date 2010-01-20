@@ -25,7 +25,7 @@
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
- * @author Nikolay Matsievsky (speed at webo dot name) 2009
+ * @author Nikolay Matsievsky (speed at webo dot name) 2009-2010
  */
 
 /**
@@ -276,20 +276,30 @@ function csstidy()
 	$this->settings['compress_colors'] = true;
 	$this->settings['compress_font-weight'] = true;
 	$this->settings['lowercase_s'] = false;
+/*
+1 common shorthands optimization
+  + font property optimization
+2 + background property optimization
+*/
 	$this->settings['optimise_shorthands'] = 1;
-	$this->settings['remove_last_;'] = false;
+	$this->settings['remove_last_;'] = true;
+/* rewrite all properties with low case, better for later gzip */
 	$this->settings['case_properties'] = 1;
-	$this->settings['sort_properties'] = false;
-	$this->settings['sort_selectors'] = false;
-	$this->settings['merge_selectors'] = 2;
-    $this->settings['discard_invalid_selectors'] = true;
+/* sort properties in alpabetic order, better for later gzip */
+	$this->settings['sort_properties'] = true;
+/*
+1, 3, 5, etc -- enable sorting selectors inside @media: a{}b{}c{}
+2, 5, 8, etc -- enable sorting selectors inside one CSS declaration: a,b,c{}
+*/
+	$this->settings['sort_selectors'] = 2;
+/* is dangeroues to be used: CSS is broken sometimes */
+	$this->settings['merge_selectors'] = 0;
+/* preserve or not browser hacks */
+    $this->settings['discard_invalid_selectors'] = false;
 	$this->settings['discard_invalid_properties'] = false;
 	$this->settings['css_level'] = 'CSS2.1';
     $this->settings['preserve_css'] = false;
     $this->settings['timestamp'] = false;
-
-	$this->load_template('default');
-    $this->print = new csstidy_print($this);
     $this->optimise = new csstidy_optimise($this);
 }
 
@@ -775,7 +785,7 @@ function parse($string) {
                 {
                     if($this->selector{0} === '@' && isset($at_rules[substr($this->selector,1)]) && $at_rules[substr($this->selector,1)] === 'iv')
                     {
-						/* adding quotes to charset, import, namespace */
+						/* Add quotes to charset, import, namespace */
 						$this->sub_value_arr[] = '"' . trim($this->sub_value) . '"';
 
                         $this->status = 'is';
@@ -991,7 +1001,7 @@ function explode_selectors()
  * @return bool
  * @version 1.02
  */
-function escaped(&$string,$pos)
+static function escaped(&$string,$pos)
 {
 	return !(@($string{$pos-1} !== '\\') || csstidy::escaped($string,$pos-1));
 }
@@ -1049,7 +1059,7 @@ function merge_css_blocks($media,$selector,$css_add)
  * @access public
  * @version 1.0
  */
-function is_important(&$value)
+static function is_important(&$value)
 {
 	return (!strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'],'',$value),-10,10),'!important'));
 }
@@ -1061,7 +1071,7 @@ function is_important(&$value)
  * @access public
  * @version 1.0
  */
-function gvw_important($value)
+static function gvw_important($value)
 {
 	if(csstidy::is_important($value))
 	{
