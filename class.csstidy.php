@@ -278,8 +278,8 @@ function csstidy()
 	$this->settings['lowercase_s'] = false;
 /*
 1 common shorthands optimization
-  + font property optimization
-2 + background property optimization
+2 + font property optimization
+3 + background property optimization
 */
 	$this->settings['optimise_shorthands'] = 1;
 	$this->settings['remove_last_;'] = true;

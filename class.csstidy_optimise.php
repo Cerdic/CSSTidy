@@ -91,9 +91,14 @@ class csstidy_optimise
 				foreach ($value as $selector => $value1)
 				{
 					$this->css[$medium][$selector] = csstidy_optimise::merge_4value_shorthands($this->css[$medium][$selector]);
-					$this->css[$medium][$selector] = csstidy_optimise::merge_font($this->css[$medium][$selector]);
 
 					if ($this->parser->get_cfg('optimise_shorthands') < 2) {
+						continue;
+					}
+
+					$this->css[$medium][$selector] = csstidy_optimise::merge_font($this->css[$medium][$selector]);
+
+					if ($this->parser->get_cfg('optimise_shorthands') < 3) {
 						continue;
 					}
 					
