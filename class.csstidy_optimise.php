@@ -773,7 +773,7 @@ class csstidy_optimise
 				{
 					$return['background-size'] .= substr($str_value[$i][$j],1,-1).',';
 				}
-				elseif(in_array($str_value[$i][$j],$pos,true) || is_numeric($str_value[$i][$j]{0}) || $str_value[$i][$j]{0} === null || $str_value[$i][$j]{0} === '-')
+				elseif(in_array($str_value[$i][$j],$pos,true) || is_numeric($str_value[$i][$j]{0}) || $str_value[$i][$j]{0} === null || $str_value[$i][$j]{0} === '-' || $str_value[$i][$j]{0} === '.')
 				{
 					$return['background-position'] .= $str_value[$i][$j];
 					if(!$have['pos']) $return['background-position'] .= ' '; else $return['background-position'].= ',';
@@ -928,7 +928,7 @@ class csstidy_optimise
 				$return['font-style'] = $str_value[0][$j];
 				$have['style'] = true;
 			}
-			elseif ($have['size'] === false && is_numeric($str_value[0][$j]{0}))
+			elseif ($have['size'] === false && (is_numeric($str_value[0][$j]{0}) || $str_value[$i][$j]{0} === null || $str_value[$i][$j]{0} === '.'))
 			{
 				$size = csstidy_optimise::explode_ws('/',trim($str_value[0][$j]));
 				$return['font-size'] = $size[0];
