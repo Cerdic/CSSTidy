@@ -928,7 +928,7 @@ class csstidy_optimise
 				$return['font-style'] = $str_value[0][$j];
 				$have['style'] = true;
 			}
-			elseif ($have['size'] === false && (is_numeric($str_value[0][$j]{0}) || $str_value[$i][$j]{0} === null || $str_value[$i][$j]{0} === '.'))
+			elseif ($have['size'] === false && (is_numeric($str_value[0][$j]{0}) || $str_value[0][$j]{0} === null || $str_value[0][$j]{0} === '.'))
 			{
 				$size = csstidy_optimise::explode_ws('/',trim($str_value[0][$j]));
 				$return['font-size'] = $size[0];
