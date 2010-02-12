@@ -904,7 +904,8 @@ class csstidy_optimise
 
 		$have['style'] = false; $have['variant'] = false;
 		$have['weight'] = false; $have['size'] = false;
-		$have['family'] = false;
+		// Detects if font-family consists of several words w/o quotes
+		$multiwords = false;
 
 		// Workaround with multiple font-family
 		$str_value = csstidy_optimise::explode_ws(',',trim($str_value));
@@ -939,11 +940,19 @@ class csstidy_optimise
 				}
 				$have['size'] = true;
 			}
-			elseif($have['family'] === false)
+			else
 			{
-				$return['font-family'] = $str_value[0][$j];
-				$have['family'] = true;
+				if (isset($return['font-family'])) {
+					$return['font-family'] .= ' ' . $str_value[0][$j];
+					$multiwords = true;
+				} else {
+					$return['font-family'] = $str_value[0][$j];
+				}
 			}
+		}
+		// add quotes if we have several qords in font-family
+		if ($multiwords !== false) {
+			$return['font-family'] = '"' . $return['font-family'] . '"';
 		}
 		$i = 1;
 		while (isset($str_value[$i])) {
@@ -984,7 +993,26 @@ class csstidy_optimise
 		$important = '';
 		// Skip if not font-family and font-size set
 		if (isset($input_css['font-family']) && isset($input_css['font-size']))
-		{		
+		{
+			// fix several words in font-family - add quotes
+			if (isset($input_css['font-family']))
+			{
+				$families = explode(",", $input_css['font-family']);
+				$result_families = array();
+				foreach ($families as $family)
+				{
+					$family = trim($family);
+					$len = strlen($family);
+					if (strpos($family, " ") &&
+						!(($family{0} == '"' && $family{$len - 1} == '"') ||
+						($family{0} == "'" && $family{$len - 1} == "'")))
+					{
+						$family = '"' . $family . '"';
+					}
+					$result_families[] = $family;
+				}
+				$input_css['font-family'] = implode(",", $result_families);
+			}
 			foreach($font_prop_default as $font_property => $default_value)
 			{
 
