@@ -827,6 +827,9 @@ function parse($string) {
 
                     $this->optimise->subvalue();
                     if($this->sub_value != '') {
+						if (substr($this->sub_value, 0, 6) == 'format') {
+							$this->sub_value = str_replace(array('format(', ')'), array('format("', '")'), $this->sub_value);
+						}
                         $this->sub_value_arr[] = $this->sub_value;
                         $this->sub_value = '';
                     }
