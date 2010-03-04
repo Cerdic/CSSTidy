@@ -583,8 +583,8 @@ function is_token(&$string, $i)
  */
 function parse($string) {
     // Temporarily set locale to en_US in order to handle floats properly
-    $old = setlocale(LC_ALL, 0);
-    setlocale(LC_ALL, 'C');
+    $old = @setlocale(LC_ALL, 0);
+    @setlocale(LC_ALL, 'C');
 
     // PHP bug? Settings need to be refreshed in PHP4
     $this->print = new csstidy_print($this);
@@ -954,7 +954,7 @@ function parse($string) {
 
     $this->print->_reset();
 
-    setlocale(LC_ALL, $old); // Set locale back to original setting
+    @setlocale(LC_ALL, $old); // Set locale back to original setting
 
     return !(empty($this->css) && empty($this->import) && empty($this->charset) && empty($this->tokens) && empty($this->namespace));
 }
