@@ -16,4 +16,4 @@ array (
   ),
 )
 --SETTINGS--
-optimise_shorthands=2
+optimise_shorthands=3

@@ -266,6 +266,13 @@ var $line = 1;
 var $quoted_string = false;
 
 /**
+ * Number of @font-face constructions
+ * @var number
+ * @access private
+ */
+var $fontface = 0;
+
+/**
  * Loads standard template and sets default settings
  * @access private
  * @version 1.3
@@ -660,6 +667,12 @@ function parse($string) {
                             $this->invalid_at = false;
                         }
                     }
+					// add fake counter not to rewrite @font-face
+					switch ($this->selector) {
+						case '@font-face':
+							$this->selector .= '_' . (++$this->fontface);
+							break;
+					}
 
                     if($this->invalid_at)
                     {

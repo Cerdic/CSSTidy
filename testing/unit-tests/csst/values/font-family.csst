@@ -14,3 +14,5 @@ array (
     'font' => '10px "Arial","Trebuchet MS","sans-serif"',
   ),
 )
+--SETTINGS--
+optimise_shorthands=2
