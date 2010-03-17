@@ -225,8 +225,8 @@ class csstidy_print
                 case SEL_START:
                     if($this->parser->get_cfg('lowercase_s')) $token[1] = strtolower($token[1]);
 					// remove fake counter from @font-face
-					if (substr($token[0], 0, 10) === '@font-face') {
-						$token[0] = '@font-face';
+					if (substr($token[1], 0, 10) === '@font-face') {
+						$token[1] = '@font-face';
 					}
                     $out .= ($token[1]{0} !== '@') ? $template[2].$this->_htmlsp($token[1], $plain) : $template[0].$this->_htmlsp($token[1], $plain);
                     $out .= $template[3];
