@@ -233,8 +233,27 @@ class csstidy_print
                     break;
 
                 case PROPERTY:
-                    if($this->parser->get_cfg('case_properties') === 2) $token[1] = strtoupper($token[1]);
-                    if($this->parser->get_cfg('case_properties') === 1) $token[1] = strtolower($token[1]);
+                    if($this->parser->get_cfg('case_properties') === 2)
+					{
+						$token[1] = strtoupper($token[1]);
+						// remove fake counter cursor property
+						if (substr($token[1], 0, 6) == 'CURSOR') {
+							$token[1] = 'CURSOR';
+						}
+					}
+					elseif($this->parser->get_cfg('case_properties') === 1)
+					{
+						$token[1] = strtolower($token[1]);
+						// remove fake counter cursor property
+						if (substr($token[1], 0, 6) == 'cursor') {
+							$token[1] = 'cursor';
+						}
+					} else {
+						// remove fake counter cursor property
+						if (preg_match("/cursor/i", substr($token[1], 0, 6))) {
+							$token[1] = preg_replace("/(cursor)_[0-9]+/i", "$1", $token[1]);
+						}
+					}
                     $out .= $template[4] . $this->_htmlsp($token[1], $plain) . ':' . $template[5];
                     break;
 

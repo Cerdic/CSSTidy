@@ -1,0 +1,15 @@
+--TEST--
+@font-face rules
+--CSS--
+a {
+    cursor: pointer;
+    cursor: hand;
+}
+--EXPECT--
+array (
+  'a' =>
+  array (
+    'cursor' => 'pointer',
+	'cursor_0' => 'hand',
+  ),
+)

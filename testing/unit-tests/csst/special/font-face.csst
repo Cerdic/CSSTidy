@@ -21,13 +21,13 @@ array (
     'font-family' => 'GillSans',
     'src' => 'url(/generic/fonts/GillSansLightC.otf) format("opentype")',
     'font-style' => 'normal',
-    'font-weight' => '400'
+    'font-weight' => '400',
   ),
   '@font-face_2' =>
   array (
     'font-family' => 'GillSans',
     'src' => 'url(/generic/fonts/GillSansC.otf) format("opentype")',
     'font-style' => 'normal',
-    'font-weight' => '700'
+    'font-weight' => '700',
   ),
 )

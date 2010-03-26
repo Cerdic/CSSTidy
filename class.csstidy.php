@@ -1042,7 +1042,19 @@ function css_add_property($media,$selector,$property,$new_val)
     {
         if((csstidy::is_important($this->css[$media][$selector][$property]) && csstidy::is_important($new_val)) || !csstidy::is_important($this->css[$media][$selector][$property]))
         {
-            unset($this->css[$media][$selector][$property]);
+			// quick fix to add multiple cursor properties
+			if (strtolower($property) == 'cursor')
+			{
+				$i = 0;
+				$prop = $property;
+				while (isset($this->css[$media][$selector][$prop]))
+				{
+					$prop = $property . '_' . ($i++);
+				}
+				$property = $prop;
+			} else {
+				unset($this->css[$media][$selector][$property]);
+			}
             $this->css[$media][$selector][$property] = trim($new_val);
         }
     }
