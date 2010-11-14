@@ -751,7 +751,10 @@ class csstidy {
 								$this->sub_value = '';
 							}
 
-							$this->value = implode(' ', $this->sub_value_arr);
+							$this->value = array_shift($this->sub_value_arr);
+							while(count($this->sub_value_arr)){
+								$this->value .= (substr($this->value,-1,1)==','?'':' ').array_shift($this->sub_value_arr);
+							}
 
 							$this->optimise->value();
 
@@ -805,9 +808,10 @@ class csstidy {
 						$temp_add = "\\A ";
 						$this->log('Fixed incorrect newline in string', 'Warning');
 					}
-					if (!($this->str_char === ')' && in_array($string{$i}, $GLOBALS['csstidy']['whitespace']) && !$this->str_in_str)) {
+					// this optimisation remove space in css3 properties (see vendor-prefixed/webkit-gradient.csst)
+					#if (!($this->str_char === ')' && in_array($string{$i}, $GLOBALS['csstidy']['whitespace']) && !$this->str_in_str)) {
 						$this->cur_string .= $temp_add;
-					}
+					#}
 					if ($string{$i} == $this->str_char && !csstidy::escaped($string, $i) && !$this->str_in_str) {
 						$this->status = $this->from;
 						if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string) && $this->property !== 'content') {
@@ -824,6 +828,10 @@ class csstidy {
 							}
 						}
 						if ($this->from === 'iv') {
+							if (!$this->quoted_string){
+								// we can on only remove space next to ','
+								$this->cur_string = implode(',',array_map('trim',explode(',',$this->cur_string)));
+							}
 							$this->sub_value .= $this->cur_string;
 						} elseif ($this->from === 'is') {
 							$this->selector .= $this->cur_string;
