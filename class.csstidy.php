@@ -659,6 +659,7 @@ class csstidy {
 						if (($string{$i} === ':' || $string{$i} === '=') && $this->property != '') {
 							$this->status = 'iv';
 							if (!$this->get_cfg('discard_invalid_properties') || csstidy::property_is_valid($this->property)) {
+								$this->property = $this->css_new_property($this->at,$this->selector,$this->property);
 								$this->_add_token(PROPERTY, $this->property);
 							}
 						} elseif ($string{$i} === '/' && @$string{$i + 1} === '*' && $this->property == '') {
@@ -909,17 +910,6 @@ class csstidy {
 		$this->added = true;
 		if (isset($this->css[$media][$selector][$property])) {
 			if ((csstidy::is_important($this->css[$media][$selector][$property]) && csstidy::is_important($new_val)) || !csstidy::is_important($this->css[$media][$selector][$property])) {
-				// quick fix to add multiple cursor properties
-				if (strtolower($property) == 'cursor') {
-					$i = 0;
-					$prop = $property;
-					while (isset($this->css[$media][$selector][$prop])) {
-						$prop = $property . '_' . ($i++);
-					}
-					$property = $prop;
-				} else {
-					unset($this->css[$media][$selector][$property]);
-				}
 				$this->css[$media][$selector][$property] = trim($new_val);
 			}
 		} else {
@@ -937,31 +927,31 @@ class csstidy {
 	 * @return string
 	 */
 	function css_new_media_section($media){
-			if($this->get_cfg('preserve_css')) {
-				return $media;
-			}
-
-			// if the last @media is the same as this
-			// keep it
-			if (!$this->css OR !is_array($this->css) OR empty($this->css)){
-				return $media;
-			}
-			end($this->css);
-			list($at,) = each($this->css);
-			if ($at == $media){
-				return $media;
-			}
-			while (isset($this->css[$media]))
-				if (is_numeric($media))
-					$media++;
-				else
-					$media .= " ";
+		if($this->get_cfg('preserve_css')) {
 			return $media;
+		}
+
+		// if the last @media is the same as this
+		// keep it
+		if (!$this->css OR !is_array($this->css) OR empty($this->css)){
+			return $media;
+		}
+		end($this->css);
+		list($at,) = each($this->css);
+		if ($at == $media){
+			return $media;
+		}
+		while (isset($this->css[$media]))
+			if (is_numeric($media))
+				$media++;
+			else
+				$media .= " ";
+		return $media;
 	}
 
 	/**
 	 * Start a new selector.
-	 * If allready referenced in this media section,
+	 * If already referenced in this media section,
 	 * rename it with extra space to avoid merging
 	 * except if merging is required,
 	 * or last selector is the same (merge siblings)
@@ -973,28 +963,51 @@ class csstidy {
 	 * @return string
 	 */
 	function css_new_selector($media,$selector){
-			if($this->get_cfg('preserve_css')) {
+		if($this->get_cfg('preserve_css')) {
+			return $selector;
+		}
+		$selector = trim($selector);
+		if (strncmp($selector,"@font-face",10)!=0){
+			if ($this->settings['merge_selectors'] != false)
+				return $selector;
+
+			if (!$this->css OR !isset($this->css[$media]) OR !$this->css[$media])
+				return $selector;
+
+			// if last is the same, keep it
+			end($this->css[$media]);
+			list($sel,) = each($this->css[$media]);
+			if ($sel == $selector){
 				return $selector;
 			}
-			$selector = trim($selector);
-			if (strncmp($selector,"@font-face",10)!=0){
-				if ($this->settings['merge_selectors'] != false)
-					return $selector;
+		}
 
-				if (!$this->css OR !isset($this->css[$media]) OR !$this->css[$media])
-					return $selector;
-				
-				// if last is the same, keep it
-				end($this->css[$media]);
-				list($sel,) = each($this->css[$media]);
-				if ($sel == $selector){
-					return $selector;
-				}
-			}
+		while (isset($this->css[$media][$selector]))
+			$selector .= " ";
+		return $selector;
+	}
 
-			while (isset($this->css[$media][$selector]))
-				$selector .= " ";
-			return $selector;
+	/**
+	 * Start a new propertie.
+	 * If already references in this selector,
+	 * rename it with extra space to avoid override
+	 *
+	 * @param string $media
+	 * @param string $selector
+	 * @param string $property
+	 * @return string
+	 */
+	function css_new_property($media, $selector, $property){
+		if($this->get_cfg('preserve_css')) {
+			return $property;
+		}
+		if (!$this->css OR !isset($this->css[$media][$selector]) OR !$this->css[$media][$selector])
+			return $property;
+
+		while (isset($this->css[$media][$selector][$property]))
+			$property .= " ";
+
+		return $property;
 	}
 
 	/**
