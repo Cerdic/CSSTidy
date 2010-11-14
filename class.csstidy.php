@@ -678,7 +678,12 @@ class csstidy {
 						} elseif ($string{$i} === '\\') {
 							$this->property .= $this->_unicode($string, $i);
 						}
-					} elseif (!ctype_space($string{$i})) {
+						// else this is dumb IE a hack, keep it
+						elseif ($this->property=='' AND !ctype_space($string{$i})) {
+							$this->property .= $string{$i};
+						}
+					}
+					elseif (!ctype_space($string{$i})) {
 						$this->property .= $string{$i};
 					}
 					break;
