@@ -831,6 +831,8 @@ class csstidy {
 							if (!$this->quoted_string){
 								// we can on only remove space next to ','
 								$this->cur_string = implode(',',array_map('trim',explode(',',$this->cur_string)));
+								// and multiple spaces
+								$this->cur_string = preg_replace(",\s+,"," ",$this->cur_string);
 							}
 							$this->sub_value .= $this->cur_string;
 						} elseif ($this->from === 'is') {
