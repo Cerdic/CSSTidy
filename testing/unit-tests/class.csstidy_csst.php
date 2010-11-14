@@ -63,7 +63,9 @@ class csstidy_csst extends SimpleExpectation
                     break;
             }
         }
-        $this->expect = trim($this->expect, "\n"); // trim trailing/leading newlines
+				$this->expect = eval("return ".$this->expect.";");
+				if (!$this->fullexpect)
+					$this->expect = array(41=>$this->expect);
         fclose($fh);
     }
     
@@ -76,13 +78,7 @@ class csstidy_csst extends SimpleExpectation
         $css = new csstidy();
         $css->set_cfg($this->settings);
         $css->parse($this->css);
-        if ($this->fullexpect) {
-            $this->actual = var_export($css->css, true);
-        } elseif (isset($css->css[41])) {
-            $this->actual = var_export($css->css[41], true);
-        } else {
-            $this->actual = 'Key 41 does not exist';
-        }
+				$this->actual = $css->css;
         return $this->expect === $this->actual;
     }
     
@@ -99,7 +95,13 @@ class csstidy_csst extends SimpleExpectation
      */
     function render() {
         $message = '<pre>'. htmlspecialchars($this->css) .'</pre>';
-        $diff = new Text_Diff('auto', array(explode("\n", $this->expect), explode("\n", $this->actual)));
+        $diff = new Text_Diff(
+						'auto',
+						array(
+								explode("\n", var_export($this->expect,true)),
+								explode("\n", var_export($this->actual,true))
+						)
+				);
         $renderer = new Text_Diff_Renderer_parallel();
         $renderer->original = 'Expected';
         $renderer->final    = 'Actual';

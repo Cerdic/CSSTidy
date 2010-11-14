@@ -4,9 +4,14 @@
  * Script for unit testing, allows for more fine grained error reporting
  * when things go wrong.
  * @author Edward Z. Yang <admin@htmlpurifier.org>
+ *
+ * Required
+ * unit-tets/Text : http://download.pear.php.net/package/Text_Diff-1.1.1.tgz
+ * unit-tests/simpletest/ : http://downloads.sourceforge.net/project/simpletest/simpletest/simpletest_1.0.1/simpletest_1.0.1.tar.gz?r=&ts=1289748853&use_mirror=freefr
+ *
  */
 
-error_reporting(E_ALL);
+error_reporting(E_ALL ^ E_DEPRECATED);
 
 // Configuration
 $simpletest_location = 'simpletest/';
