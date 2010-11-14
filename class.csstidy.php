@@ -239,12 +239,6 @@ class csstidy {
 	 * @access private
 	 */
 	var $quoted_string = false;
-	/**
-	 * Number of @font-face constructions
-	 * @var number
-	 * @access private
-	 */
-	var $fontface = 0;
 
 	/**
 	 * Loads standard template and sets default settings
@@ -568,6 +562,7 @@ class csstidy {
 							$this->from = 'at';
 						} elseif ($string{$i} === '{') {
 							$this->status = 'is';
+							$this->at = $this->css_new_media_section($this->at);
 							$this->_add_token(AT_START, $this->at);
 						} elseif ($string{$i} === ',') {
 							$this->at = trim($this->at) . ',';
@@ -604,12 +599,6 @@ class csstidy {
 									$this->invalid_at = false;
 								}
 							}
-							// add fake counter not to rewrite @font-face
-							switch ($this->selector) {
-								case '@font-face':
-									$this->selector .= '_' . (++$this->fontface);
-									break;
-							}
 
 							if ($this->invalid_at) {
 								$this->selector = '@';
@@ -634,6 +623,10 @@ class csstidy {
 							$this->status = 'is';
 						} elseif ($string{$i} === '{') {
 							$this->status = 'ip';
+							if($this->at == '') {
+								$this->at = $this->css_new_media_section(DEFAULT_AT);
+							}
+							$this->selector = $this->css_new_selector($this->at,$this->selector);
 							$this->_add_token(SEL_START, $this->selector);
 							$this->added = false;
 						} elseif ($string{$i} === '}') {
@@ -733,7 +726,7 @@ class csstidy {
 						}
 						if (($string{$i} === '}' || $string{$i} === ';' || $pn) && !empty($this->selector)) {
 							if ($this->at == '') {
-								$this->at = DEFAULT_AT;
+								$this->at = $this->css_new_media_section(DEFAULT_AT);
 							}
 
 							// case settings
@@ -752,8 +745,6 @@ class csstidy {
 							}
 
 							$this->value = implode(' ', $this->sub_value_arr);
-
-							$this->selector = trim($this->selector);
 
 							$this->optimise->value();
 
@@ -933,6 +924,76 @@ class csstidy {
 		} else {
 			$this->css[$media][$selector][$property] = trim($new_val);
 		}
+	}
+
+	/**
+	 * Start a new media section.
+	 * Check if the media is not already known,
+	 * else rename it with extra spaces
+	 * to avoid merging
+	 *
+	 * @param string $media
+	 * @return string
+	 */
+	function css_new_media_section($media){
+			if($this->get_cfg('preserve_css')) {
+				return $media;
+			}
+
+			// if the last @media is the same as this
+			// keep it
+			if (!$this->css OR !is_array($this->css) OR empty($this->css)){
+				return $media;
+			}
+			end($this->css);
+			list($at,) = each($this->css);
+			if ($at == $media){
+				return $media;
+			}
+			while (isset($this->css[$media]))
+				if (is_numeric($media))
+					$media++;
+				else
+					$media .= " ";
+			return $media;
+	}
+
+	/**
+	 * Start a new selector.
+	 * If allready referenced in this media section,
+	 * rename it with extra space to avoid merging
+	 * except if merging is required,
+	 * or last selector is the same (merge siblings)
+	 *
+	 * never merge @font-face
+	 *
+	 * @param string $media
+	 * @param string $selector
+	 * @return string
+	 */
+	function css_new_selector($media,$selector){
+			if($this->get_cfg('preserve_css')) {
+				return $selector;
+			}
+			$selector = trim($selector);
+			if (strncmp($selector,"@font-face",10)!=0){
+				if ($this->settings['merge_selectors'] != false)
+					return $selector;
+
+				if (!$this->css OR !isset($this->css[$media]) OR !$this->css[$media])
+					return $selector;
+				
+				// if last is the same, keep it
+				end($this->css[$media]);
+				list($sel,) = each($this->css[$media]);
+				if ($sel == $selector){
+					return $selector;
+				}
+			}
+
+			while (isset($this->css[$media][$selector]))
+				$selector .= " ";
+			return $selector;
 	}
 
 	/**
