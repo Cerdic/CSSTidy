@@ -27,6 +27,7 @@
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
  * @author Nikolay Matsievsky (speed at webo dot name) 2009-2010
+ * @author Cedric Morin (cedric at yterium dot com) 2010
  */
 /**
  * Defines ctype functions if required
@@ -67,7 +68,7 @@ require('class.csstidy_optimise.php');
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.3
+ * @version 1.3.1
  */
 class csstidy {
 
