@@ -33,7 +33,8 @@
  *
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.0
+ * @author Cedric Morin (cedric at yterium dot com) 2010+
+ * @version 1.1
  */
 
 class csstidy_print
@@ -93,31 +94,33 @@ class csstidy_print
      * @access public
      * @version 1.0
      */
-    function plain()
+    function plain($default_media='')
     {
-        $this->_print(true);
+        $this->_print(true, $default_media);
         return $this->output_css_plain;
     }
 
     /**
      * Returns the formatted CSS code
+		 * @param string $default_media default @media to add to selectors without any @media
      * @return string
      * @access public
      * @version 1.0
      */
-    function formatted()
+    function formatted($default_media='')
     {
-        $this->_print(false);
+        $this->_print(false, $default_media);
         return $this->output_css;
     }
 
     /**
      * Returns the formatted CSS Code and saves it into $this->output_css and $this->output_css_plain
      * @param bool $plain plain text or not
+		 * @param string $default_media default @media to add to selectors without any @media
      * @access private
      * @version 2.0
      */
-    function _print($plain = false)
+    function _print($plain = false, $default_media='')
     {
         if ($this->output_css && $this->output_css_plain) {
             return;
@@ -125,7 +128,7 @@ class csstidy_print
 
         $output = '';
         if (!$this->parser->get_cfg('preserve_css')) {
-            $this->_convert_raw_css();
+            $this->_convert_raw_css($default_media);
         }
 
         $template =& $this->template;
@@ -238,19 +241,23 @@ class csstidy_print
 
     /**
      * Converts $this->css array to a raw array ($this->tokens)
+		 * @param string $default_media default @media to add to selectors without any @media
      * @access private
      * @version 1.0
      */
-    function _convert_raw_css()
+    function _convert_raw_css($default_media='')
     {
         $this->tokens = array();
 
         foreach ($this->css as $medium => $val)
         {
             if ($this->parser->get_cfg('sort_selectors')) ksort($val);
-            if ($medium != DEFAULT_AT) {
+            if (intval($medium) < DEFAULT_AT) {
                 $this->parser->_add_token(AT_START, $medium, true);
             }
+						elseif ($default_media) {
+                $this->parser->_add_token(AT_START, $default_media, true);
+						}
 
             foreach ($val as $selector => $vali)
             {
@@ -266,9 +273,12 @@ class csstidy_print
                 $this->parser->_add_token(SEL_END, $selector, true);
             }
 
-            if ($medium != DEFAULT_AT) {
+            if (intval($medium) < DEFAULT_AT) {
                 $this->parser->_add_token(AT_END, $medium, true);
             }
+						elseif ($default_media) {
+                $this->parser->_add_token(AT_END, $default_media, true);
+						}
         }
     }
 

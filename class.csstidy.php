@@ -23,6 +23,7 @@
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
+ *
  */
 
 /**
@@ -56,7 +57,8 @@ require('class.csstidy_optimise.php');
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.3
+ * @author Cedric Morin (cedric at yterium dot com) 2010+
+ * @version 1.3.1
  */
 class csstidy {
 
@@ -490,6 +492,7 @@ function parse($string) {
                 elseif($string{$i} == '{')
                 {
                     $this->status = 'is';
+										$this->at = $this->css_new_media_section($this->at);
                     $this->_add_token(AT_START, $this->at);
                 }
                 elseif($string{$i} == ',')
@@ -565,6 +568,11 @@ function parse($string) {
                 elseif($string{$i} == '{')
                 {
                     $this->status = 'ip';
+                    if($this->at == '')
+                    {
+                        $this->at = $this->css_new_media_section(DEFAULT_AT);
+                    }
+										$this->selector = $this->css_new_selector($this->at,$this->selector);
                     $this->_add_token(SEL_START, $this->selector);
                     $this->added = false;
                 }
@@ -697,7 +705,7 @@ function parse($string) {
                 {
                     if($this->at == '')
                     {
-                        $this->at = DEFAULT_AT;
+                        $this->at = $this->css_new_media_section(DEFAULT_AT);
                     }
 
                     // case settings
@@ -714,8 +722,6 @@ function parse($string) {
                     }
 
                     $this->value = implode(' ',$this->sub_value_arr);
-
-                    $this->selector = trim($this->selector);
 
                     $this->optimise->value();
 
@@ -906,6 +912,50 @@ function css_add_property($media,$selector,$property,$new_val)
     {
         $this->css[$media][$selector][$property] = trim($new_val);
     }
+}
+
+/**
+ * Start a new media section.
+ * Check the media is not already know,
+ * else rename it with extra spaces
+ * to avoid merging
+ * 
+ * @param string $media
+ * @return string
+ */
+function css_new_media_section($media){
+    if($this->get_cfg('preserve_css')) {
+			return $media;
+    }
+		
+		while (isset($this->css[$media]))
+			if (is_numeric($media))
+				$media++;
+			else
+				$media .= " ";
+		return $media;
+}
+
+/**
+ * Start a new selector.
+ * If allready referenced in this media section,
+ * rename it with extra space to avoid merging
+ * except if merging is required !
+ *
+ * @param string $media
+ * @param string $selector
+ * @return string
+ */
+function css_new_selector($media,$selector){
+    if($this->get_cfg('preserve_css')) {
+			return $selector;
+    }
+		$selector = trim($selector);
+		if ($this->settings['merge_selectors'] != false)
+			return $selector;
+		while (isset($this->css[$media][$selector]))
+			$selector .= " ";
+		return $selector;
 }
 
 /**
