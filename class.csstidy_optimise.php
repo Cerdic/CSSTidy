@@ -385,7 +385,8 @@ class csstidy_optimise
         for ($l = 0; $l < count($temp); $l++)
         {
             // continue if no numeric value
-            if (!(strlen($temp[$l]) > 0 && ( is_numeric($temp[$l]{0}) || $temp[$l]{0} == '+' || $temp[$l]{0} == '-' ) ))
+						// be carreful : vendor prefix values like -moz are not numeric values !
+            if (!(strlen($temp[$l]) > 0 && ( is_numeric($temp[$l]{0}) || (($temp[$l]{0} == '+' || $temp[$l]{0} == '-' ) && is_numeric($temp[$l]{1})) ) ))
             {
                 continue;
             }
