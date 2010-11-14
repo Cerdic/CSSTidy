@@ -804,7 +804,7 @@ class csstidy_optimise {
 				if (isset($size[1])) {
 					$return['line-height'] = $size[1];
 				} else {
-					$return['line-height'] = 'normal';
+					$return['line-height'] = ''; // don't add 'normal' !
 				}
 				$have['size'] = true;
 			} else {
