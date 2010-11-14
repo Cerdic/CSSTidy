@@ -1,5 +1,5 @@
 --TEST--
-@font-face rules
+multiples cursor rules
 --CSS--
 a {
     cursor: pointer;
