@@ -10,6 +10,6 @@ array (
   'a' =>
   array (
     'cursor' => 'pointer',
-	'cursor_0' => 'hand',
+	'cursor ' => 'hand',
   ),
 )
