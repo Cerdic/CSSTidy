@@ -258,15 +258,18 @@ class csstidy {
 		 */
 		$this->settings['optimise_shorthands'] = 1;
 		$this->settings['remove_last_;'] = true;
-		/* rewrite all properties with low case, better for later gzip */
+		/* rewrite all properties with low case, better for later gzip OK, safe*/
 		$this->settings['case_properties'] = 1;
-		/* sort properties in alpabetic order, better for later gzip */
-		$this->settings['sort_properties'] = true;
+		/* sort properties in alpabetic order, better for later gzip
+		 * but can cause trouble in case of overiding same propertie or using hack
+		 */
+		$this->settings['sort_properties'] = false;
 		/*
 		  1, 3, 5, etc -- enable sorting selectors inside @media: a{}b{}c{}
 		  2, 5, 8, etc -- enable sorting selectors inside one CSS declaration: a,b,c{}
+		  preserve order by default cause it can break functionnality
 		 */
-		$this->settings['sort_selectors'] = 2;
+		$this->settings['sort_selectors'] = 0;
 		/* is dangeroues to be used: CSS is broken sometimes */
 		$this->settings['merge_selectors'] = 0;
 		/* preserve or not browser hacks */
@@ -275,6 +278,8 @@ class csstidy {
 		$this->settings['css_level'] = 'CSS2.1';
 		$this->settings['preserve_css'] = false;
 		$this->settings['timestamp'] = false;
+		$this->settings['template'] = ''; // say that propertie exist
+		$this->set_cfg('template','default'); // call load_template
 		$this->optimise = new csstidy_optimise($this);
 	}
 
