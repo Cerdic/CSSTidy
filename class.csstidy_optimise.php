@@ -138,18 +138,18 @@ class csstidy_optimise {
 			return;
 		}
 
-		if ($this->property === 'font' && $this->parser->get_cfg('optimise_shorthands') > 0) {
-			unset($this->css[$this->at][$this->selector]['font']);
+		if ($this->property === 'font' && $this->parser->get_cfg('optimise_shorthands') > 1) {
+			$this->css[$this->at][$this->selector]['font']='';
 			$this->parser->merge_css_blocks($this->at, $this->selector, csstidy_optimise::dissolve_short_font($this->value));
 		}
-		if ($this->property === 'background' && $this->parser->get_cfg('optimise_shorthands') > 1) {
-			unset($this->css[$this->at][$this->selector]['background']);
+		if ($this->property === 'background' && $this->parser->get_cfg('optimise_shorthands') > 2) {
+			$this->css[$this->at][$this->selector]['background']='';
 			$this->parser->merge_css_blocks($this->at, $this->selector, csstidy_optimise::dissolve_short_bg($this->value));
 		}
 		if (isset($shorthands[$this->property])) {
 			$this->parser->merge_css_blocks($this->at, $this->selector, csstidy_optimise::dissolve_4value_shorthands($this->property, $this->value));
 			if (is_array($shorthands[$this->property])) {
-				unset($this->css[$this->at][$this->selector][$this->property]);
+				$this->css[$this->at][$this->selector][$this->property] = '';
 			}
 		}
 	}
@@ -902,7 +902,8 @@ class csstidy_optimise {
 
 			// Delete all font-properties
 			foreach ($font_prop_default as $font_property => $default_value) {
-				unset($input_css[$font_property]);
+				if ($font_property!=='font' OR !$new_font_value)
+					unset($input_css[$font_property]);
 			}
 
 			// Add new font property
