@@ -763,6 +763,8 @@ class csstidy_optimise {
 		// Add new background property
 		if ($new_bg_value !== '')
 			$input_css['background'] = $new_bg_value . $important;
+		elseif(isset ($input_css['background']))
+			$input_css['background'] = 'none';
 
 		return $input_css;
 	}
