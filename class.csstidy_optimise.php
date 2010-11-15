@@ -619,6 +619,10 @@ class csstidy_optimise {
 	 * @todo full CSS 3 compliance
 	 */
 	function dissolve_short_bg($str_value) {
+		// don't try to explose background gradient !
+		if (stripos($str_value, "gradient(")!==FALSE)
+			return array('background'=>$str_value);
+		
 		$background_prop_default = & $GLOBALS['csstidy']['background_prop_default'];
 		$repeat = array('repeat', 'repeat-x', 'repeat-y', 'no-repeat', 'space');
 		$attachment = array('scroll', 'fixed', 'local');
@@ -701,6 +705,10 @@ class csstidy_optimise {
 		$new_bg_value = '';
 		$important = '';
 
+		// if background properties is here and not empty, don't try anything
+		if (isset($input_css['background']) AND $input_css['background'])
+			return $input_css;
+		
 		for ($i = 0; $i < $number_of_values; $i++) {
 			foreach ($background_prop_default as $bg_property => $default_value) {
 				// Skip if property does not exist
@@ -709,6 +717,9 @@ class csstidy_optimise {
 				}
 
 				$cur_value = $input_css[$bg_property];
+				// skip all optimisation if gradient() somewhere
+				if (stripos($cur_value, "gradient(")!==FALSE)
+					return $input_css;
 
 				// Skip some properties if there is no background image
 				if ((!isset($bg_img_array[$i]) || $bg_img_array[$i] === 'none')
