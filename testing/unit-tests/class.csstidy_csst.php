@@ -24,7 +24,10 @@ class csstidy_csst extends SimpleExpectation
     
     /** Boolean whether or not to use $css->css instead for $expect */
     var $fullexpect = false;
-    
+
+		/** Print form of CSS that can be tested **/
+    var $print = false;
+
     /** Actual result */
     var $actual;
     
@@ -52,7 +55,9 @@ class csstidy_csst extends SimpleExpectation
                     $this->css    .= $line . "\n";
                     break;
                 case '--FULLEXPECT--':
-                    $this->fullexpect = true; // no break!
+                    $this->fullexpect = true;
+                    $this->expect .= $line . "\n";
+                    break;
                 case '--EXPECT--':
                     $this->expect .= $line . "\n";
                     break;
@@ -61,11 +66,21 @@ class csstidy_csst extends SimpleExpectation
                     $v = eval("return $v;");
                     $this->settings[$n] = $v;
                     break;
+                case '--PRINT--':
+                    $this->print = true;
+                    $this->expect .= $line . "\n";
+                    break;
             }
         }
-				$this->expect = eval("return ".$this->expect.";");
-				if (!$this->fullexpect)
-					$this->expect = array(41=>$this->expect);
+				if ($this->print) {
+					$this->expect = trim($this->expect);
+				}
+				else {
+					if ($this->expect)
+						$this->expect = eval("return ".$this->expect.";");
+					if (!$this->fullexpect)
+						$this->expect = array(41=>$this->expect);
+				}
         fclose($fh);
     }
     
@@ -78,7 +93,12 @@ class csstidy_csst extends SimpleExpectation
         $css = new csstidy();
         $css->set_cfg($this->settings);
         $css->parse($this->css);
-				$this->actual = $css->css;
+				if ($this->print){
+					$this->actual = $css->print->plain();
+				}
+				else{
+					$this->actual = $css->css;
+				}
         return $this->expect === $this->actual;
     }
     
@@ -98,8 +118,8 @@ class csstidy_csst extends SimpleExpectation
         $diff = new Text_Diff(
 						'auto',
 						array(
-								explode("\n", var_export($this->expect,true)),
-								explode("\n", var_export($this->actual,true))
+								explode("\n", $this->print?$this->expect:var_export($this->expect,true)),
+								explode("\n", $this->print?$this->actual:var_export($this->actual,true))
 						)
 				);
         $renderer = new Text_Diff_Renderer_parallel();
