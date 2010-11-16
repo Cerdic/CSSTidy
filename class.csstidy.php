@@ -18,7 +18,7 @@
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Lesser General Public License for more details.
- * 
+ *
  *   You should have received a copy of the GNU Lesser General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -242,6 +242,11 @@ class csstidy {
 	var $quoted_string = false;
 
 	/**
+	 * List of tokens
+	 * @var string
+	 */
+	var $tokens_list = "";
+	/**
 	 * Loads standard template and sets default settings
 	 * @access private
 	 * @version 1.3
@@ -281,6 +286,8 @@ class csstidy {
 		$this->settings['template'] = ''; // say that propertie exist
 		$this->set_cfg('template','default'); // call load_template
 		$this->optimise = new csstidy_optimise($this);
+
+		$this->tokens_list = & $GLOBALS['csstidy']['tokens'];
 	}
 
 	/**
@@ -398,7 +405,6 @@ class csstidy {
 	function _unicode(&$string, &$i) {
 		++$i;
 		$add = '';
-		$tokens = & $GLOBALS['csstidy']['tokens'];
 		$replaced = false;
 
 		while ($i < strlen($string) && (ctype_xdigit($string{$i}) || ctype_space($string{$i})) && strlen($add) < 6) {
@@ -423,7 +429,7 @@ class csstidy {
 			$i--;
 		}
 
-		if ($add !== '\\' || !$this->get_cfg('remove_bslash') || strpos($tokens, $string{$i + 1}) !== false) {
+		if ($add !== '\\' || !$this->get_cfg('remove_bslash') || strpos($this->tokens_list, $string{$i + 1}) !== false) {
 			return $add;
 		}
 
@@ -525,8 +531,7 @@ class csstidy {
 	 * @version 1.11
 	 */
 	function is_token(&$string, $i) {
-		$tokens = & $GLOBALS['csstidy']['tokens'];
-		return (strpos($tokens, $string{$i}) !== false && !csstidy::escaped($string, $i));
+		return (strpos($this->tokens_list, $string{$i}) !== false && !csstidy::escaped($string, $i));
 	}
 
 	/**
@@ -834,10 +839,12 @@ class csstidy {
 						}
 						if ($this->from === 'iv') {
 							if (!$this->quoted_string){
-								// we can on only remove space next to ','
-								$this->cur_string = implode(',',array_map('trim',explode(',',$this->cur_string)));
-								// and multiple spaces
-								$this->cur_string = preg_replace(",\s+,"," ",$this->cur_string);
+								if (strpos($this->cur_string,',')!==false)
+									// we can on only remove space next to ','
+									$this->cur_string = implode(',',array_map('trim',explode(',',$this->cur_string)));
+								// and multiple spaces (too expensive)
+								if (strpos($this->cur_string,'  ')!==false)
+									$this->cur_string = preg_replace(",\s+,"," ",$this->cur_string);
 							}
 							$this->sub_value .= $this->cur_string;
 						} elseif ($this->from === 'is') {
