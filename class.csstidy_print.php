@@ -300,9 +300,11 @@ class csstidy_print {
 	 */
 	function _convert_raw_css($default_media='') {
 		$this->tokens = array();
+		$sort_selectors = $this->parser->get_cfg('sort_selectors');
+		$sort_properties = $this->parser->get_cfg('sort_properties');
 
 		foreach ($this->css as $medium => $val) {
-			if ($this->parser->get_cfg('sort_selectors'))
+			if ($sort_selectors)
 				ksort($val);
 			if (intval($medium) < DEFAULT_AT) {
 				$this->parser->_add_token(AT_START, $medium, true);
@@ -312,15 +314,29 @@ class csstidy_print {
 			}
 			
 			foreach ($val as $selector => $vali) {
-				if ($this->parser->get_cfg('sort_properties'))
+				if ($sort_properties)
 					ksort($vali);
 				$this->parser->_add_token(SEL_START, $selector, true);
 
+				$invalid = array(
+					'*' => array(), // IE7 hacks first
+					'_' => array()  // IE6 hacks
+				);
 				foreach ($vali as $property => $valj) {
-					$this->parser->_add_token(PROPERTY, $property, true);
-					$this->parser->_add_token(VALUE, $valj, true);
+					$prefix = substr($property, 0, 1);
+					if ($sort_properties && ($prefix === '*' || $prefix === '_')) {
+						$invalid[$prefix][$property] = $valj;
+					} else {
+						$this->parser->_add_token(PROPERTY, $property, true);
+						$this->parser->_add_token(VALUE, $valj, true);
+					}
 				}
-
+				foreach ($invalid as $prefix => $props) {
+					foreach ($props as $property => $valj) {
+						$this->parser->_add_token(PROPERTY, $property, true);
+						$this->parser->_add_token(VALUE, $valj, true);
+					}
+				}
 				$this->parser->_add_token(SEL_END, $selector, true);
 			}
 
