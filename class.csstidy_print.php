@@ -320,12 +320,14 @@ class csstidy_print {
 
 				$invalid = array(
 					'*' => array(), // IE7 hacks first
-					'_' => array()  // IE6 hacks
+					'_' => array(), // IE6 hacks
+					'/' => array(), // IE6 hacks
+					'-' => array()  // IE6 hacks
 				);
 				foreach ($vali as $property => $valj) {
-					$prefix = substr($property, 0, 1);
-					if ($sort_properties && ($prefix === '*' || $prefix === '_')) {
-						$invalid[$prefix][$property] = $valj;
+					$matches = array();
+					if ($sort_properties && preg_match('/^(\*|_|\/|-)(?!(ms|moz|o\b|xv|atsc|wap|khtml|webkit|ah|hp|ro|rim|tc)-)/', $property, $matches)) {
+						$invalid[$matches[1]][$property] = $valj;
 					} else {
 						$this->parser->_add_token(PROPERTY, $property, true);
 						$this->parser->_add_token(VALUE, $valj, true);
