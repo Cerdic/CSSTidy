@@ -422,7 +422,7 @@ $GLOBALS['csstidy']['all_properties']['speak-numeral'] = 'CSS2.0,CSS2.1';
  *
  * @global array $GLOBALS['csstidy']['quoted_string_properties']
  */
-$GLOBALS['csstidy']['quoted_string_properties'] = array('content', 'font-family', 'quotes');
+$GLOBALS['csstidy']['quoted_string_properties'] = array('content', 'font', 'font-family', 'quotes');
 
 /**
  * An array containing all predefined templates.
