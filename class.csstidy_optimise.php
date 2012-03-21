@@ -359,7 +359,12 @@ class csstidy_optimise {
 
 			// Fix bad colors
 			if (in_array($this->property, $color_values)) {
-				$temp[$l] = '#' . $temp[$l];
+				if (strlen($temp[$l]) == 3 || strlen($temp[$l]) == 6) {
+					$temp[$l] = '#' . $temp[$l];
+				}
+				else {
+					$temp[$l] = "0";
+				}
 				continue;
 			}
 
