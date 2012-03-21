@@ -1114,6 +1114,7 @@ class csstidy {
 	 * @version 1.0
 	 */
 	function property_is_valid($property) {
+		if (in_array(trim($property), $GLOBALS['csstidy']['multiple_properties'])) $property = trim($property);
 		$all_properties = & $GLOBALS['csstidy']['all_properties'];
 		return (isset($all_properties[$property]) && strpos($all_properties[$property], strtoupper($this->get_cfg('css_level'))) !== false );
 	}

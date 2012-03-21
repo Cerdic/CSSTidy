@@ -425,6 +425,13 @@ $GLOBALS['csstidy']['all_properties']['speak-numeral'] = 'CSS2.0,CSS2.1';
 $GLOBALS['csstidy']['quoted_string_properties'] = array('content', 'font', 'font-family', 'quotes');
 
 /**
+ * An array containing all properties that can be defined multiple times without being overwritten.
+ *
+ * @global array $GLOBALS['csstidy']['quoted_string_properties']
+ */
+$GLOBALS['csstidy']['multiple_properties'] = array('background', 'background-image');
+
+/**
  * An array containing all predefined templates.
  *
  * @global array $GLOBALS['csstidy']['predefined_templates']
