@@ -192,24 +192,19 @@ class csstidy {
 	 */
 	var $sub_value_arr = array();
 	/**
-	 * Saves the char which opened the last string
-	 * @var string
+	 * Saves the stack of characters that opened the current strings
+	 * @var array
 	 * @access private
 	 */
-	var $str_char = '';
-	var $cur_string = '';
+	var $str_char = array();
+	var $cur_string = array();
 	/**
 	 * Status from which the parser switched to ic or instr
-	 * @var string
+	 * @var array
 	 * @access private
 	 */
-	var $from = '';
+	var $from = array();
 	/**
-	 * Variable needed to manage string-in-strings, for example url("foo.png")
-	 * @var string
-	 * @access private
-	 */
-	var $str_in_str = false;
 	/**
 	 * =true if in invalid at-rule
 	 * @var bool
@@ -236,10 +231,10 @@ class csstidy {
 	var $line = 1;
 	/**
 	 * Marks if we need to leave quotes for a string
-	 * @var string
+	 * @var array
 	 * @access private
 	 */
-	var $quoted_string = false;
+	var $quoted_string = array();
 
 	/**
 	 * List of tokens
@@ -571,7 +566,7 @@ class csstidy {
 						if ($string{$i} === '/' && @$string{$i + 1} === '*') {
 							$this->status = 'ic';
 							++$i;
-							$this->from = 'at';
+							$this->from[] = 'at';
 						} elseif ($string{$i} === '{') {
 							$this->status = 'is';
 							$this->at = $this->css_new_media_section($this->at);
@@ -599,7 +594,7 @@ class csstidy {
 						if ($string{$i} === '/' && @$string{$i + 1} === '*' && trim($this->selector) == '') {
 							$this->status = 'ic';
 							++$i;
-							$this->from = 'is';
+							$this->from[] = 'is';
 						} elseif ($string{$i} === '@' && trim($this->selector) == '') {
 							// Check for at-rule
 							$this->invalid_at = true;
@@ -624,12 +619,12 @@ class csstidy {
 								$this->log('Invalid @-rule: ' . $invalid_at_name . ' (removed)', 'Warning');
 							}
 						} elseif (($string{$i} === '"' || $string{$i} === "'")) {
-							$this->cur_string = $string{$i};
+							$this->cur_string[] = $string{$i};
 							$this->status = 'instr';
-							$this->str_char = $string{$i};
-							$this->from = 'is';
+							$this->str_char[] = $string{$i};
+							$this->from[] = 'is';
 							/* fixing CSS3 attribute selectors, i.e. a[href$=".mp3" */
-							$this->quoted_string = ($string{$i - 1} == '=' );
+							$this->quoted_string[] = ($string{$i - 1} == '=' );
 						} elseif ($this->invalid_at && $string{$i} === ';') {
 							$this->invalid_at = false;
 							$this->status = 'is';
@@ -676,7 +671,7 @@ class csstidy {
 						} elseif ($string{$i} === '/' && @$string{$i + 1} === '*' && $this->property == '') {
 							$this->status = 'ic';
 							++$i;
-							$this->from = 'ip';
+							$this->from[] = 'ip';
 						} elseif ($string{$i} === '}') {
 							$this->explode_selectors();
 							$this->status = 'is';
@@ -706,13 +701,13 @@ class csstidy {
 						if ($string{$i} === '/' && @$string{$i + 1} === '*') {
 							$this->status = 'ic';
 							++$i;
-							$this->from = 'iv';
+							$this->from[] = 'iv';
 						} elseif (($string{$i} === '"' || $string{$i} === "'" || $string{$i} === '(')) {
-							$this->cur_string = $string{$i};
-							$this->str_char = ($string{$i} === '(') ? ')' : $string{$i};
+							$this->cur_string[] = $string{$i};
+							$this->str_char[] = ($string{$i} === '(') ? ')' : $string{$i};
 							$this->status = 'instr';
-							$this->from = 'iv';
-							$this->quoted_string = in_array(strtolower($this->property), $quoted_string_properties);
+							$this->from[] = 'iv';
+							$this->quoted_string[] = in_array(strtolower($this->property), $quoted_string_properties);
 						} elseif ($string{$i} === ',') {
 							$this->sub_value = trim($this->sub_value) . ',';
 						} elseif ($string{$i} === '\\') {
@@ -779,7 +774,8 @@ class csstidy {
 
 							$this->value = array_shift($this->sub_value_arr);
 							while(count($this->sub_value_arr)){
-								$this->value .= (substr($this->value,-1,1)==','?'':' ').array_shift($this->sub_value_arr);
+								//$this->value .= (substr($this->value,-1,1)==','?'':' ').array_shift($this->sub_value_arr);
+								$this->value .= ' '.array_shift($this->sub_value_arr);
 							}
 
 							$this->optimise->value();
@@ -824,55 +820,82 @@ class csstidy {
 
 				/* Case in string */
 				case 'instr':
-					if ($this->str_char === ')' && ($string{$i} === '"' || $string{$i} === '\'') && !$this->str_in_str && !csstidy::escaped($string, $i)) {
-						$this->str_in_str = true;
-					} elseif ($this->str_char === ')' && ($string{$i} === '"' || $string{$i} === '\'') && $this->str_in_str && !csstidy::escaped($string, $i)) {
-						$this->str_in_str = false;
+					$_str_char = $this->str_char[count($this->str_char)-1];
+					$_cur_string = $this->cur_string[count($this->cur_string)-1];
+					$_quoted_string = $this->quoted_string[count($this->quoted_string)-1];
+					$temp_add = $string{$i};
+
+					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses, but 
+					// parentheticals can be nested more than once.
+					if ($_str_char === ")" && ($string{$i} === "(" || $string{$i} === '"' || $string{$i} === '\'') && !csstidy::escaped($string, $i)) {
+						$this->cur_string[] = $string{$i};
+						$this->str_char[] = $string{$i} == "(" ? ")" : $string{$i};
+						$this->from[] = 'instr';
+						$this->quoted_string[] = !($string{$i} === "(");
+						continue;
 					}
-					$temp_add = $string{$i};					 // ...and no not-escaped backslash at the previous position
-					if (($string{$i} === "\n" || $string{$i} === "\r") && !($string{$i - 1} === '\\' && !csstidy::escaped($string, $i - 1))) {
-						$temp_add = "\\A ";
+
+					if ($_str_char !== ")" && ($string{$i} === "\n" || $string{$i} === "\r") && !($string{$i - 1} === '\\' && !csstidy::escaped($string, $i - 1))) {
+						$temp_add = "\\A";
 						$this->log('Fixed incorrect newline in string', 'Warning');
 					}
-					// this optimisation remove space in css3 properties (see vendor-prefixed/webkit-gradient.csst)
-					#if (!($this->str_char === ')' && in_array($string{$i}, $GLOBALS['csstidy']['whitespace']) && !$this->str_in_str)) {
-						$this->cur_string .= $temp_add;
-					#}
-					if ($string{$i} == $this->str_char && !csstidy::escaped($string, $i) && !$this->str_in_str) {
-						$this->status = $this->from;
-						if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $this->cur_string) && $this->property !== 'content') {
-							if (!$this->quoted_string) {
-								if ($this->str_char === '"' || $this->str_char === '\'') {
-									// Temporarily disable this optimization to avoid problems with @charset rule, quote properties, and some attribute selectors...
-									// Attribute selectors fixed, added quotes to @chartset, no problems with properties detected. Enabled
-									$this->cur_string = substr($this->cur_string, 1, -1);
-								} else if (strlen($this->cur_string) > 3 && ($this->cur_string[1] === '"' || $this->cur_string[1] === '\'')) /* () */ {
-									$this->cur_string = $this->cur_string[0] . substr($this->cur_string, 2, -2) . substr($this->cur_string, -1);
+
+					$_cur_string .= $temp_add;
+
+					if ($string{$i} === $_str_char && !csstidy::escaped($string, $i)) {
+						$this->status = array_pop($this->from);
+
+						if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $_cur_string) && $this->property !== 'content') {
+							if (!$_quoted_string) {
+								if ($_str_char !== ')') {
+									// Convert properties like
+									// font-family: 'Arial';
+									// to
+									// font-family: Arial;
+									// or
+									// url("abc")
+									// to
+									// url(abc)
+									$_cur_string = substr($_cur_string, 1, -1);
 								}
 							} else {
-								$this->quoted_string = false;
+								$_quoted_string = false;
 							}
 						}
-						if ($this->from === 'iv') {
-							if (!$this->quoted_string){
-								if (strpos($this->cur_string,',')!==false)
+
+						array_pop($this->cur_string);
+						array_pop($this->quoted_string);
+						array_pop($this->str_char);
+
+						if ($_str_char === ")") {
+							$_cur_string = "(" . trim(substr($_cur_string, 1, -1)) . ")";
+						}
+
+						if ($this->status === 'iv') {
+							if (!$_quoted_string){
+								if (strpos($_cur_string,',')!==false)
 									// we can on only remove space next to ','
-									$this->cur_string = implode(',',array_map('trim',explode(',',$this->cur_string)));
+									$_cur_string = implode(',',array_map('trim',explode(',',$_cur_string)));
 								// and multiple spaces (too expensive)
-								if (strpos($this->cur_string,'  ')!==false)
-									$this->cur_string = preg_replace(",\s+,"," ",$this->cur_string);
+								if (strpos($_cur_string,'  ')!==false)
+									$_cur_string = preg_replace(",\s+,"," ",$_cur_string);
 							}
-							$this->sub_value .= $this->cur_string;
-						} elseif ($this->from === 'is') {
-							$this->selector .= $this->cur_string;
+							$this->sub_value .= $_cur_string;
+						} elseif ($this->status === 'is') {
+							$this->selector .= $_cur_string;
+						} elseif ($this->status === 'instr') {
+							$this->cur_string[count($this->cur_string)-1] .= $_cur_string;
 						}
+					}
+					else {
+						$this->cur_string[count($this->cur_string)-1] = $_cur_string;
 					}
 					break;
 
 				/* Case in-comment */
 				case 'ic':
 					if ($string{$i} === '*' && $string{$i + 1} === '/') {
-						$this->status = $this->from;
+						$this->status = array_pop($this->from);
 						$i++;
 						$this->_add_token(COMMENT, $cur_comment);
 						$cur_comment = '';
