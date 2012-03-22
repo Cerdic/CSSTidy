@@ -78,7 +78,7 @@ array (
   'a' => 
   array (
     'background' => '1px',
-    'background-color' => '#1',
+    'background-color' => '0',
     'background-image' => '1',
     'background-repeat' => '1',
     'background-attachment' => '1',
@@ -88,7 +88,7 @@ array (
     'border-right' => '1px',
     'border-bottom' => '1px',
     'border-left' => '1px',
-    'border-color' => '#1',
+    'border-color' => '0',
     'border-style' => '1',
     'border-width' => '1px',
     'border-top-width' => '1px',
@@ -97,7 +97,7 @@ array (
     'border-bottom-width' => '1px',
     'clear' => '1',
     'clip' => '1',
-    'color' => '#1',
+    'color' => '0',
     'display' => '1',
     'float' => '1',
     'font' => '1',
