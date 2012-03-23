@@ -757,9 +757,23 @@ class csstidy {
 							$this->optimise->subvalue();
 							if ($this->sub_value != '') {
 								if (substr($this->sub_value, 0, 6) == 'format') {
-									$this->sub_value = str_replace(array('format(', ')'), array('format("', '")'), $this->sub_value);
+									$format_strings = csstidy::parse_string_list(substr($this->sub_value, 7, -1));
+									if (!$format_strings) {
+										$this->sub_value = "";
+									}
+									else {
+										$this->sub_value = "format(";
+										
+										foreach ($format_strings as $format_string) {
+											$this->sub_value .= '"' . str_replace('"', '\\"', $format_string) . '",';
+										}
+
+										$this->sub_value = substr($this->sub_value, 0, -1) . ")";
+									}
 								}
-								$this->sub_value_arr[] = $this->sub_value;
+								if ($this->sub_value != '') {
+									$this->sub_value_arr[] = $this->sub_value;
+								}
 								$this->sub_value = '';
 							}
 
@@ -1119,4 +1133,66 @@ class csstidy {
 		return (isset($all_properties[$property]) && strpos($all_properties[$property], strtoupper($this->get_cfg('css_level'))) !== false );
 	}
 
+	/**
+	 * Accepts a list of strings (e.g., the argument to format() in a @font-face src property)
+	 * and returns a list of the strings.  Converts things like:
+	 *
+	 * format(abc) => format("abc")
+	 * format(abc def) => format("abc","def")
+	 * format(abc "def") => format("abc","def")
+	 * format(abc, def, ghi) => format("abc","def","ghi")
+	 * format("abc",'def') => format("abc","def")
+	 * format("abc, def, ghi") => format("abc, def, ghi")
+	 *
+	 * @param string
+	 * @return array
+	 */
+
+	function parse_string_list($value) {
+		$value = trim($value);
+
+		// Case: empty
+		if (!$value) return array();
+
+		$strings = array();
+
+		$in_str = false;
+		$current_string = "";
+
+		for ($i = 0, $_len = strlen($value); $i < $_len; $i++) {
+			if (($value{$i} == "," || $value{$i} === " ") && $in_str === true) {
+				$in_str = false;
+				$strings[] = $current_string;
+				$current_string = "";
+			}
+			else if ($value{$i} == '"' || $value{$i} == "'"){
+				if ($in_str === $value{$i}) {
+					$strings[] = $current_string;
+					$in_str = false;
+					$current_string = "";
+					continue;
+				}
+				else if (!$in_str) {
+					$in_str = $value{$i};
+				}
+			}
+			else {
+				if ($in_str){
+					$current_string .= $value{$i};
+				}
+				else {
+					if (!preg_match("/[\s,]/", $value{$i})) {
+						$in_str = true;
+						$current_string = $value{$i};
+					}
+				}
+			}
+		}
+
+		if ($current_string) {
+			$strings[] = $current_string;
+		}
+
+		return $strings;
+	}
 }
