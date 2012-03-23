@@ -121,7 +121,6 @@ array (
     'padding-right' => '1px',
     'padding-bottom' => '1px',
     'padding-left' => '1px',
-    'size' => '1',
     'text-indent' => '1px',
     'text-align' => '1',
     'text-decoration' => '1',
