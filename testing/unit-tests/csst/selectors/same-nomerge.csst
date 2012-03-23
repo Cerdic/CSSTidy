@@ -12,11 +12,11 @@ array (
   array (
     'display' => 'inherit',
   ),
-  'h1,h2' =>
+  'h1,h2' => 
   array (
     'font-size' => '1em',
   ),
-  'h1 ' =>
+  'h1 ' => 
   array (
     'font-size' => '2em',
   ),

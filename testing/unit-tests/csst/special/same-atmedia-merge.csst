@@ -25,24 +25,24 @@ background-color: white;
 
 --FULLEXPECT--
 array (
-  41 =>
+  41 => 
   array (
-    'BODY' =>
+    'BODY' => 
     array (
       'color' => '#000',
     ),
   ),
-'@media screen,tv,projection ' =>
+  '@media screen,tv,projection ' => 
   array (
-    'BODY' =>
+    'BODY' => 
     array (
       'background-color' => 'red',
       'color' => 'green',
     ),
   ),
-  42 =>
+  42 => 
   array (
-    'BODY' =>
+    'BODY' => 
     array (
       'background-color' => '#fff',
     ),
