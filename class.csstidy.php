@@ -808,7 +808,6 @@ class csstidy {
 				case 'instr':
 					$_str_char = $this->str_char[count($this->str_char)-1];
 					$_cur_string = $this->cur_string[count($this->cur_string)-1];
-					$_quoted_string = $this->quoted_string[count($this->quoted_string)-1];
 					$temp_add = $string{$i};
 
 					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses, but 
@@ -829,6 +828,8 @@ class csstidy {
 					$_cur_string .= $temp_add;
 
 					if ($string{$i} === $_str_char && !csstidy::escaped($string, $i)) {
+						$_quoted_string = array_pop($this->quoted_string);
+
 						$this->status = array_pop($this->from);
 
 						if (!preg_match('|[' . implode('', $GLOBALS['csstidy']['whitespace']) . ']|uis', $_cur_string) && $this->property !== 'content') {
@@ -850,7 +851,6 @@ class csstidy {
 						}
 
 						array_pop($this->cur_string);
-						array_pop($this->quoted_string);
 						array_pop($this->str_char);
 
 						if ($_str_char === ")") {
