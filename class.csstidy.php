@@ -576,8 +576,8 @@ class csstidy {
 						} elseif ($string{$i} === '\\') {
 							$this->at .= $this->_unicode($string, $i);
 						}
-						// fix for complicated media, i.e @media screen and (-webkit-min-device-pixel-ratio:0)
-						elseif (in_array($string{$i}, array('(', ')', ':'))) {
+						// fix for complicated media, i.e @media screen and (-webkit-min-device-pixel-ratio:1.5)
+						elseif (in_array($string{$i}, array('(', ')', ':', '.'))) {
 							$this->at .= $string{$i};
 						}
 					} else {
