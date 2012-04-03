@@ -573,9 +573,6 @@ $GLOBALS['csstidy']['all_properties']['word-break'] = 'CSS3.0';
 $GLOBALS['csstidy']['all_properties']['word-spacing'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
 $GLOBALS['csstidy']['all_properties']['word-wrap'] = 'CSS3.0';
 $GLOBALS['csstidy']['all_properties']['z-index'] = 'CSS2.0,CSS2.1,CSS3.0';
-$GLOBALS['csstidy']['all_properties']['width'] = 'CSS1.0,CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['widows'] = 'CSS2.0,CSS2.1';
-$GLOBALS['csstidy']['all_properties']['z-index'] = 'CSS1.0,CSS2.0,CSS2.1';
 
 /**
  * An array containing all properties that can accept a quoted string as a value.
