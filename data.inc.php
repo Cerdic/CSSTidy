@@ -516,6 +516,7 @@ $GLOBALS['csstidy']['all_properties']['speak-header'] = 'CSS2.0,CSS2.1,CSS3.0';
 $GLOBALS['csstidy']['all_properties']['speak-numeral'] = 'CSS2.0,CSS2.1,CSS3.0';
 $GLOBALS['csstidy']['all_properties']['speak-punctuation'] = 'CSS2.0,CSS2.1,CSS3.0';
 $GLOBALS['csstidy']['all_properties']['speech-rate'] = 'CSS2.0,CSS2.1,CSS3.0';
+$GLOBALS['csstidy']['all_properties']['src'] = 'CSS3.0';
 $GLOBALS['csstidy']['all_properties']['stress'] = 'CSS2.0,CSS2.1,CSS3.0';
 $GLOBALS['csstidy']['all_properties']['string-set'] = 'CSS3.0';
 $GLOBALS['csstidy']['all_properties']['tab-size'] = 'CSS3.0';
