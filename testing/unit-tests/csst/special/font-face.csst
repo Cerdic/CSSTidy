@@ -3,7 +3,7 @@
 --CSS--
 @font-face {
     font-family: GillSans;
-    src:url("/generic/fonts/GillSansLightC.otf") format("opentype");
+    src:url("/generic/fonts/GillSansLightC.otf") format('opentype');
     font-style: normal;
     font-weight: normal;
 }

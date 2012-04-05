@@ -1,0 +1,17 @@
+--TEST--
+Multiple background values for a single background property.
+--CSS--
+hgroup {
+	background:url('http://demos.hacks.mozilla.org/openweb/resources/images/logos/firefox-48.png'), -moz-linear-gradient(left,rgba(255,255,255,0),rgba(255,255,255,1)), url('http://demos.hacks.mozilla.org/openweb/resources/images/patterns/flowers-pattern.jpg');
+	background-repeat:no-repeat, no-repeat, repeat;
+	background-position:bottom right, left, right;
+}
+--EXPECT--
+array (
+  'hgroup' => 
+  array (
+    'background' => 'url(\'http://demos.hacks.mozilla.org/openweb/resources/images/logos/firefox-48.png\'), -moz-linear-gradient(left,rgba(255,255,255,0),rgba(255,255,255,1)), url(\'http://demos.hacks.mozilla.org/openweb/resources/images/patterns/flowers-pattern.jpg\')',
+    'background-repeat' => 'no-repeat, no-repeat, repeat',
+    'background-position' => 'bottom right, left, right',
+  ),
+)
