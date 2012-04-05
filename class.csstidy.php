@@ -831,7 +831,7 @@ class csstidy {
 						$this->cur_string[] = $string{$i};
 						$this->str_char[] = $string{$i} == "(" ? ")" : $string{$i};
 						$this->from[] = 'instr';
-						$this->quoted_string[] = !($string{$i} === "(");
+						$this->quoted_string[] = ($_str_char === ")" AND $string{$i} !== "(" AND trim($_cur_string)=="(")?$_quoted_string:!($string{$i} === "(");
 						continue;
 					}
 
