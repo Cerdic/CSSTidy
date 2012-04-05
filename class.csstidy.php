@@ -552,6 +552,7 @@ class csstidy {
 
 		$all_properties = & $GLOBALS['csstidy']['all_properties'];
 		$at_rules = & $GLOBALS['csstidy']['at_rules'];
+		$quoted_string_properties = & $GLOBALS['csstidy']['quoted_string_properties'];
 
 		$this->css = array();
 		$this->print->input_css = $string;
@@ -711,6 +712,7 @@ class csstidy {
 							$this->str_char = ($string{$i} === '(') ? ')' : $string{$i};
 							$this->status = 'instr';
 							$this->from = 'iv';
+							$this->quoted_string = in_array(strtolower($this->property), $quoted_string_properties);
 						} elseif ($string{$i} === ',') {
 							$this->sub_value = trim($this->sub_value) . ',';
 						} elseif ($string{$i} === '\\') {

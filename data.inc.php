@@ -418,6 +418,13 @@ $GLOBALS['csstidy']['all_properties']['speak-punctuation'] = 'CSS2.0,CSS2.1';
 $GLOBALS['csstidy']['all_properties']['speak-numeral'] = 'CSS2.0,CSS2.1';
 
 /**
+ * An array containing all properties that can accept a quoted string as a value.
+ *
+ * @global array $GLOBALS['csstidy']['quoted_string_properties']
+ */
+$GLOBALS['csstidy']['quoted_string_properties'] = array('content', 'font-family', 'quotes');
+
+/**
  * An array containing all predefined templates.
  *
  * @global array $GLOBALS['csstidy']['predefined_templates']
