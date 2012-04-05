@@ -130,7 +130,6 @@ array (
     'white-space' => '1',
     'vertical-align' => '1',
     'width' => '1px',
-    'z-index' => '1',
   ),
 )
 --SETTINGS--
