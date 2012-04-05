@@ -774,8 +774,7 @@ class csstidy {
 
 							$this->value = array_shift($this->sub_value_arr);
 							while(count($this->sub_value_arr)){
-								//$this->value .= (substr($this->value,-1,1)==','?'':' ').array_shift($this->sub_value_arr);
-								$this->value .= ' '.array_shift($this->sub_value_arr);
+								$this->value .= (substr($this->value,-1,1)==','?'':' ').array_shift($this->sub_value_arr);
 							}
 
 							$this->optimise->value();
