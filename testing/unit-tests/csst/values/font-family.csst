@@ -7,19 +7,19 @@ em { font:10px/normal "Arial", "Trebuchet MS","sans-serif"}
 i { font:10px/1.5em "Arial", "Trebuchet MS","sans-serif"}
 --EXPECT--
 array (
-  'a' =>
+  'a' => 
   array (
     'font' => '10px Arial,sans-serif',
   ),
-   'b' =>
+  'b' => 
   array (
     'font' => '10px Arial,"Trebuchet MS",sans-serif',
   ),
-   'em' =>
+  'em' => 
   array (
     'font' => '10px/normal Arial,"Trebuchet MS",sans-serif',
   ),
-   'i' =>
+  'i' => 
   array (
     'font' => '10px/1.5em Arial,"Trebuchet MS",sans-serif',
   ),

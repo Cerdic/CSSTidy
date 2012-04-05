@@ -7,9 +7,9 @@ a {
 }
 --EXPECT--
 array (
-  'a' =>
+  'a' => 
   array (
     'cursor' => 'pointer',
-	'cursor ' => 'hand',
+    'cursor ' => 'hand',
   ),
 )

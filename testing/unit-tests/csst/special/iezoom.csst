@@ -6,7 +6,7 @@ zoom: 1;
 }
 --EXPECT--
 array (
-  '#content' =>
+  '#content' => 
   array (
     'zoom' => '1',
   ),

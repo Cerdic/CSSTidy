@@ -7,9 +7,9 @@
 }
 --EXPECT--
 array (
-  '@font-face' =>
+  '@font-face' => 
   array (
-		'font-family' => '"Unibody8SmallCaps Regular"',
-		'src' => 'url(fonts/unibody_8-smallcaps-webfont.woff) format("woff")',
+    'font-family' => '"Unibody8SmallCaps Regular"',
+    'src' => 'url(fonts/unibody_8-smallcaps-webfont.woff) format("woff")',
   ),
 )

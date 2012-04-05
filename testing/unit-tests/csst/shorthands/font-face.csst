@@ -6,7 +6,7 @@ Test font-face optimization (no optimization)
 }
 --EXPECT--
 array (
-  '@font-face' =>
+  '@font-face' => 
   array (
     'src' => 'url(fonts/share.ttf) format("truetype")',
   ),
