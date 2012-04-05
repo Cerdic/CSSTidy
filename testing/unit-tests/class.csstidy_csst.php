@@ -27,6 +27,7 @@ class csstidy_csst extends SimpleExpectation
 
 		/** Print form of CSS that can be tested **/
     var $print = false;
+		var $default_media = "";
 
     /** Actual result */
     var $actual;
@@ -64,7 +65,10 @@ class csstidy_csst extends SimpleExpectation
                 case '--SETTINGS--':
                     list($n, $v) = array_map('trim',explode('=', $line, 2));
                     $v = eval("return $v;");
-                    $this->settings[$n] = $v;
+                    if ($n=="default_media" AND $this->print)
+	                    $this->default_media = $v;
+                    else
+                      $this->settings[$n] = $v;
                     break;
                 case '--PRINT--':
                     $this->print = true;
@@ -94,7 +98,7 @@ class csstidy_csst extends SimpleExpectation
         $css->set_cfg($this->settings);
         $css->parse($this->css);
 				if ($this->print){
-					$this->actual = $css->print->plain();
+					$this->actual = $css->print->plain($this->default_media);
 				}
 				else{
 					$this->actual = $css->css;
