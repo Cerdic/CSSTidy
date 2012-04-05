@@ -751,7 +751,7 @@ class csstidy {
 
 							$this->optimise->subvalue();
 							if ($this->sub_value != '') {
-								if (substr($this->sub_value, 0, 6) == 'format') {
+								if (strncmp($this->sub_value,'format',6)==0) {
 									$format_strings = csstidy::parse_string_list(substr($this->sub_value, 7, -1));
 									if (!$format_strings) {
 										$this->sub_value = "";
@@ -1097,7 +1097,9 @@ class csstidy {
 	 * @version 1.0
 	 */
 	static function is_important(&$value) {
-		return (!strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'], '', $value), -10, 10), '!important'));
+		return (
+			strpos($value,"!")!==false // quick test
+		  AND !strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'], '', $value), -10, 10), '!important'));
 	}
 
 	/**
