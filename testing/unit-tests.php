@@ -11,7 +11,7 @@
  *
  */
 
-error_reporting(E_ALL ^ E_DEPRECATED);
+error_reporting(E_ALL ^ 8192/*E_DEPRECATED*/);
 
 // Configuration
 $simpletest_location = 'simpletest/';
