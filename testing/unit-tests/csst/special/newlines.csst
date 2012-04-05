@@ -49,7 +49,7 @@ u {
 array (
   'a' => 
   array (
-    'background' => '-webkit-gradient(linear,left bottom,left top,color-stop(0,rgb(153,102,51)),color-stop(0.3,rgb(51,153,102)),color-stop(1,rgb(102,51,153)))',
+    'background' => '-webkit-gradient(linear,left bottom,left top,color-stop(0,#963),color-stop(0.3,#396),color-stop(1,#639))',
     'content' => '"ABC\\A123\\ADEF\\AGHI"',
   ),
   'b' => 

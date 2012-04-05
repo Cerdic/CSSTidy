@@ -11,7 +11,7 @@
 array (
 	'.linear' =>
 	array (
-		'background' => '-webkit-gradient(linear,left top,left bottom,from(#00abeb),to(#fff),color-stop(0.5,#fff),color-stop(0.5,#66cc00))',
+		'background' => '-webkit-gradient(linear,left top,left bottom,from(#00abeb),to(#fff),color-stop(0.5,#fff),color-stop(0.5,#6c0))',
 	),
 	'.radial' =>
 	array (

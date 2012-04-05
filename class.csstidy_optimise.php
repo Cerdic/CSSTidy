@@ -276,8 +276,32 @@ class csstidy_optimise {
 	function cut_color($color) {
 		$replace_colors = & $GLOBALS['csstidy']['replace_colors'];
 
+		// if it's a string, don't touch !
+		if (strncmp($color,"'",1)==0 OR strncmp($color,'"',1)==0)
+			return $color;
+
+		/* expressions complexes de type gradient */
+		if (strpos($color,"(")!==false AND strncmp($color,'rgb(',4)!=0){
+			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
+			if (stripos($color,"progid:")!==false)
+				return $color;
+			preg_match_all(",rgb\([^)]+\),i",$color,$matches,PREG_SET_ORDER);
+			if (count($matches)){
+				foreach ($matches as $m){
+					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
+				}
+			}
+			preg_match_all(",#[0-9a-f]{6}(?=[^0-9a-f]),i",$color,$matches,PREG_SET_ORDER);
+			if (count($matches)){
+				foreach ($matches as $m){
+					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
+				}
+			}
+			return $color;
+		}
+
 		// rgb(0,0,0) -> #000000 (or #000 in this case later)
-		if (strtolower(substr($color, 0, 4)) === 'rgb(') {
+		if (strncasecmp($color, 'rgb(', 4)==0) {
 			$color_tmp = substr($color, 4, strlen($color) - 5);
 			$color_tmp = explode(',', $color_tmp);
 			for ($i = 0; $i < count($color_tmp); $i++) {
