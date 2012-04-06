@@ -4,11 +4,13 @@ Test font-face optimization (no optimization)
 @font-face {
     src: url("fonts/share.ttf") format("truetype");
 }
---EXPECT--
+--FULLEXPECT--
 array (
-  '@font-face' =>
-  array (
-    'src' => 'url(fonts/share.ttf) format("truetype")',
+	' '=> array(
+		'@font-face' =>
+		array (
+			'src' => 'url(fonts/share.ttf) format("truetype")',
+		),
   ),
 )
 --SETTINGS--

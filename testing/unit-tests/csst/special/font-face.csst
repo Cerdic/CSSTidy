@@ -48,8 +48,9 @@
 @font-face {
     src:url("/generic/fonts/GillSans LightC.otf") format(opentype,woff);
 }
---EXPECT--
+--FULLEXPECT--
 array (
+	' ' => array(
   '@font-face' => 
   array (
     'font-family' => 'GillSans',
@@ -103,5 +104,6 @@ array (
   '@font-face           ' => 
   array (
     'src' => 'url("/generic/fonts/GillSans LightC.otf") format("opentype","woff")',
+  ),
   ),
 )
