@@ -609,7 +609,7 @@ class csstidy {
 								if (!strcasecmp(substr($string, $i + 1, strlen($name)), $name)) {
 									($type === 'at') ? $this->at = '@' . $name : $this->selector = '@' . $name;
 									if ($type === "atis"){
-										$this->next_selector_at = ($this->next_selector_at?$this->next_selector_at:$this->at);
+										$this->next_selector_at = ($this->next_selector_at?$this->next_selector_at:($this->at?$this->at:DEFAULT_AT));
 										$this->at = $this->css_new_media_section(' ');
 										$type = "is";
 									}
