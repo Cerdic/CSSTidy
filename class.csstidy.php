@@ -150,6 +150,13 @@ class csstidy {
 	 */
 	var $at = '';
 	/**
+	 * Saves the at rule for next selector (during @font-face or other @)
+	 * @var string
+	 * @access private
+	 */
+	var $next_selector_at = '';
+
+	/**
 	 * Saves the current selector
 	 * @var string
 	 * @access private
@@ -601,6 +608,11 @@ class csstidy {
 							foreach ($at_rules as $name => $type) {
 								if (!strcasecmp(substr($string, $i + 1, strlen($name)), $name)) {
 									($type === 'at') ? $this->at = '@' . $name : $this->selector = '@' . $name;
+									if ($type === "atis"){
+										$this->next_selector_at = ($this->next_selector_at?$this->next_selector_at:$this->at);
+										$this->at = $this->css_new_media_section(' ');
+										$type = "is";
+									}
 									$this->status = $type;
 									$i += strlen($name);
 									$this->invalid_at = false;
@@ -628,6 +640,10 @@ class csstidy {
 						} elseif ($this->invalid_at && $string{$i} === ';') {
 							$this->invalid_at = false;
 							$this->status = 'is';
+							if($this->next_selector_at){
+								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->next_selector_at = '';
+							}
 						} elseif ($string{$i} === '{') {
 							$this->status = 'ip';
 							if($this->at == '') {
@@ -679,6 +695,10 @@ class csstidy {
 							$this->_add_token(SEL_END, $this->selector);
 							$this->selector = '';
 							$this->property = '';
+							if($this->next_selector_at){
+								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->next_selector_at = '';
+							}
 						} elseif ($string{$i} === ';') {
 							$this->property = '';
 						} elseif ($string{$i} === '\\') {
@@ -739,7 +759,7 @@ class csstidy {
 							$this->sub_value .= $string{$i};
 						}
 						if (($string{$i} === '}' || $string{$i} === ';' || $pn) && !empty($this->selector)) {
-							if ($this->at == '') {
+							if($this->at == ''){
 								$this->at = $this->css_new_media_section(DEFAULT_AT);
 							}
 
@@ -803,6 +823,10 @@ class csstidy {
 							$this->status = 'is';
 							$this->invalid_at = false;
 							$this->selector = '';
+							if($this->next_selector_at){
+								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->next_selector_at = '';
+							}
 						}
 					} elseif (!$pn) {
 						$this->sub_value .= $string{$i};

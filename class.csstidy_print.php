@@ -307,7 +307,10 @@ class csstidy_print {
 			if ($sort_selectors)
 				ksort($val);
 			if (intval($medium) < DEFAULT_AT) {
-				$this->parser->_add_token(AT_START, $medium, true);
+				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
+				if (strlen(trim($medium))){
+					$this->parser->_add_token(AT_START, $medium, true);
+				}
 			}
 			elseif ($default_media) {
 				$this->parser->_add_token(AT_START, $default_media, true);
@@ -343,7 +346,10 @@ class csstidy_print {
 			}
 
 			if (intval($medium) < DEFAULT_AT) {
-				$this->parser->_add_token(AT_END, $medium, true);
+				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
+				if (strlen(trim($medium))){
+					$this->parser->_add_token(AT_END, $medium, true);
+				}
 			}
 			elseif ($default_media) {
 				$this->parser->_add_token(AT_END, $default_media, true);
