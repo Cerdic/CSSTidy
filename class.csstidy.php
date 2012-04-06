@@ -706,7 +706,9 @@ class csstidy {
 							$this->property .= $this->_unicode($string, $i);
 						}
 						// else this is dumb IE a hack, keep it
-						elseif ($this->property=='' AND !ctype_space($string{$i})) {
+						// including //
+						elseif (($this->property=='' AND !ctype_space($string{$i}))
+						  OR ($this->property=='/' OR $string{$i}=="/")) {
 							$this->property .= $string{$i};
 						}
 					}

@@ -328,12 +328,14 @@ class csstidy_print {
 					'-' => array()  // IE6 hacks
 				);
 				foreach ($vali as $property => $valj) {
-					$matches = array();
-					if ($sort_properties && preg_match('/^(\*|_|\/|-)(?!(ms|moz|o\b|xv|atsc|wap|khtml|webkit|ah|hp|ro|rim|tc)-)/', $property, $matches)) {
-						$invalid[$matches[1]][$property] = $valj;
-					} else {
-						$this->parser->_add_token(PROPERTY, $property, true);
-						$this->parser->_add_token(VALUE, $valj, true);
+					if (strncmp($property,"//",2)!==0){
+						$matches = array();
+						if ($sort_properties && preg_match('/^(\*|_|\/|-)(?!(ms|moz|o\b|xv|atsc|wap|khtml|webkit|ah|hp|ro|rim|tc)-)/', $property, $matches)) {
+							$invalid[$matches[1]][$property] = $valj;
+						} else {
+							$this->parser->_add_token(PROPERTY, $property, true);
+							$this->parser->_add_token(VALUE, $valj, true);
+						}
 					}
 				}
 				foreach ($invalid as $prefix => $props) {
