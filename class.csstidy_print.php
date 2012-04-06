@@ -27,7 +27,7 @@
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2007
  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
- * @author Cedric Morin (cedric at yterium dot com) 2010
+ * @author Cedric Morin (cedric at yterium dot com) 2010-2012
  */
 
 /**
@@ -37,7 +37,7 @@
  *
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.0.1
+ * @version 1.1.0
  */
 class csstidy_print {
 

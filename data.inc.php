@@ -62,7 +62,7 @@ $GLOBALS['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%
  * Available at-rules
  *
  * @global array $GLOBALS['csstidy']['at_rules']
- * @version 1.0
+ * @version 1.1
  */
 $GLOBALS['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'atis','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at','keyframes' => 'at');
 
@@ -289,8 +289,7 @@ $GLOBALS['csstidy']['shorthands']['-moz-border-radius'] = 0;
  * All CSS Properties. Needed for csstidy::property_is_next()
  *
  * @global array $GLOBALS['csstidy']['all_properties']
- * @todo Add CSS3 properties
- * @version 1.0
+ * @version 1.1
  * @see csstidy::property_is_next()
  */
 $GLOBALS['csstidy']['all_properties']['alignment-adjust'] = 'CSS3.0';
