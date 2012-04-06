@@ -283,7 +283,7 @@ class csstidy {
 		/* preserve or not browser hacks */
 		$this->settings['discard_invalid_selectors'] = false;
 		$this->settings['discard_invalid_properties'] = false;
-		$this->settings['css_level'] = 'CSS2.1';
+		$this->settings['css_level'] = 'CSS3.0';
 		$this->settings['preserve_css'] = false;
 		$this->settings['timestamp'] = false;
 		$this->settings['template'] = ''; // say that propertie exist
