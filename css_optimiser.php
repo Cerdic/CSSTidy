@@ -17,7 +17,7 @@
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Lesser General Public License for more details.
- * 
+ *
  *   You should have received a copy of the GNU Lesser General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -27,8 +27,8 @@
  * @author Brett Zamir (brettz9 at yahoo dot com) 2007
  */
 
-require('class.csstidy.php');
-require('lang.inc.php');
+require(__DIR__.'/class.csstidy.php');
+require(__DIR__.'/lang.inc.php');
 
 
 if (get_magic_quotes_gpc()) {
