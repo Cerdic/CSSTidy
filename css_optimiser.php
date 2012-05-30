@@ -130,8 +130,8 @@ if(isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 
 
 // This by itself is enough since our scripts don't use DOM to create elements (in which case the namespace aware ones
-// should be used when serving as application/xhtml+xml but not when served as text/html ; 
-// also, case will be different when retrieving element names, as HTML DOM returns in upper case, 
+// should be used when serving as application/xhtml+xml but not when served as text/html ;
+// also, case will be different when retrieving element names, as HTML DOM returns in upper case,
 // genuine XHTML DOM (when XHTML served as such) as lower
 if (stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml')) {
 	$http_accept = 'application/xhtml+xml';
@@ -195,7 +195,7 @@ else {
 		if (window.clipboardData) { // Feature testing
 			window.clipboardData.setData('Text',document.getElementById("copytext").innerText);
 		}
-		else if (navigator.userAgent.indexOf('Gecko') != -1 
+		else if (navigator.userAgent.indexOf('Gecko') != -1
 					&& navigator.userAgent.indexOf('Apple') == -1
 					) {
 			try {
@@ -445,10 +445,9 @@ else {
         echo '<code id="copytext">';
         echo $css->print->formatted();
         echo '</code></fieldset><div><br /></div>';
-		
-		echo '<fieldset class="code_output"><legend>',$lang[$l][64],'</legend>';
+	echo '<fieldset class="code_output"><legend>',$lang[$l][64],'</legend>';
         echo '<textarea rows="10" cols="80">';
-		
+
 		if(isset($_REQUEST['whole_file'])) {
 			echo htmlspecialchars($css->print->formatted_page('xhtml1.1', false, '', 'en'), ENT_QUOTES, 'utf-8');
 		}
@@ -459,12 +458,10 @@ else {
 		echo '</textarea></fieldset>';
 		echo '<fieldset class="code_output"><legend>',$lang[$l][65],'</legend>';
 		echo '<textarea rows="10" cols="30">';
-		
 		echo file_get_contents('cssparsed.css');
 		echo '</textarea>';
-		
 		echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; ',$lang[$l][59],'</a></p>';
-		
+
      }
      elseif(isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) {
         echo '<p class="important">',$lang[$l][28],'</p>';

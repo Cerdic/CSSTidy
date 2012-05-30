@@ -733,7 +733,7 @@ class csstidy_optimise {
 		// if background properties is here and not empty, don't try anything
 		if (isset($input_css['background']) AND $input_css['background'])
 			return $input_css;
-		
+
 		for ($i = 0; $i < $number_of_values; $i++) {
 			foreach ($background_prop_default as $bg_property => $default_value) {
 				// Skip if property does not exist
