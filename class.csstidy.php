@@ -781,7 +781,6 @@ class csstidy {
 									}
 									else {
 										$this->sub_value = "format(";
-										
 										foreach ($format_strings as $format_string) {
 											$this->sub_value .= '"' . str_replace('"', '\\"', $format_string) . '",';
 										}
@@ -800,6 +799,7 @@ class csstidy {
 								$this->value .= (substr($this->value,-1,1)==','?'':' ').array_shift($this->sub_value_arr);
 							}
 
+							$this->selector = trim($this->selector);
 							$this->optimise->value();
 
 							$valid = csstidy::property_is_valid($this->property);
