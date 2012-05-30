@@ -35,28 +35,28 @@
  *
  * @version 1.0
  */
-require_once('class.csstidy_ctype.php');
+require_once(__DIR__.'/class.csstidy_ctype.php');
 
 /**
  * Various CSS data needed for correct optimisations etc.
  *
  * @version 1.3
  */
-require('data.inc.php');
+require(__DIR__.'/data.inc.php');
 
 /**
  * Contains a class for printing CSS code
  *
  * @version 1.0
  */
-require('class.csstidy_print.php');
+require(__DIR__.'/class.csstidy_print.php');
 
 /**
  * Contains a class for optimising CSS code
  *
  * @version 1.0
  */
-require('class.csstidy_optimise.php');
+require(__DIR__.'/class.csstidy_optimise.php');
 
 /**
  * CSS Parser class
@@ -781,7 +781,6 @@ class csstidy {
 									}
 									else {
 										$this->sub_value = "format(";
-										
 										foreach ($format_strings as $format_string) {
 											$this->sub_value .= '"' . str_replace('"', '\\"', $format_string) . '",';
 										}
@@ -800,6 +799,7 @@ class csstidy {
 								$this->value .= (substr($this->value,-1,1)==','?'':' ').array_shift($this->sub_value_arr);
 							}
 
+							$this->selector = trim($this->selector);
 							$this->optimise->value();
 
 							$valid = csstidy::property_is_valid($this->property);

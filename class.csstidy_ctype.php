@@ -43,4 +43,3 @@ if (!function_exists('ctype_alpha')) {
 	}
 
 }
-?>
