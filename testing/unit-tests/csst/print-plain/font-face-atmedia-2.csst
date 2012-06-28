@@ -27,8 +27,8 @@ Test simple CSS print
 p { border: none;}
 
 --PRINT--
-@font-face{font-family:'GenerikaRegular';src:url(../fonts/generikaregular-webfont.eot);src:url(../fonts/generikaregular-webfont.eot?#iefix) format(embedded-opentype),url(../fonts/generikaregular-webfont.woff) format(woff),url(../fonts/generikaregular-webfont.ttf) format(truetype),url(../fonts/generikaregular-webfont.svg#GenerikaRegular) format("svg");font-weight:400;font-style:normal}
-@font-face{font-family:'GenerikaLight';src:url(../fonts/generikalight-webfont.eot);src:url(../fonts/generikalight-webfont.eot?#iefix) format(embedded-opentype),url(../fonts/generikalight-webfont.woff) format(woff),url(../fonts/generikalight-webfont.ttf) format(truetype),url(../fonts/generikalight-webfont.svg#GenerikaLight) format("svg");font-weight:400;font-style:normal}
+@font-face{font-family:'GenerikaRegular';src:url(../fonts/generikaregular-webfont.eot);src:url(../fonts/generikaregular-webfont.eot?#iefix) format("embedded-opentype"),url(../fonts/generikaregular-webfont.woff) format("woff"),url(../fonts/generikaregular-webfont.ttf) format("truetype"),url(../fonts/generikaregular-webfont.svg#GenerikaRegular) format("svg");font-weight:400;font-style:normal}
+@font-face{font-family:'GenerikaLight';src:url(../fonts/generikalight-webfont.eot);src:url(../fonts/generikalight-webfont.eot?#iefix) format("embedded-opentype"),url(../fonts/generikalight-webfont.woff) format("woff"),url(../fonts/generikalight-webfont.ttf) format("truetype"),url(../fonts/generikalight-webfont.svg#GenerikaLight) format("svg");font-weight:400;font-style:normal}
 @media screen {
 p{border:none}
 }
