@@ -774,30 +774,19 @@ class csstidy {
 
 							$this->optimise->subvalue();
 							if ($this->sub_value != '') {
-								if (strncmp($this->sub_value,'format',6)==0) {
-									$format_strings = csstidy::parse_string_list(substr($this->sub_value, 7, -1));
-									if (!$format_strings) {
-										$this->sub_value = "";
-									}
-									else {
-										$this->sub_value = "format(";
-										
-										foreach ($format_strings as $format_string) {
-											$this->sub_value .= '"' . str_replace('"', '\\"', $format_string) . '",';
-										}
-
-										$this->sub_value = substr($this->sub_value, 0, -1) . ")";
-									}
-								}
-								if ($this->sub_value != '') {
-									$this->sub_value_arr[] = $this->sub_value;
-								}
+								$this->sub_value_arr[] = $this->sub_value;
 								$this->sub_value = '';
 							}
 
-							$this->value = array_shift($this->sub_value_arr);
+							$this->value = '';
 							while(count($this->sub_value_arr)){
-								$this->value .= (substr($this->value,-1,1)==','?'':' ').array_shift($this->sub_value_arr);
+								$sub = array_shift($this->sub_value_arr);
+								if (strstr($this->selector, "font-face")){
+									$sub = $this->quote_font_format($sub);
+								}
+
+								if ($sub != '')
+									$this->value .= ((!strlen($this->value) OR substr($this->value,-1,1)==',')?'':' ').$sub;
 							}
 
 							$this->optimise->value();
@@ -939,6 +928,34 @@ class csstidy {
 		@setlocale(LC_ALL, $old); // Set locale back to original setting
 
 		return!(empty($this->css) && empty($this->import) && empty($this->charset) && empty($this->tokens) && empty($this->namespace));
+	}
+
+
+	/**
+	 * format() in font-face needs quoted values for somes browser (FF at least)
+	 * 
+	 * @param $value
+	 * @return string
+	 */
+	function quote_font_format($value){
+		if (strncmp($value,'format',6)==0) {
+			$p = strrpos($value,")");
+			$end = substr($value,$p);
+			$format_strings = csstidy::parse_string_list(substr($value, 7, $p-7));
+			if (!$format_strings) {
+				$value = "";
+			}
+			else {
+				$value = "format(";
+
+				foreach ($format_strings as $format_string) {
+					$value .= '"' . str_replace('"', '\\"', $format_string) . '",';
+				}
+
+				$value = substr($value, 0, -1) . $end;
+			}
+		}
+		return $value;
 	}
 
 	/**
