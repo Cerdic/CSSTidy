@@ -738,12 +738,12 @@ class csstidy {
 						} elseif ($string{$i} === ';' || $pn) {
 							if ($this->selector{0} === '@' && isset($at_rules[substr($this->selector, 1)]) && $at_rules[substr($this->selector, 1)] === 'iv') {
 								/* Add quotes to charset, import, namespace */
-								$this->sub_value_arr[] = '"' . trim($this->sub_value) . '"';
+								$this->sub_value_arr[] = trim($this->sub_value);
 
 								$this->status = 'is';
 
 								switch ($this->selector) {
-									case '@charset': $this->charset = $this->sub_value_arr[0];
+									case '@charset': $this->charset = '"'.$this->sub_value_arr[0].'"';
 										break;
 									case '@namespace': $this->namespace = implode(' ', $this->sub_value_arr);
 										break;
@@ -933,7 +933,7 @@ class csstidy {
 
 	/**
 	 * format() in font-face needs quoted values for somes browser (FF at least)
-	 * 
+	 *
 	 * @param $value
 	 * @return string
 	 */

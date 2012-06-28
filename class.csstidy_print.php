@@ -183,28 +183,28 @@ class csstidy_print {
 		}
 
 		if (!empty($this->charset)) {
-			$output .= $template[0] . '@charset ' . $template[5] . $this->charset . $template[6];
+			$output .= $template[0] . '@charset ' . $template[5] . $this->charset . $template[6] . $template[13];
 		}
 
 		if (!empty($this->import)) {
 			for ($i = 0, $size = count($this->import); $i < $size; $i++) {
 				if (substr($this->import[$i], 0, 4) === 'url(' && substr($this->import[$i], -1, 1) === ')') {
-					$this->import[$i] = '\'' . substr($this->import[$i], 4, -1) . '\'';
+					$this->import[$i] = '"' . substr($this->import[$i], 4, -1) . '"';
 					$this->parser->log('Optimised @import : Removed "url("', 'Information');
 				}
-				$output .= $template[0] . '@import ' . $template[5] . $this->import[$i] . $template[6];
+				$output .= $template[0] . '@import ' . $template[5] . $this->import[$i] . $template[6] . $template[13];
 			}
 		}
 
 		if (!empty($this->namespace)) {
-			if (substr($this->namespace, 0, 4) === 'url(' && substr($this->namespace, -1, 1) === ')') {
-				$this->namespace = '\'' . substr($this->namespace, 4, -1) . '\'';
+			if (($p=strpos($this->namespace,"url("))!==false && substr($this->namespace, -1, 1) === ')') {
+				$this->namespace = substr_replace($this->namespace,'"',$p,4);
+				$this->namespace = substr($this->namespace, 0, -1) . '"';
 				$this->parser->log('Optimised @namespace : Removed "url("', 'Information');
 			}
-			$output .= $template[0] . '@namespace ' . $template[5] . $this->namespace . $template[6];
+			$output .= $template[0] . '@namespace ' . $template[5] . $this->namespace . $template[6] . $template[13];
 		}
 
-		$output .= $template[13];
 		$in_at_out = '';
 		$out = & $output;
 
