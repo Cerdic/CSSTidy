@@ -19,4 +19,3 @@ class csstidy_reporter extends HTMLReporter
     }
     
 }
-
