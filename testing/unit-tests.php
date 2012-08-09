@@ -34,9 +34,9 @@ require 'unit-tests/_files.php';
 // Setup test files
 $test = new GroupTest('CSSTidy unit tests');
 foreach ($test_files as $test_file) {
-    require_once "unit-tests/$test_file";
-    list($x, $class_suffix) = explode('.', $test_file);
-    $test->addTestClass("csstidy_test_$class_suffix");
+	require_once "unit-tests/$test_file";
+	list($x, $class_suffix) = explode('.', $test_file);
+	$test->addTestClass("csstidy_test_$class_suffix");
 }
 
 if (SimpleReporter::inCli()) $reporter = new TextReporter();

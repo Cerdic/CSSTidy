@@ -19,7 +19,7 @@
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Lesser General Public License for more details.
- * 
+ *
  *   You should have received a copy of the GNU Lesser General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -308,14 +308,13 @@ class csstidy_print {
 				ksort($val);
 			if (intval($medium) < DEFAULT_AT) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
-				if (strlen(trim($medium))){
+				if (strlen(trim($medium))) {
 					$this->parser->_add_token(AT_START, $medium, true);
 				}
-			}
-			elseif ($default_media) {
+			} elseif ($default_media) {
 				$this->parser->_add_token(AT_START, $default_media, true);
 			}
-			
+
 			foreach ($val as $selector => $vali) {
 				if ($sort_properties)
 					ksort($vali);
@@ -328,7 +327,7 @@ class csstidy_print {
 					'-' => array()  // IE6 hacks
 				);
 				foreach ($vali as $property => $valj) {
-					if (strncmp($property,"//",2)!==0){
+					if (strncmp($property,"//",2)!==0) {
 						$matches = array();
 						if ($sort_properties && preg_match('/^(\*|_|\/|-)(?!(ms|moz|o\b|xv|atsc|wap|khtml|webkit|ah|hp|ro|rim|tc)-)/', $property, $matches)) {
 							$invalid[$matches[1]][$property] = $valj;
@@ -349,11 +348,10 @@ class csstidy_print {
 
 			if (intval($medium) < DEFAULT_AT) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
-				if (strlen(trim($medium))){
+				if (strlen(trim($medium))) {
 					$this->parser->_add_token(AT_END, $medium, true);
 				}
-			}
-			elseif ($default_media) {
+			} elseif ($default_media) {
 				$this->parser->_add_token(AT_END, $default_media, true);
 			}
 		}

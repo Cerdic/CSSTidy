@@ -19,7 +19,7 @@
  *   but WITHOUT ANY WARRANTY; without even the implied warranty of
  *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *   GNU Lesser General Public License for more details.
- * 
+ *
  *   You should have received a copy of the GNU Lesser General Public License
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
@@ -179,7 +179,7 @@ class csstidy_optimise {
 			if ($this->sub_value === 'bold') {
 				$this->sub_value = '700';
 				$this->parser->log('Optimised font-weight: Changed "bold" to "700"', 'Information');
-			} else if ($this->sub_value === 'normal') {
+			} elseif ($this->sub_value === 'normal') {
 				$this->sub_value = '400';
 				$this->parser->log('Optimised font-weight: Changed "normal" to "400"', 'Information');
 			}
@@ -282,19 +282,19 @@ class csstidy_optimise {
 			return $color;
 
 		/* expressions complexes de type gradient */
-		if (strpos($color,"(")!==false AND strncmp($color,'rgb(',4)!=0){
+		if (strpos($color,"(")!==false AND strncmp($color,'rgb(',4)!=0) {
 			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
 			if (stripos($color,"progid:")!==false)
 				return $color;
 			preg_match_all(",rgb\([^)]+\),i",$color,$matches,PREG_SET_ORDER);
-			if (count($matches)){
-				foreach ($matches as $m){
+			if (count($matches)) {
+				foreach ($matches as $m) {
 					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
 				}
 			}
 			preg_match_all(",#[0-9a-f]{6}(?=[^0-9a-f]),i",$color,$matches,PREG_SET_ORDER);
-			if (count($matches)){
-				foreach ($matches as $m){
+			if (count($matches)) {
+				foreach ($matches as $m) {
 					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
 				}
 			}
@@ -647,7 +647,7 @@ class csstidy_optimise {
 		// don't try to explose background gradient !
 		if (stripos($str_value, "gradient(")!==FALSE)
 			return array('background'=>$str_value);
-		
+
 		$background_prop_default = & $GLOBALS['csstidy']['background_prop_default'];
 		$repeat = array('repeat', 'repeat-x', 'repeat-y', 'no-repeat', 'space');
 		$attachment = array('scroll', 'fixed', 'local');
@@ -695,8 +695,7 @@ class csstidy_optimise {
 						$return['background-position'] .= ' '; else
 						$return['background-position'].= ',';
 					$have['pos'] = true;
-				}
-				elseif (!$have['color']) {
+				} elseif (!$have['color']) {
 					$return['background-color'] .= $str_value[$i][$j] . ',';
 					$have['color'] = true;
 				}
@@ -733,7 +732,7 @@ class csstidy_optimise {
 		// if background properties is here and not empty, don't try anything
 		if (isset($input_css['background']) AND $input_css['background'])
 			return $input_css;
-		
+
 		for ($i = 0; $i < $number_of_values; $i++) {
 			foreach ($background_prop_default as $bg_property => $default_value) {
 				// Skip if property does not exist
