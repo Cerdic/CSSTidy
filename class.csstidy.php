@@ -354,7 +354,7 @@ class csstidy {
 				$this->_load_template($this->settings['template']);
 			}
 			return true;
-		} else if (isset($this->settings[$setting]) && $value !== '') {
+		} elseif (isset($this->settings[$setting]) && $value !== '') {
 			$this->settings[$setting] = $value;
 			if ($setting === 'template') {
 				$this->_load_template($this->settings['template']);
@@ -609,7 +609,7 @@ class csstidy {
 							foreach ($at_rules as $name => $type) {
 								if (!strcasecmp(substr($string, $i + 1, strlen($name)), $name)) {
 									($type === 'at') ? $this->at = '@' . $name : $this->selector = '@' . $name;
-									if ($type === "atis"){
+									if ($type === "atis") {
 										$this->next_selector_at = ($this->next_selector_at?$this->next_selector_at:($this->at?$this->at:DEFAULT_AT));
 										$this->at = $this->css_new_media_section(' ');
 										$type = "is";
@@ -641,13 +641,13 @@ class csstidy {
 						} elseif ($this->invalid_at && $string{$i} === ';') {
 							$this->invalid_at = false;
 							$this->status = 'is';
-							if($this->next_selector_at){
+							if ($this->next_selector_at) {
 								$this->at = $this->css_new_media_section($this->next_selector_at);
 								$this->next_selector_at = '';
 							}
 						} elseif ($string{$i} === '{') {
 							$this->status = 'ip';
-							if($this->at == '') {
+							if ($this->at == '') {
 								$this->at = $this->css_new_media_section(DEFAULT_AT);
 							}
 							$this->selector = $this->css_new_selector($this->at,$this->selector);
@@ -696,7 +696,7 @@ class csstidy {
 							$this->_add_token(SEL_END, $this->selector);
 							$this->selector = '';
 							$this->property = '';
-							if($this->next_selector_at){
+							if ($this->next_selector_at) {
 								$this->at = $this->css_new_media_section($this->next_selector_at);
 								$this->next_selector_at = '';
 							}
@@ -762,7 +762,7 @@ class csstidy {
 							$this->sub_value .= $string{$i};
 						}
 						if (($string{$i} === '}' || $string{$i} === ';' || $pn) && !empty($this->selector)) {
-							if($this->at == ''){
+							if ($this->at == '') {
 								$this->at = $this->css_new_media_section(DEFAULT_AT);
 							}
 
@@ -779,9 +779,9 @@ class csstidy {
 							}
 
 							$this->value = '';
-							while(count($this->sub_value_arr)){
+							while (count($this->sub_value_arr)) {
 								$sub = array_shift($this->sub_value_arr);
-								if (strstr($this->selector, "font-face")){
+								if (strstr($this->selector, "font-face")) {
 									$sub = $this->quote_font_format($sub);
 								}
 
@@ -815,7 +815,7 @@ class csstidy {
 							$this->status = 'is';
 							$this->invalid_at = false;
 							$this->selector = '';
-							if($this->next_selector_at){
+							if ($this->next_selector_at) {
 								$this->at = $this->css_new_media_section($this->next_selector_at);
 								$this->next_selector_at = '';
 							}
@@ -887,7 +887,7 @@ class csstidy {
 						}
 
 						if ($this->status === 'iv') {
-							if (!$_quoted_string){
+							if (!$_quoted_string) {
 								if (strpos($_cur_string,',')!==false)
 									// we can on only remove space next to ','
 									$_cur_string = implode(',',array_map('trim',explode(',',$_cur_string)));
@@ -937,7 +937,7 @@ class csstidy {
 	 * @param $value
 	 * @return string
 	 */
-	function quote_font_format($value){
+	function quote_font_format($value) {
 		if (strncmp($value,'format',6)==0) {
 			$p = strrpos($value,")");
 			$end = substr($value,$p);
@@ -1035,19 +1035,19 @@ class csstidy {
 	 * @param string $media
 	 * @return string
 	 */
-	function css_new_media_section($media){
-		if($this->get_cfg('preserve_css')) {
+	function css_new_media_section($media) {
+		if ($this->get_cfg('preserve_css')) {
 			return $media;
 		}
 
 		// if the last @media is the same as this
 		// keep it
-		if (!$this->css OR !is_array($this->css) OR empty($this->css)){
+		if (!$this->css OR !is_array($this->css) OR empty($this->css)) {
 			return $media;
 		}
 		end($this->css);
 		list($at,) = each($this->css);
-		if ($at == $media){
+		if ($at == $media) {
 			return $media;
 		}
 		while (isset($this->css[$media]))
@@ -1071,12 +1071,12 @@ class csstidy {
 	 * @param string $selector
 	 * @return string
 	 */
-	function css_new_selector($media,$selector){
-		if($this->get_cfg('preserve_css')) {
+	function css_new_selector($media,$selector) {
+		if ($this->get_cfg('preserve_css')) {
 			return $selector;
 		}
 		$selector = trim($selector);
-		if (strncmp($selector,"@font-face",10)!=0){
+		if (strncmp($selector,"@font-face",10)!=0) {
 			if ($this->settings['merge_selectors'] != false)
 				return $selector;
 
@@ -1086,7 +1086,7 @@ class csstidy {
 			// if last is the same, keep it
 			end($this->css[$media]);
 			list($sel,) = each($this->css[$media]);
-			if ($sel == $selector){
+			if ($sel == $selector) {
 				return $selector;
 			}
 		}
@@ -1106,8 +1106,8 @@ class csstidy {
 	 * @param string $property
 	 * @return string
 	 */
-	function css_new_property($media, $selector, $property){
-		if($this->get_cfg('preserve_css')) {
+	function css_new_property($media, $selector, $property) {
+		if ($this->get_cfg('preserve_css')) {
 			return $property;
 		}
 		if (!$this->css OR !isset($this->css[$media][$selector]) OR !$this->css[$media][$selector])
@@ -1232,20 +1232,18 @@ class csstidy {
 				$in_str = false;
 				$strings[] = $current_string;
 				$current_string = "";
-			}
-			else if ($value{$i} == '"' || $value{$i} == "'"){
+			} elseif ($value{$i} == '"' || $value{$i} == "'") {
 				if ($in_str === $value{$i}) {
 					$strings[] = $current_string;
 					$in_str = false;
 					$current_string = "";
 					continue;
-				}
-				else if (!$in_str) {
+				} elseif (!$in_str) {
 					$in_str = $value{$i};
 				}
 			}
 			else {
-				if ($in_str){
+				if ($in_str) {
 					$current_string .= $value{$i};
 				}
 				else {

@@ -179,7 +179,7 @@ class csstidy_optimise {
 			if ($this->sub_value === 'bold') {
 				$this->sub_value = '700';
 				$this->parser->log('Optimised font-weight: Changed "bold" to "700"', 'Information');
-			} else if ($this->sub_value === 'normal') {
+			} elseif ($this->sub_value === 'normal') {
 				$this->sub_value = '400';
 				$this->parser->log('Optimised font-weight: Changed "normal" to "400"', 'Information');
 			}
@@ -282,19 +282,19 @@ class csstidy_optimise {
 			return $color;
 
 		/* expressions complexes de type gradient */
-		if (strpos($color,"(")!==false AND strncmp($color,'rgb(',4)!=0){
+		if (strpos($color,"(")!==false AND strncmp($color,'rgb(',4)!=0) {
 			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
 			if (stripos($color,"progid:")!==false)
 				return $color;
 			preg_match_all(",rgb\([^)]+\),i",$color,$matches,PREG_SET_ORDER);
-			if (count($matches)){
-				foreach ($matches as $m){
+			if (count($matches)) {
+				foreach ($matches as $m) {
 					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
 				}
 			}
 			preg_match_all(",#[0-9a-f]{6}(?=[^0-9a-f]),i",$color,$matches,PREG_SET_ORDER);
-			if (count($matches)){
-				foreach ($matches as $m){
+			if (count($matches)) {
+				foreach ($matches as $m) {
 					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
 				}
 			}

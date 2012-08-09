@@ -97,7 +97,7 @@ class csstidy_csst extends SimpleExpectation
 		$css = new csstidy();
 		$css->set_cfg($this->settings);
 		$css->parse($this->css);
-				if ($this->print){
+				if ($this->print) {
 					$this->actual = $css->print->plain($this->default_media);
 				}
 				else{

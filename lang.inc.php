@@ -27,14 +27,12 @@
  */
 
 
-if(isset($_GET['lang'])) {
+if (isset($_GET['lang'])) {
 	$l = $_GET['lang'];
-}
-else if(isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+} elseif (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
 	$l = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 	$l = strtolower(substr($l, 0, 2));
-}
-else {
+} else {
 	$l = '';
 }
 
