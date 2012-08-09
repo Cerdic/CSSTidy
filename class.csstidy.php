@@ -260,9 +260,9 @@ class csstidy {
 		$this->settings['compress_font-weight'] = true;
 		$this->settings['lowercase_s'] = false;
 		/*
-		  1 common shorthands optimization
-		  2 + font property optimization
-		  3 + background property optimization
+			1 common shorthands optimization
+			2 + font property optimization
+			3 + background property optimization
 		 */
 		$this->settings['optimise_shorthands'] = 1;
 		$this->settings['remove_last_;'] = true;
@@ -273,9 +273,9 @@ class csstidy {
 		 */
 		$this->settings['sort_properties'] = false;
 		/*
-		  1, 3, 5, etc -- enable sorting selectors inside @media: a{}b{}c{}
-		  2, 5, 8, etc -- enable sorting selectors inside one CSS declaration: a,b,c{}
-		  preserve order by default cause it can break functionnality
+			1, 3, 5, etc -- enable sorting selectors inside @media: a{}b{}c{}
+			2, 5, 8, etc -- enable sorting selectors inside one CSS declaration: a,b,c{}
+			preserve order by default cause it can break functionnality
 		 */
 		$this->settings['sort_selectors'] = 0;
 		/* is dangeroues to be used: CSS is broken sometimes */
@@ -708,7 +708,7 @@ class csstidy {
 						// else this is dumb IE a hack, keep it
 						// including //
 						elseif (($this->property=='' AND !ctype_space($string{$i}))
-						  OR ($this->property=='/' OR $string{$i}=="/")) {
+							OR ($this->property=='/' OR $string{$i}=="/")) {
 							$this->property .= $string{$i};
 						}
 					}
@@ -840,7 +840,7 @@ class csstidy {
 					$_quoted_string = $this->quoted_string[count($this->quoted_string)-1];
 					$temp_add = $string{$i};
 
-					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses, but 
+					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses, but
 					// parentheticals can be nested more than once.
 					if ($_str_char === ")" && ($string{$i} === "(" || $string{$i} === '"' || $string{$i} === '\'') && !csstidy::escaped($string, $i)) {
 						$this->cur_string[] = $string{$i};
@@ -1143,7 +1143,7 @@ class csstidy {
 	static function is_important(&$value) {
 		return (
 			strpos($value,"!")!==false // quick test
-		  AND !strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'], '', $value), -10, 10), '!important'));
+			AND !strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'], '', $value), -10, 10), '!important'));
 	}
 
 	/**
