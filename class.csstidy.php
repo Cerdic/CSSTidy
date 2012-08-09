@@ -711,8 +711,7 @@ class csstidy {
 							OR ($this->property=='/' OR $string{$i}=="/")) {
 							$this->property .= $string{$i};
 						}
-					}
-					elseif (!ctype_space($string{$i})) {
+					} elseif (!ctype_space($string{$i})) {
 						$this->property .= $string{$i};
 					}
 					break;
@@ -901,8 +900,7 @@ class csstidy {
 						} elseif ($this->status === 'instr') {
 							$this->cur_string[count($this->cur_string)-1] .= $_cur_string;
 						}
-					}
-					else {
+					} else {
 						$this->cur_string[count($this->cur_string)-1] = $_cur_string;
 					}
 					break;
@@ -944,8 +942,7 @@ class csstidy {
 			$format_strings = csstidy::parse_string_list(substr($value, 7, $p-7));
 			if (!$format_strings) {
 				$value = "";
-			}
-			else {
+			} else {
 				$value = "format(";
 
 				foreach ($format_strings as $format_string) {
@@ -1241,12 +1238,10 @@ class csstidy {
 				} elseif (!$in_str) {
 					$in_str = $value{$i};
 				}
-			}
-			else {
+			} else {
 				if ($in_str) {
 					$current_string .= $value{$i};
-				}
-				else {
+				} else {
 					if (!preg_match("/[\s,]/", $value{$i})) {
 						$in_str = true;
 						$current_string = $value{$i};

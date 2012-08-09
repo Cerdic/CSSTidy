@@ -695,8 +695,7 @@ class csstidy_optimise {
 						$return['background-position'] .= ' '; else
 						$return['background-position'].= ',';
 					$have['pos'] = true;
-				}
-				elseif (!$have['color']) {
+				} elseif (!$have['color']) {
 					$return['background-color'] .= $str_value[$i][$j] . ',';
 					$have['color'] = true;
 				}

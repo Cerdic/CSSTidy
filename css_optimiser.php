@@ -67,8 +67,7 @@ function rmdirr($dirname,$oc=0)
 		$dir->close();
 	}
 	// Clean up
-	if ($oc==1)
-	{
+	if ($oc==1) {
 		return rmdir($dirname);
 	}
 }
@@ -80,8 +79,7 @@ function options($options, $selected = null, $labelIsValue = false)
 	settype($selected, 'array');
 	settype($options, 'array');
 
-	foreach ($options as $value=>$label)
-	{
+	foreach ($options as $value=>$label) {
 		if (is_array($label)) {
 			$value = $label[0];
 			$label = $label[1];
@@ -134,23 +132,18 @@ if (isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
 // genuine XHTML DOM (when XHTML served as such) as lower
 if (stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml')) {
 	$http_accept = 'application/xhtml+xml';
-}
-elseif (stristr($_SERVER['HTTP_ACCEPT'], 'application/xml')) {
+} elseif (stristr($_SERVER['HTTP_ACCEPT'], 'application/xml')) {
 	$http_accept = 'application/xml';
-}
-elseif (stristr($_SERVER['HTTP_ACCEPT'], 'text/xml')) {
+} elseif (stristr($_SERVER['HTTP_ACCEPT'], 'text/xml')) {
 	$http_accept = 'text/xml';
-}
-elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'Opera ') || stristr($_SERVER['HTTP_USER_AGENT'], 'Opera/')) {
+} elseif (stristr($_SERVER['HTTP_USER_AGENT'], 'Opera ') || stristr($_SERVER['HTTP_USER_AGENT'], 'Opera/')) {
 	preg_match('@Opera/(\d)@', $_SERVER['HTTP_USER_AGENT'], $matches);
 	if (isset($matches[1]) && $matches[1] >= 7) {
 		$http_accept = 'application/xhtml+xml';
-	}
-	else {
+	} else {
 		$http_accept = 'text/html';
 	}
-}
-else {
+} else {
 	$http_accept = 'text/html';
 }
 
@@ -161,8 +154,7 @@ if ($http_accept === 'text/html') {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <?php
-}
-else {
+} else {
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <?php
@@ -176,8 +168,7 @@ else {
 	</title>
 	<link rel="stylesheet" href="cssparse.css" type="text/css" />
 	<script type="text/javascript"><!--/*--><![CDATA[/*><!--*/
-	function enable_disable_preserve()
-	{
+	function enable_disable_preserve() {
 		var inputs =   new Array('sort_sel', 'sort_de', 'optimise_shorthands', 'merge_selectors', 'none');
 		var inputs_v = new Array( true,       true,      true,                  true,              false);
 		for (var i = 0; i < inputs.length; i++) {
@@ -188,8 +179,7 @@ else {
 			}
 		}
 	}
-	function ClipBoard()
-	{
+	function ClipBoard() {
 		if (window.clipboardData) { // Feature testing
 			window.clipboardData.setData('Text',document.getElementById("copytext").innerText);
 		} else if (navigator.userAgent.indexOf('Gecko') != -1
@@ -352,13 +342,10 @@ else {
 
 	$url = (isset($_REQUEST['url']) && !empty($_REQUEST['url'])) ? $_REQUEST['url'] : false;
 
-	if (isset($_REQUEST['template']))
-	{
-		switch ($_REQUEST['template'])
-		{
+	if (isset($_REQUEST['template'])) {
+		switch ($_REQUEST['template']) {
 			case 4:
-			if ($is_custom)
-			{
+			if ($is_custom) {
 				$css->load_template($_REQUEST['custom'],false);
 			}
 			break;
@@ -377,25 +364,19 @@ else {
 		}
 	}
 
-	if ($url)
-	{
-		if (substr($_REQUEST['url'],0,7) !== 'http://')
-		{
+	if ($url) {
+		if (substr($_REQUEST['url'],0,7) !== 'http://') {
 			$_REQUEST['url'] = 'http://'.$_REQUEST['url'];
 		}
 		$result = $css->parse_from_url($_REQUEST['url'],0);
-	}
-	elseif(isset($_REQUEST['css_text']) && strlen($_REQUEST['css_text'])>5)
-	{
+	} elseif (isset($_REQUEST['css_text']) && strlen($_REQUEST['css_text'])>5) {
 		$result = $css->parse($_REQUEST['css_text']);
 	}
 
-	if ($result)
-	{
+	if ($result) {
 		$ratio = $css->print->get_ratio();
 		$diff = $css->print->get_diff();
-		if (isset($_REQUEST['file_output']))
-		{
+		if (isset($_REQUEST['file_output'])) {
 			$filename = md5(mt_rand().time().mt_rand());
 			if (!is_dir('temp')) {
 				$madedir = mkdir('temp');
@@ -406,8 +387,7 @@ else {
 			}
 			$handle = fopen('temp/'.$filename.'.css','w');
 			if ($handle) {
-				if (fwrite($handle,$css->print->plain()))
-				{
+				if (fwrite($handle,$css->print->plain())) {
 					$file_ok = true;
 				}
 			}
@@ -419,12 +399,10 @@ else {
 		if (count($css->log) > 0): ?>
 		<fieldset id="messages"><legend>Messages</legend>
 			<div><dl><?php
-			foreach ($css->log as $line => $array)
-			{
+			foreach ($css->log as $line => $array) {
 				echo '<dt>',$line,'</dt>';
 				$array_size = count($array);
-				for ($i = 0; $i < $array_size; ++$i)
-				{
+				for ($i = 0; $i < $array_size; ++$i) {
 					echo '<dd class="',$array[$i]['t'],'">',$array[$i]['m'],'</dd>';
 				}
 			}
@@ -432,8 +410,7 @@ else {
 		</fieldset>
 		<?php endif;
 		echo '<fieldset><legend>',$lang[$l][37],': ',$css->print->size('input'),'KB, ',$lang[$l][38],':',$css->print->size('output'),'KB, ',$lang[$l][36],': ',$ratio;
-		if ($file_ok)
-		{
+		if ($file_ok) {
 			echo ' - <a href="temp/',$filename,'.css">Download</a>';
 		}
 		echo ' - <a href="javascript:ClipBoard()">',$lang[$l][58],'</a>';
@@ -447,8 +424,7 @@ else {
 
 		if (isset($_REQUEST['whole_file'])) {
 			echo htmlspecialchars($css->print->formatted_page('xhtml1.1', false, '', 'en'), ENT_QUOTES, 'utf-8');
-		}
-		else {
+		} else {
 			echo htmlspecialchars('<code id="copytext">', ENT_QUOTES, 'utf-8'),"\n";
 			echo htmlspecialchars($css->print->formatted()."\n".'</code>', ENT_QUOTES, 'utf-8');
 		}
@@ -461,8 +437,7 @@ else {
 
 		echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; ',$lang[$l][59],'</a></p>';
 
-	 }
-	 elseif(isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) {
+	 } elseif (isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) {
 		echo '<p class="important">',$lang[$l][28],'</p>';
 	 }
 	 ?>

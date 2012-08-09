@@ -311,8 +311,7 @@ class csstidy_print {
 				if (strlen(trim($medium))) {
 					$this->parser->_add_token(AT_START, $medium, true);
 				}
-			}
-			elseif ($default_media) {
+			} elseif ($default_media) {
 				$this->parser->_add_token(AT_START, $default_media, true);
 			}
 
@@ -352,8 +351,7 @@ class csstidy_print {
 				if (strlen(trim($medium))) {
 					$this->parser->_add_token(AT_END, $medium, true);
 				}
-			}
-			elseif ($default_media) {
+			} elseif ($default_media) {
 				$this->parser->_add_token(AT_END, $default_media, true);
 			}
 		}

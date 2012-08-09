@@ -78,8 +78,7 @@ class csstidy_csst extends SimpleExpectation
 		}
 				if ($this->print) {
 					$this->expect = trim($this->expect);
-				}
-				else {
+				} else {
 					if ($this->expect)
 						$this->expect = eval("return ".$this->expect.";");
 					if (!$this->fullexpect)
@@ -99,8 +98,7 @@ class csstidy_csst extends SimpleExpectation
 		$css->parse($this->css);
 				if ($this->print) {
 					$this->actual = $css->print->plain($this->default_media);
-				}
-				else{
+				} else {
 					$this->actual = $css->css;
 				}
 		return $this->expect === $this->actual;
