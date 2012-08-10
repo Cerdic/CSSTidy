@@ -29,7 +29,7 @@
  * @author Nikolay Matsievsky (speed at webo dot name) 2009-2010
  * @author Cedric Morin (cedric at yterium dot com) 2010-2012
  * @author Christopher Finke (cfinke at gmail.com) 2012
- * @author Mark Scherer (remove $this->data once and for all + PHP5.4 comp) 2012
+ * @author Mark Scherer (remove $GLOBALS once and for all + PHP5.4 comp) 2012
  */
 
 /**
