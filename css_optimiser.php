@@ -150,17 +150,17 @@ if (stristr($_SERVER['HTTP_ACCEPT'], 'application/xhtml+xml')) {
 header('Content-Type: '.$http_accept.'; charset=utf-8');
 
 if ($http_accept === 'text/html') {
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <?php
 } else {
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+	
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <?php
 }
-?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $l; ?>">
+
+?><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $l; ?>">
 	<head>
 	<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
 	<title>
@@ -228,7 +228,7 @@ if ($http_accept === 'text/html') {
 			<fieldset id="code_layout">
 			<legend><?php echo $lang[$l][11]; ?></legend> <label for="template"
 			class="block"><?php echo $lang[$l][12]; ?></label> <select
-			id="template" name="template" style="margin-bottom:1em;">
+			id="template" name="template" style="margin-bottom:1em">
 				<?php
 				$num = (isset($_REQUEST['template'])) ? intval($_REQUEST['template']) : 1;
 				echo options(array(3 => $lang[$l][13], 2 => $lang[$l][14], 1 => $lang[$l][15], 0 => $lang[$l][16], 4 => $lang[$l][17]), $num);
@@ -393,7 +393,7 @@ if ($http_accept === 'text/html') {
 			}
 			fclose($handle);
 		}
-		if ($ratio>0) $ratio = '<span style="color:green;">'.$ratio.'%</span>
+		if ($ratio>0) $ratio = '<span style="color:green">'.$ratio.'%</span>
 	('.$diff.' Bytes)'; else $ratio = '<span
 	style="color:red;">'.$ratio.'%</span> ('.$diff.' Bytes)';
 		if (count($css->log) > 0): ?>
@@ -413,14 +413,14 @@ if ($http_accept === 'text/html') {
 		if ($file_ok) {
 			echo ' - <a href="temp/',$filename,'.css">Download</a>';
 		}
-		echo ' - <a href="javascript:ClipBoard()">',$lang[$l][58],'</a>';
-		echo '</legend>';
-		echo '<code id="copytext">';
-		echo $css->print->formatted();
-		echo '</code></fieldset><div><br /></div>';
+		echo ' - <a href="javascript:ClipBoard()">',$lang[$l][58],'</a>'
+		, '</legend>'
+		, '<code id="copytext">'
+		, $css->print->formatted();
+		, '</code></fieldset><div><br /></div>'
 
-		echo '<fieldset class="code_output"><legend>',$lang[$l][64],'</legend>';
-		echo '<textarea rows="10" cols="80">';
+		, '<fieldset class="code_output"><legend>',$lang[$l][64],'</legend>'
+		, '<textarea rows="10" cols="80">';
 
 		if (isset($_REQUEST['whole_file'])) {
 			echo htmlspecialchars($css->print->formatted_page('xhtml1.1', false, '', 'en'), ENT_QUOTES, 'utf-8');
@@ -428,20 +428,20 @@ if ($http_accept === 'text/html') {
 			echo htmlspecialchars('<code id="copytext">', ENT_QUOTES, 'utf-8'),"\n";
 			echo htmlspecialchars($css->print->formatted()."\n".'</code>', ENT_QUOTES, 'utf-8');
 		}
-		echo '</textarea></fieldset>';
-		echo '<fieldset class="code_output"><legend>',$lang[$l][65],'</legend>';
-		echo '<textarea rows="10" cols="30">';
+		echo '</textarea></fieldset>'
+		, '<fieldset class="code_output"><legend>',$lang[$l][65],'</legend>'
+		, '<textarea rows="10" cols="30">';
 
 		echo file_get_contents('cssparsed.css');
-		echo '</textarea>';
+		echo '</textarea>'
 
-		echo '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; ',$lang[$l][59],'</a></p>';
+		, '</fieldset><p><a href="javascript:scrollTo(0,0)">&#8593; ',$lang[$l][59],'</a></p>';
 
 	 } elseif (isset($_REQUEST['css_text']) || isset($_REQUEST['url'])) {
 		echo '<p class="important">',$lang[$l][28],'</p>';
 	 }
 	 ?>
-	<p style="text-align:center;font-size:.8em;clear:both;">
+	<p style="text-align:center;font-size:.8em;clear:both">
 		<?php echo $lang[$l][61] ?> <a
 		href="http://csstidy.sourceforge.net/contact.php"><?php echo $lang[$l][62] ?></a>.
 	</p>
