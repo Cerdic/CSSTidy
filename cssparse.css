@@ -2,7 +2,7 @@
 
 html,body {
 font:.8em Verdana,Helvetica,sans-serif;
-background:#F8F8F6
+background:#f8f8f6
 }
 
 code {
@@ -17,7 +17,7 @@ fieldset {
 display:block;
 margin:.5em 0;
 padding:1em;
-border:solid #7284AB 2px
+border:solid #7284ab 2px
 }
 
 fieldset.code_output {
@@ -56,7 +56,7 @@ display:block
 }
 
 legend {
-background:#c4E1C3;
+background:#c4e1c3;
 padding:2px 4px;
 border:dashed 1px
 }
