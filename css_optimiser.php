@@ -416,7 +416,7 @@ if ($http_accept === 'text/html') {
 		echo ' - <a href="javascript:ClipBoard()">',$lang[$l][58],'</a>'
 		, '</legend>'
 		, '<code id="copytext">'
-		, $css->print->formatted();
+		, $css->print->formatted()
 		, '</code></fieldset><div><br /></div>'
 
 		, '<fieldset class="code_output"><legend>',$lang[$l][64],'</legend>'
