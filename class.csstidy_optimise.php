@@ -284,24 +284,24 @@ class csstidy_optimise {
 		$replace_colors = & $this->parser->data['csstidy']['replace_colors'];
 
 		// if it's a string, don't touch !
-		if (strncmp($color,"'",1)==0 OR strncmp($color,'"',1)==0)
+		if (strncmp($color, "'", 1) == 0 || strncmp($color, '"', 1) == 0)
 			return $color;
 
 		/* expressions complexes de type gradient */
-		if (strpos($color,"(")!==false AND strncmp($color,'rgb(',4)!=0) {
+		if (strpos($color, '(') !== false && strncmp($color, 'rgb(' ,4) != 0) {
 			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
-			if (stripos($color,"progid:")!==false)
+			if (stripos($color, 'progid:') !== false)
 				return $color;
-			preg_match_all(",rgb\([^)]+\),i",$color,$matches,PREG_SET_ORDER);
+			preg_match_all(",rgb\([^)]+\),i", $color, $matches, PREG_SET_ORDER);
 			if (count($matches)) {
 				foreach ($matches as $m) {
-					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
+					$color = str_replace($m[0], $this->cut_color($m[0]), $color);
 				}
 			}
-			preg_match_all(",#[0-9a-f]{6}(?=[^0-9a-f]),i",$color,$matches,PREG_SET_ORDER);
+			preg_match_all(",#[0-9a-f]{6}(?=[^0-9a-f]),i", $color, $matches, PREG_SET_ORDER);
 			if (count($matches)) {
 				foreach ($matches as $m) {
-					$color = str_replace($m[0],$this->cut_color($m[0]),$color);
+					$color = str_replace($m[0],$this->cut_color($m[0]), $color);
 				}
 			}
 			return $color;
@@ -652,7 +652,7 @@ class csstidy_optimise {
 	 */
 	public function dissolve_short_bg($str_value) {
 		// don't try to explose background gradient !
-		if (stripos($str_value, "gradient(")!==FALSE)
+		if (stripos($str_value, 'gradient(')!== false)
 			return array('background'=>$str_value);
 
 		$background_prop_default = & $this->parser->data['csstidy']['background_prop_default'];
@@ -737,7 +737,7 @@ class csstidy_optimise {
 		$important = '';
 
 		// if background properties is here and not empty, don't try anything
-		if (isset($input_css['background']) AND $input_css['background'])
+		if (isset($input_css['background']) && $input_css['background'])
 			return $input_css;
 
 		for ($i = 0; $i < $number_of_values; $i++) {
@@ -749,7 +749,7 @@ class csstidy_optimise {
 
 				$cur_value = $input_css[$bg_property];
 				// skip all optimisation if gradient() somewhere
-				if (stripos($cur_value, "gradient(")!==FALSE)
+				if (stripos($cur_value, 'gradient(') !== false)
 					return $input_css;
 
 				// Skip some properties if there is no background image
@@ -902,19 +902,19 @@ class csstidy_optimise {
 		if (isset($input_css['font-family']) && isset($input_css['font-size'])) {
 			// fix several words in font-family - add quotes
 			if (isset($input_css['font-family'])) {
-				$families = explode(",", $input_css['font-family']);
+				$families = explode(',', $input_css['font-family']);
 				$result_families = array();
 				foreach ($families as $family) {
 					$family = trim($family);
 					$len = strlen($family);
-					if (strpos($family, " ") &&
-									!(($family{0} == '"' && $family{$len - 1} == '"') ||
-									($family{0} == "'" && $family{$len - 1} == "'"))) {
+					if (strpos($family, ' ') &&
+									!(($family{0} === '"' && $family{$len - 1} === '"') ||
+									($family{0} === "'" && $family{$len - 1} === "'"))) {
 						$family = '"' . $family . '"';
 					}
 					$result_families[] = $family;
 				}
-				$input_css['font-family'] = implode(",", $result_families);
+				$input_css['font-family'] = implode(',', $result_families);
 			}
 			foreach ($font_prop_default as $font_property => $default_value) {
 
@@ -946,7 +946,7 @@ class csstidy_optimise {
 
 			// Delete all font-properties
 			foreach ($font_prop_default as $font_property => $default_value) {
-				if ($font_property!=='font' OR !$new_font_value)
+				if ($font_property !== 'font' || !$new_font_value)
 					unset($input_css[$font_property]);
 			}
 
