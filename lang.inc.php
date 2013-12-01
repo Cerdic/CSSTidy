@@ -175,8 +175,8 @@ $lang['de'][65] = 'CSS to style CSS output';
 $lang['de'][66] = 'You need to go to about:config in your URL bar, select \'signed.applets.codebase_principal_support\' in the filter field, and set its value to true in order to use this feature; however, be aware that doing so increases security risks.';
 
 
-$lang['fr'][0] = 'CSS Formatteur et Optimiseur (basé sur CSSTidy ';
-$lang['fr'][1] = 'CSS Formatteur et Optimiseur';
+$lang['fr'][0] = 'CSS Formateur et Optimiseur (basé sur CSSTidy ';
+$lang['fr'][1] = 'CSS Formateur et Optimiseur';
 $lang['fr'][2] = '(basé sur ';
 $lang['fr'][3] = '(Version texte)';
 $lang['fr'][4] = 'Note Importante&#160;:';
@@ -233,13 +233,13 @@ $lang['fr'][56] = 'Toutes les optimisations';
 $lang['fr'][57] = 'Ajouter un timestamp';
 $lang['fr'][58] = 'Copier dans le presse-papiers';
 $lang['fr'][59] = 'Retour en haut';
-$lang['fr'][60] = 'Votre navigateur ne suporte pas la copie vers le presse-papiers.';
+$lang['fr'][60] = 'Votre navigateur ne supporte pas la copie vers le presse-papiers.';
 $lang['fr'][61] = 'Pour signaler des bugs ou pour des suggestions,';
 $lang['fr'][62] = 'contactez-moi';
 $lang['fr'][63] = 'Sauver le code CSS comme document complet HTML';
 $lang['fr'][64] = 'Code';
 $lang['fr'][65] = 'CSS pour colorier la sortie CSS';
-$lang['fr'][66] = 'Vous devez aller dans about:config dans votre barre d’adresse, selectionner \'signed.applets.codebase_principal_support\' dans le champ Filtre et attribuez-lui la valeur \'true\' pour utiliser cette fonctionnalité; toutefois, soyez conscient que cela augmente les risques de sécurité.';
+$lang['fr'][66] = 'Vous devez aller dans about:config dans votre barre d’adresse, sélectionner \'signed.applets.codebase_principal_support\' dans le champ Filtre et attribuez-lui la valeur \'true\' pour utiliser cette fonctionnalité; toutefois, soyez conscient que cela augmente les risques de sécurité.';
 
 
 $lang['zh'][0] = 'CSS整形與最佳化工具(使用 CSSTidy ';
