@@ -248,7 +248,7 @@ class csstidy {
 	 * List of tokens
 	 * @var string
 	 */
-	var $tokens_list = "";
+	var $tokens_list = '';
 	/**
 	 * Loads standard template and sets default settings
 	 * @access private
@@ -609,10 +609,10 @@ class csstidy {
 							foreach ($at_rules as $name => $type) {
 								if (!strcasecmp(substr($string, $i + 1, strlen($name)), $name)) {
 									($type === 'at') ? $this->at = '@' . $name : $this->selector = '@' . $name;
-									if ($type === "atis") {
+									if ($type === 'atis') {
 										$this->next_selector_at = ($this->next_selector_at?$this->next_selector_at:($this->at?$this->at:DEFAULT_AT));
 										$this->at = $this->css_new_media_section(' ');
-										$type = "is";
+										$type = 'is';
 									}
 									$this->status = $type;
 									$i += strlen($name);
@@ -637,7 +637,7 @@ class csstidy {
 							$this->str_char[] = $string{$i};
 							$this->from[] = 'is';
 							/* fixing CSS3 attribute selectors, i.e. a[href$=".mp3" */
-							$this->quoted_string[] = ($string{$i - 1} == '=' );
+							$this->quoted_string[] = ($string{$i - 1} === '=' );
 						} elseif ($this->invalid_at && $string{$i} === ';') {
 							$this->invalid_at = false;
 							$this->status = 'is';
@@ -707,8 +707,8 @@ class csstidy {
 						}
 						// else this is dumb IE a hack, keep it
 						// including //
-						elseif (($this->property=='' AND !ctype_space($string{$i}))
-							OR ($this->property=='/' OR $string{$i}=="/")) {
+						elseif (($this->property === '' && !ctype_space($string{$i}))
+							|| ($this->property === '/' || $string{$i} === '/')) {
 							$this->property .= $string{$i};
 						}
 					} elseif (!ctype_space($string{$i})) {
@@ -780,12 +780,12 @@ class csstidy {
 							$this->value = '';
 							while (count($this->sub_value_arr)) {
 								$sub = array_shift($this->sub_value_arr);
-								if (strstr($this->selector, "font-face")) {
+								if (strstr($this->selector, 'font-face')) {
 									$sub = $this->quote_font_format($sub);
 								}
 
 								if ($sub != '')
-									$this->value .= ((!strlen($this->value) OR substr($this->value,-1,1)==',')?'':' ').$sub;
+									$this->value .= ((!strlen($this->value) || substr($this->value,-1,1) === ',')?'':' ').$sub;
 							}
 
 							$this->optimise->value();
@@ -841,15 +841,15 @@ class csstidy {
 
 					// Add another string to the stack. Strings can't be nested inside of quotes, only parentheses, but
 					// parentheticals can be nested more than once.
-					if ($_str_char === ")" && ($string{$i} === "(" || $string{$i} === '"' || $string{$i} === '\'') && !csstidy::escaped($string, $i)) {
+					if ($_str_char === ')' && ($string{$i} === '(' || $string{$i} === '"' || $string{$i} === '\'') && !csstidy::escaped($string, $i)) {
 						$this->cur_string[] = $string{$i};
-						$this->str_char[] = $string{$i} == "(" ? ")" : $string{$i};
+						$this->str_char[] = $string{$i} === '(' ? ')' : $string{$i};
 						$this->from[] = 'instr';
-						$this->quoted_string[] = ($_str_char === ")" AND $string{$i} !== "(" AND trim($_cur_string)=="(")?$_quoted_string:!($string{$i} === "(");
+						$this->quoted_string[] = ($_str_char === ')' && $string{$i} !== '(' && trim($_cur_string)==='(')?$_quoted_string:!($string{$i} === '(');
 						continue;
 					}
 
-					if ($_str_char !== ")" && ($string{$i} === "\n" || $string{$i} === "\r") && !($string{$i - 1} === '\\' && !csstidy::escaped($string, $i - 1))) {
+					if ($_str_char !== ')' && ($string{$i} === "\n" || $string{$i} === "\r") && !($string{$i - 1} === '\\' && !csstidy::escaped($string, $i - 1))) {
 						$temp_add = "\\A";
 						$this->log('Fixed incorrect newline in string', 'Warning');
 					}
@@ -881,18 +881,18 @@ class csstidy {
 						array_pop($this->quoted_string);
 						array_pop($this->str_char);
 
-						if ($_str_char === ")") {
-							$_cur_string = "(" . trim(substr($_cur_string, 1, -1)) . ")";
+						if ($_str_char === ')') {
+							$_cur_string = '(' . trim(substr($_cur_string, 1, -1)) . ')';
 						}
 
 						if ($this->status === 'iv') {
 							if (!$_quoted_string) {
-								if (strpos($_cur_string,',')!==false)
+								if (strpos($_cur_string,',') !== false)
 									// we can on only remove space next to ','
-									$_cur_string = implode(',',array_map('trim',explode(',',$_cur_string)));
+									$_cur_string = implode(',', array_map('trim', explode(',',$_cur_string)));
 								// and multiple spaces (too expensive)
-								if (strpos($_cur_string,'  ')!==false)
-									$_cur_string = preg_replace(",\s+,"," ",$_cur_string);
+								if (strpos($_cur_string, '  ') !== false)
+									$_cur_string = preg_replace(",\s+,", ' ', $_cur_string);
 							}
 							$this->sub_value .= $_cur_string;
 						} elseif ($this->status === 'is') {
@@ -936,14 +936,14 @@ class csstidy {
 	 * @return string
 	 */
 	function quote_font_format($value) {
-		if (strncmp($value,'format',6)==0) {
-			$p = strrpos($value,")");
+		if (strncmp($value,'format',6) == 0) {
+			$p = strrpos($value,')');
 			$end = substr($value,$p);
 			$format_strings = csstidy::parse_string_list(substr($value, 7, $p-7));
 			if (!$format_strings) {
-				$value = "";
+				$value = '';
 			} else {
-				$value = "format(";
+				$value = 'format(';
 
 				foreach ($format_strings as $format_string) {
 					$value .= '"' . str_replace('"', '\\"', $format_string) . '",';
@@ -1039,7 +1039,7 @@ class csstidy {
 
 		// if the last @media is the same as this
 		// keep it
-		if (!$this->css OR !is_array($this->css) OR empty($this->css)) {
+		if (!$this->css || !is_array($this->css) || empty($this->css)) {
 			return $media;
 		}
 		end($this->css);
@@ -1051,7 +1051,7 @@ class csstidy {
 			if (is_numeric($media))
 				$media++;
 			else
-				$media .= " ";
+				$media .= ' ';
 		return $media;
 	}
 
@@ -1073,11 +1073,11 @@ class csstidy {
 			return $selector;
 		}
 		$selector = trim($selector);
-		if (strncmp($selector,"@font-face",10)!=0) {
+		if (strncmp($selector,'@font-face',10)!=0) {
 			if ($this->settings['merge_selectors'] != false)
 				return $selector;
 
-			if (!$this->css OR !isset($this->css[$media]) OR !$this->css[$media])
+			if (!$this->css || !isset($this->css[$media]) || !$this->css[$media])
 				return $selector;
 
 			// if last is the same, keep it
@@ -1089,7 +1089,7 @@ class csstidy {
 		}
 
 		while (isset($this->css[$media][$selector]))
-			$selector .= " ";
+			$selector .= ' ';
 		return $selector;
 	}
 
@@ -1107,11 +1107,11 @@ class csstidy {
 		if ($this->get_cfg('preserve_css')) {
 			return $property;
 		}
-		if (!$this->css OR !isset($this->css[$media][$selector]) OR !$this->css[$media][$selector])
+		if (!$this->css || !isset($this->css[$media][$selector]) || !$this->css[$media][$selector])
 			return $property;
 
 		while (isset($this->css[$media][$selector][$property]))
-			$property .= " ";
+			$property .= ' ';
 
 		return $property;
 	}
@@ -1139,7 +1139,7 @@ class csstidy {
 	 */
 	static function is_important(&$value) {
 		return (
-			strpos($value,"!")!==false // quick test
+			strpos($value, '!') !== false // quick test
 			AND !strcasecmp(substr(str_replace($GLOBALS['csstidy']['whitespace'], '', $value), -10, 10), '!important'));
 	}
 
@@ -1222,18 +1222,18 @@ class csstidy {
 		$strings = array();
 
 		$in_str = false;
-		$current_string = "";
+		$current_string = '';
 
 		for ($i = 0, $_len = strlen($value); $i < $_len; $i++) {
-			if (($value{$i} == "," || $value{$i} === " ") && $in_str === true) {
+			if (($value{$i} === ',' || $value{$i} === ' ') && $in_str === true) {
 				$in_str = false;
 				$strings[] = $current_string;
-				$current_string = "";
-			} elseif ($value{$i} == '"' || $value{$i} == "'") {
+				$current_string = '';
+			} elseif ($value{$i} === '"' || $value{$i} === "'") {
 				if ($in_str === $value{$i}) {
 					$strings[] = $current_string;
 					$in_str = false;
-					$current_string = "";
+					$current_string = '';
 					continue;
 				} elseif (!$in_str) {
 					$in_str = $value{$i};
