@@ -2,13 +2,17 @@ CSSTidy
 ---
 
 CSSTidy is a CSS minifier 
-Since the original project (http://csstidy.sourceforge.net/index.php) has been suspended
-here is the import of https://csstidy.svn.sourceforge.net/svnroot/csstidy on 2010-11-14
+
+v1.5.2
+  is PHP 5.4+ compliant, removes use of GLOBALS, fixes some bugs, integrates CSS3 units
+  and now available on https://packagist.org/packages/cerdic/css-tidy
 
 v1.4 is the new version coming from master branch (corresponds to the initial trunk of svn repository) after beeing stabilized
 
 v1.3 branch corresponds to the last stable relase published by the author.
 It integrates some bugfixes and a 1.3.1 version has been taged
+Since the original project (http://csstidy.sourceforge.net/index.php) has been suspended
+here is the import of https://csstidy.svn.sourceforge.net/svnroot/csstidy on 2010-11-14
 
 Only PHP version is here maintained
 
