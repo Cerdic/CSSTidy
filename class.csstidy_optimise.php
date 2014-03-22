@@ -900,7 +900,7 @@ class csstidy_optimise {
 		$new_font_value = '';
 		$important = '';
 		// Skip if not font-family and font-size set
-		if (isset($input_css['font-family']) && isset($input_css['font-size'])) {
+		if (isset($input_css['font-family']) && isset($input_css['font-size']) && $input_css['font-family'] != 'inherit') {
 			// fix several words in font-family - add quotes
 			if (isset($input_css['font-family'])) {
 				$families = explode(',', $input_css['font-family']);
