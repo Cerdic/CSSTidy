@@ -699,8 +699,8 @@ class csstidy {
 							$this->sel_separate[] = strlen($this->selector);
 						} elseif ($string{$i} === '\\') {
 							$this->selector .= $this->_unicode($string, $i);
-						} elseif ($string{$i} === '*' && @in_array($string{$i + 1}, array('.', '#', '[', ':'))) {
-							// remove unnecessary universal selector, FS#147
+						} elseif ($string{$i} === '*' && @in_array($string{$i + 1}, array('.', '#', '[', ':')) && ($i==0 OR $string{$i - 1}!=='/')) {
+							// remove unnecessary universal selector, FS#147, but not comment in selector
 						} else {
 							$this->selector .= $string{$i};
 						}
