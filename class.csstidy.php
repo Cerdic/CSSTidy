@@ -302,6 +302,7 @@ class csstidy {
 		 */
 		$this->settings['optimise_shorthands'] = 1;
 		$this->settings['remove_last_;'] = true;
+		$this->settings['space_before_important'] = false;
 		/* rewrite all properties with low case, better for later gzip OK, safe*/
 		$this->settings['case_properties'] = 1;
 		/* sort properties in alpabetic order, better for later gzip

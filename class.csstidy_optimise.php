@@ -269,7 +269,8 @@ class csstidy_optimise {
 	 */
 	public function compress_important(&$string) {
 		if ($this->parser->is_important($string)) {
-			$string = $this->parser->gvw_important($string) . '!important';
+			$important = $this->parser->get_cfg('space_before_important') ? ' !important' : '!important';
+			$string = $this->parser->gvw_important($string) . $important;
 		}
 		return $string;
 	}
