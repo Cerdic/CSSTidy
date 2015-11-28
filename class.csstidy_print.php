@@ -256,9 +256,11 @@ class csstidy_print {
 
 				case AT_END:
 					$out = & $output;
-					$out .= $template[10] . str_replace("\n", "\n" . $template[10], $in_at_out);
+					$in_at_out = str_replace("\n\n", "\r\n", $in_at_out); // don't fill empty lines
+					$in_at_out = str_replace("\n", "\n" . $template[10], $in_at_out);
+					$in_at_out = str_replace("\r\n", "\n\n", $in_at_out);
+					$out .= $template[10] . $in_at_out . $template[9];
 					$in_at_out = '';
-					$out .= $template[9];
 					break;
 
 				case COMMENT:
