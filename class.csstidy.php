@@ -147,7 +147,7 @@ class csstidy {
 	 * @var string
 	 * @access private
 	 */
-	public $version = '1.5.2';
+	public $version = '1.5.5';
 	/**
 	 * Stores the settings
 	 * @var array
