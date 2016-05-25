@@ -1150,7 +1150,7 @@ class csstidy {
 		while (isset($this->css[$media][$selector][$property]))
 			$property .= ' ';
 
-		return $property;
+		return trim($property);
 	}
 
 	/**
