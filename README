@@ -3,6 +3,9 @@ CSSTidy
 
 CSSTidy is a CSS minifier 
 
+v1.5.6
+  fixes minor bugs, mainly on CSS3 properties/units
+
 v1.5.2
   is PHP 5.4+ compliant, removes use of GLOBALS, fixes some bugs, integrates CSS3 units
   and now available on https://packagist.org/packages/cerdic/css-tidy
