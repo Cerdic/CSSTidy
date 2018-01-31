@@ -312,7 +312,7 @@ if ($http_accept === 'text/html') {
 			<input type="checkbox" id="discard" name="discard"
 					 <?php if ($css->get_cfg('discard_invalid_properties')) echo 'checked="checked"'; ?> />
 			<label for="discard"><?php echo $lang[$l][43]; ?></label>
-			<select name="css_level"><?php echo options(array('CSS2.1','CSS2.0','CSS1.0'),$css->get_cfg('css_level'), true); ?></select><br />
+			<select name="css_level"><?php echo options(array('CSS3.0','CSS2.1','CSS2.0','CSS1.0'),$css->get_cfg('css_level'), true); ?></select><br />
 
 
 			<input type="checkbox" id="timestamp" name="timestamp"
