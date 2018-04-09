@@ -11,7 +11,8 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/pear/Text_Diff"
+            "url": "https://github.com/pear/Text_Diff",
+            "no-api": true
         }
     ],
     "autoload": {
