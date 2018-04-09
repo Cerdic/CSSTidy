@@ -33,4 +33,4 @@ foreach ($test_files as $test_file) {
 if (SimpleReporter::inCli()) $reporter = new TextReporter();
 else $reporter = new csstidy_reporter('UTF-8');
 
-$test->run($reporter);
+exit ($test->run($reporter) ? 0 : 1);
