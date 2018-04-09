@@ -8,10 +8,29 @@
             "email": "changeme@mailinator.com"
         }
     ],
-    "autoload" : {
-        "classmap": ["."]
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/pear/Text_Diff"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "class.csstidy_optimise.php",
+            "class.csstidy_print.php",
+            "class.csstidy.php"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "testing"
+        ]
     },
     "require": {
 
+    },
+    "require-dev": {
+        "pear/text_diff": "^1.2",
+        "simpletest/simpletest": "^1.1"
     }
 }
