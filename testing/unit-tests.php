@@ -7,7 +7,7 @@
  *
  */
 
-error_reporting(E_ALL ^ 8192/*E_DEPRECATED*/);
+error_reporting(E_ALL);
 
 // Configuration
 if (file_exists('../test-settings.php')) include_once '../test-settings.php';
