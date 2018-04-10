@@ -73,7 +73,7 @@ define('DEFAULT_AT', 41);
 /**
  * Contains a class for printing CSS code
  *
- * @version 1.0
+ * @version 1.1.0
  */
 require('class.csstidy_print.php');
 
@@ -94,7 +94,7 @@ require('class.csstidy_optimise.php');
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 1.5.6
+ * @version 1.5.7
  */
 class csstidy {
 
@@ -147,7 +147,7 @@ class csstidy {
 	 * @var string
 	 * @access private
 	 */
-	public $version = '1.5.6';
+	public $version = '1.5.7';
 	/**
 	 * Stores the settings
 	 * @var array
