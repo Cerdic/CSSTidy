@@ -578,7 +578,9 @@ class csstidy_optimise {
 		$status = 'st';
 		$to = '';
 
-		$output = array();
+		$output = array(
+			0 => '',
+		);
 		$num = 0;
 		for ($i = 0, $len = strlen($string); $i < $len; $i++) {
 			switch ($status) {
@@ -603,11 +605,7 @@ class csstidy_optimise {
 			}
 		}
 
-		if (isset($output[0])) {
-			return $output;
-		} else {
-			return array($output);
-		}
+		return $output;
 	}
 
 	/**
