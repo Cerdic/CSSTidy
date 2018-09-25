@@ -1102,6 +1102,15 @@ class csstidy_optimise {
 	 * @param string $value
 	 * @return string
 	 */
+	public function reverse_left_and_right_background_position_x($value) {
+		return $this->reverse_left_and_right_background_position($value);
+	}
+
+	/**
+	 * Reversing background position shorthands
+	 * @param string $value
+	 * @return string
+	 */
 	public function reverse_left_and_right_background_position($value) {
 		// multiple background case
 		if (strpos($value, ',') !== false) {
