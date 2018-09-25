@@ -274,9 +274,10 @@ $data['csstidy']['shorthands']['border-style'] = array('border-top-style','borde
 $data['csstidy']['shorthands']['border-width'] = array('border-top-width','border-right-width','border-bottom-width','border-left-width');
 $data['csstidy']['shorthands']['margin'] = array('margin-top','margin-right','margin-bottom','margin-left');
 $data['csstidy']['shorthands']['padding'] = array('padding-top','padding-right','padding-bottom','padding-left');
-$data['csstidy']['shorthands']['-moz-border-radius'] = 0;
 
 $data['csstidy']['radius_shorthands']['border-radius'] = array('border-top-left-radius','border-top-right-radius','border-bottom-right-radius','border-bottom-left-radius');
+$data['csstidy']['radius_shorthands']['-webkit-border-radius'] = array('-webkit-border-top-left-radius','-webkit-border-top-right-radius','-webkit-border-bottom-right-radius','-webkit-border-bottom-left-radius');
+$data['csstidy']['radius_shorthands']['-moz-border-radius'] = array('-moz-border-radius-topleft','-moz-border-radius-topright','-moz-border-radius-bottomright','-moz-border-radius-bottomleft');
 
 /**
  * All CSS Properties. Needed for csstidy::property_is_next()

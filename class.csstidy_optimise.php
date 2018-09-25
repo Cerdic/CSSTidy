@@ -1190,6 +1190,24 @@ class csstidy_optimise {
 		return $this->reverse_left_and_right_4value_radius_shorthands('border-radius', $value);
 	}
 
+	/**
+	 * Reversing border-radius shorthands
+	 * @param string $value
+	 * @return string
+	 */
+	public function reverse_left_and_right__moz_border_radius($value) {
+		return $this->reverse_left_and_right_4value_radius_shorthands('border-radius', $value);
+	}
+
+	/**
+	 * Reversing border-radius shorthands
+	 * @param string $value
+	 * @return string
+	 */
+	public function reverse_left_and_right__webkit_border_radius($value) {
+		return $this->reverse_left_and_right_4value_radius_shorthands('border-radius', $value);
+	}
+
 
 	/**
 	 * Reversing background shorthands
