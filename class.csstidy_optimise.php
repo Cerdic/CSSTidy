@@ -977,7 +977,6 @@ class csstidy_optimise {
 	 */
 	public function reverse_left_and_right($array) {
 		$return = array();
-		$shorthands = & $this->parser->data['csstidy']['shorthands'];
 
 		// change left <-> right in properties name and values
 		foreach ($array as $propertie => $value) {
@@ -1008,18 +1007,32 @@ class csstidy_optimise {
 	 * @param string $value
 	 * @return string
 	 */
-	public function reverse_left_and_right_margin($value) {
-		$v = $this->dissolve_4value_shorthands('margin', $value);
-		if ($v['margin-left'] !== $v['margin-right']) {
-			$r = $v['margin-right'];
-			$v['margin-right'] = $v['margin-left'];
-			$v['margin-left'] = $r;
-			$v = $this->merge_4value_shorthands($v);
-			if (isset($v['margin'])) {
-				return $v['margin'];
+	public function reverse_left_and_right_4value_shorthands($property, $value) {
+		$shorthands = & $this->parser->data['csstidy']['shorthands'];
+		if (isset($shorthands[$property])) {
+			$property_right = $shorthands[$property][1];
+			$property_left = $shorthands[$property][3];
+			$v = $this->dissolve_4value_shorthands($property, $value);
+			if ($v[$property_left] !== $v[$property_right]) {
+				$r = $v[$property_right];
+				$v[$property_right] = $v[$property_left];
+				$v[$property_left] = $r;
+				$v = $this->merge_4value_shorthands($v);
+				if (isset($v[$property])) {
+					return $v[$property];
+				}
 			}
 		}
 		return $value;
+	}
+
+	/**
+	 * Reversing margin shorthands
+	 * @param string $value
+	 * @return string
+	 */
+	public function reverse_left_and_right_margin($value) {
+		return $this->reverse_left_and_right_4value_shorthands('margin', $value);
 	}
 
 	/**
@@ -1028,7 +1041,16 @@ class csstidy_optimise {
 	 * @return string
 	 */
 	public function reverse_left_and_right_padding($value) {
-		return $this->reverse_left_and_right_margin($value);
+		return $this->reverse_left_and_right_4value_shorthands('padding', $value);
+	}
+
+	/**
+	 * Reversing border-color shorthands
+	 * @param string $value
+	 * @return string
+	 */
+	public function reverse_left_and_right_border_color($value) {
+		return $this->reverse_left_and_right_4value_shorthands('border-color', $value);
 	}
 
 	/**
