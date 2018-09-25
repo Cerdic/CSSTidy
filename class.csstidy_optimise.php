@@ -970,6 +970,11 @@ class csstidy_optimise {
 		return $input_css;
 	}
 
+	/**
+	 * Reverse left vs right in a list of properties/values
+	 * @param array $array
+	 * @return array
+	 */
 	public function reverse_left_and_right($array) {
 		$return = array();
 		$shorthands = & $this->parser->data['csstidy']['shorthands'];
@@ -998,6 +1003,11 @@ class csstidy_optimise {
 		return $return;
 	}
 
+	/**
+	 * Reversing margin shorthands
+	 * @param string $value
+	 * @return string
+	 */
 	public function reverse_left_and_right_margin($value) {
 		$v = $this->dissolve_4value_shorthands('margin', $value);
 		if ($v['margin-left'] !== $v['margin-right']) {
@@ -1012,10 +1022,20 @@ class csstidy_optimise {
 		return $value;
 	}
 
+	/**
+	 * Reversing padding shorthands
+	 * @param string $value
+	 * @return string
+	 */
 	public function reverse_left_and_right_padding($value) {
 		return $this->reverse_left_and_right_margin($value);
 	}
 
+	/**
+	 * Reversing background shorthands
+	 * @param string $value
+	 * @return string
+	 */
 	public function reverse_left_and_right_background($value) {
 		$values = $this->dissolve_short_bg($value);
 		if (isset($values['background-position']) and $values['background-position']) {
@@ -1036,6 +1056,11 @@ class csstidy_optimise {
 		return $value;
 	}
 
+	/**
+	 * Reversing background position shorthands
+	 * @param string $value
+	 * @return string
+	 */
 	public function reverse_left_and_right_background_position($value) {
 		// multiple background case
 		if (strpos($value, ',') !== false) {
