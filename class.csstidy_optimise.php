@@ -70,6 +70,17 @@ class csstidy_optimise {
 	 * @version 1.0
 	 */
 	public function postparse() {
+
+		if ($this->parser->get_cfg('reverse_left_and_right') > 0) {
+
+			foreach ($this->css as $medium => $selectors) {
+				foreach ($selectors as $selector => $properties) {
+					$this->css[$medium][$selector] = $this->reverse_left_and_right($this->css[$medium][$selector]);
+				}
+			}
+
+		}
+
 		if ($this->parser->get_cfg('preserve_css')) {
 			return;
 		}
@@ -571,10 +582,11 @@ class csstidy_optimise {
 	 * Explodes a string as explode() does, however, not if $sep is escaped or within a string.
 	 * @param string $sep seperator
 	 * @param string $string
+	 * @param bool $explode_in_parenthesis
 	 * @return array
 	 * @version 1.0
 	 */
-	public function explode_ws($sep, $string) {
+	public function explode_ws($sep, $string, $explode_in_parenthesis = false) {
 		$status = 'st';
 		$to = '';
 
@@ -587,7 +599,7 @@ class csstidy_optimise {
 				case 'st':
 					if ($string{$i} == $sep && !$this->parser->escaped($string, $i)) {
 						++$num;
-					} elseif ($string{$i} === '"' || $string{$i} === '\'' || $string{$i} === '(' && !$this->parser->escaped($string, $i)) {
+					} elseif ($string{$i} === '"' || $string{$i} === '\'' || (!$explode_in_parenthesis && $string{$i} === '(') && !$this->parser->escaped($string, $i)) {
 						$status = 'str';
 						$to = ($string{$i} === '(') ? ')' : $string{$i};
 						(isset($output[$num])) ? $output[$num] .= $string{$i} : $output[$num] = $string{$i};
@@ -956,6 +968,105 @@ class csstidy_optimise {
 		}
 
 		return $input_css;
+	}
+
+	public function reverse_left_and_right($array) {
+		$return = array();
+		$shorthands = & $this->parser->data['csstidy']['shorthands'];
+
+		// change left <-> right in properties name and values
+		foreach ($array as $propertie => $value) {
+
+			if (method_exists($this, $m = 'reverse_left_and_right_' . str_replace('-','_',trim($propertie)))) {
+				$value = $this->$m($value);
+			}
+
+			// simple replacement for properties
+			$propertie = str_ireplace(array('left', 'right' ,"\x1"), array("\x1", 'left', 'right') , $propertie);
+			// be careful for values, not modifying protected or quoted valued
+			foreach (array('left' => "\x1", 'right' => 'left', "\x1" => 'right') as $v => $r) {
+				if (strpos($value, $v) !== false) {
+					$value = str_replace($v, "\x0" , $value);
+					$value = $this->explode_ws("\x0", $value, true);
+					$value = implode($r, $value);
+					$value = str_replace("\x0" , $v, $value);
+				}
+			}
+			$return[$propertie] = $value;
+		}
+
+		return $return;
+	}
+
+	public function reverse_left_and_right_margin($value) {
+		$v = $this->dissolve_4value_shorthands('margin', $value);
+		if ($v['margin-left'] !== $v['margin-right']) {
+			$r = $v['margin-right'];
+			$v['margin-right'] = $v['margin-left'];
+			$v['margin-left'] = $r;
+			$v = $this->merge_4value_shorthands($v);
+			if (isset($v['margin'])) {
+				return $v['margin'];
+			}
+		}
+		return $value;
+	}
+
+	public function reverse_left_and_right_padding($value) {
+		return $this->reverse_left_and_right_margin($value);
+	}
+
+	public function reverse_left_and_right_background($value) {
+		$values = $this->dissolve_short_bg($value);
+		if (isset($values['background-position']) and $values['background-position']) {
+			$v = $this->reverse_left_and_right_background_position($values['background-position']);
+			if ($v !== $values['background-position']) {
+				if ($value == $values['background-position']) {
+					return $v;
+				}
+				else {
+					$values['background-position'] = $v;
+					$x = $this->merge_bg($values);
+					if (isset($x['background'])) {
+						return $x['background'];
+					}
+				}
+			}
+		}
+		return $value;
+	}
+
+	public function reverse_left_and_right_background_position($value) {
+		// multiple background case
+		if (strpos($value, ',') !== false) {
+			$values = $this->explode_ws(',', $value);
+			if (count($values) > 1) {
+				foreach ($values as $k=>$v) {
+					$values[$k] = $this->reverse_left_and_right_background_position($v);
+				}
+				return implode(',', $values);
+			}
+		}
+
+		// if no explicit left or right value
+		if (stripos($value, 'left') === false and stripos($value, 'right') === false) {
+			$values = $this->explode_ws(' ', trim($value));
+			$values = array_map('trim', $values);
+			$values = array_filter($values);
+			$values = array_values($values);
+			if (count($values) == 1) {
+				return "left $value";
+			}
+			if ($values[1] == 'top' or $values[1] == 'bottom') {
+				return 'left ' . implode(' ', $values);
+			}
+			else {
+				$last = array_pop($values);
+				return implode(' ', $values) . ' left ' . $last;
+			}
+		}
+
+		return $value;
 	}
 
 }
