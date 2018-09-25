@@ -1063,6 +1063,16 @@ class csstidy_optimise {
 	}
 
 	/**
+	 * Reversing border-width shorthands
+	 * @param string $value
+	 * @return string
+	 */
+	public function reverse_left_and_right_border_width($value) {
+		return $this->reverse_left_and_right_4value_shorthands('border-width', $value);
+	}
+
+
+	/**
 	 * Reversing background shorthands
 	 * @param string $value
 	 * @return string
