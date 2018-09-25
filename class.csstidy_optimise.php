@@ -1075,8 +1075,8 @@ class csstidy_optimise {
 			foreach (array('left' => "\x1", 'right' => 'left', "\x1" => 'right') as $v => $r) {
 				if (strpos($value, $v) !== false) {
 					$value = str_replace($v, "\x0" , $value);
-					$value = $this->explode_ws("\x0", $value, true);
-					$value = implode($r, $value);
+					$value = $this->explode_ws("\x0", $value . ' ', true);
+					$value = rtrim(implode($r, $value));
 					$value = str_replace("\x0" , $v, $value);
 				}
 			}

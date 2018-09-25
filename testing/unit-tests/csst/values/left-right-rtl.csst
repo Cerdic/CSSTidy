@@ -1,0 +1,22 @@
+--TEST--
+Test left/right inversion
+--CSS--
+a { 
+    float:left;
+}
+b {
+    float:right;
+}
+--EXPECT--
+array (
+  'a' => 
+  array (
+    'float' => 'right',
+  ),
+  'b' =>
+  array (
+    'float' => 'left',
+  ),
+)
+--SETTINGS--
+reverse_left_and_right=true
