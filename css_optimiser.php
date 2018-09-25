@@ -124,6 +124,7 @@ if (isset($_REQUEST['remove_last_sem'])) $css->set_cfg('remove_last_;',true);
 if (isset($_REQUEST['discard'])) $css->set_cfg('discard_invalid_properties',true);
 if (isset($_REQUEST['css_level'])) $css->set_cfg('css_level',$_REQUEST['css_level']);
 if (isset($_REQUEST['timestamp'])) $css->set_cfg('timestamp',true);
+if (isset($_REQUEST['rtl'])) $css->set_cfg('reverse_left_and_right',true);
 
 
 // This by itself is enough since our scripts don't use DOM to create elements (in which case the namespace aware ones
@@ -318,6 +319,10 @@ if ($http_accept === 'text/html') {
 			<input type="checkbox" id="timestamp" name="timestamp"
 					 <?php if ($css->get_cfg('timestamp')) echo 'checked="checked"'; ?> />
 	 			<label for="timestamp"><?php echo $lang[$l][57]; ?></label><br />
+
+			<input type="checkbox" id="rtl" name="rtl"
+					 <?php if ($css->get_cfg('reverse_left_and_right')) echo 'checked="checked"'; ?> />
+	 			<label for="rtl"><?php echo $lang[$l][67]; ?></label><br />
 
 			<input type="checkbox" id="whole_file" name="whole_file"
 					 <?php if (isset($_REQUEST['whole_file'])) echo 'checked="checked"'; ?> />
