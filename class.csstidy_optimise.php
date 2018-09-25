@@ -603,8 +603,8 @@ class csstidy_optimise {
 		if (strpos($value, '/') !== false) {
 			$values = $this->explode_ws('/', $value);
 			if (count($values) == 2) {
-				$r[0] = $this->dissolve_4value_shorthands($property, $values[0], $shorthands);
-				$r[1] = $this->dissolve_4value_shorthands($property, $values[1], $shorthands);
+				$r[0] = $this->dissolve_4value_shorthands($property, trim($values[0]), $shorthands);
+				$r[1] = $this->dissolve_4value_shorthands($property, trim($values[1]), $shorthands);
 				$return = array();
 				foreach ($r[0] as $p=>$v) {
 					$return[$p] = $v;
@@ -1087,7 +1087,7 @@ class csstidy_optimise {
 	}
 
 	/**
-	 * Reversing margin shorthands
+	 * Reversing 4 values shorthands properties
 	 * @param string $value
 	 * @return string
 	 */
@@ -1102,6 +1102,32 @@ class csstidy_optimise {
 				$v[$property_right] = $v[$property_left];
 				$v[$property_left] = $r;
 				$v = $this->merge_4value_shorthands($v);
+				if (isset($v[$property])) {
+					return $v[$property];
+				}
+			}
+		}
+		return $value;
+	}
+
+	/**
+	 * Reversing 4 values radius shorthands properties
+	 * @param string $value
+	 * @return string
+	 */
+	public function reverse_left_and_right_4value_radius_shorthands($property, $value) {
+		$shorthands = & $this->parser->data['csstidy']['radius_shorthands'];
+		if (isset($shorthands[$property])) {
+			$v = $this->dissolve_4value_radius_shorthands($property, $value);
+			if ($v[$shorthands[$property][0]] !== $v[$shorthands[$property][1]]
+			  or $v[$shorthands[$property][2]] !== $v[$shorthands[$property][3]]) {
+				$r = array(
+					$shorthands[$property][0] => $v[$shorthands[$property][1]],
+					$shorthands[$property][1] => $v[$shorthands[$property][0]],
+					$shorthands[$property][2] => $v[$shorthands[$property][3]],
+					$shorthands[$property][3] => $v[$shorthands[$property][2]],
+				);
+				$v = $this->merge_4value_radius_shorthands($r);
 				if (isset($v[$property])) {
 					return $v[$property];
 				}
@@ -1153,6 +1179,15 @@ class csstidy_optimise {
 	 */
 	public function reverse_left_and_right_border_width($value) {
 		return $this->reverse_left_and_right_4value_shorthands('border-width', $value);
+	}
+
+	/**
+	 * Reversing border-radius shorthands
+	 * @param string $value
+	 * @return string
+	 */
+	public function reverse_left_and_right_border_radius($value) {
+		return $this->reverse_left_and_right_4value_radius_shorthands('border-radius', $value);
 	}
 
 
