@@ -318,6 +318,10 @@ class csstidy {
 		/* is dangeroues to be used: CSS is broken sometimes */
 		$this->settings['merge_selectors'] = 0;
 		/* preserve or not browser hacks */
+
+		/* Useful to produce a rtl css from a ltr one (or the opposite) */
+		$this->settings['reverse_left_and_right'] = 0;
+
 		$this->settings['discard_invalid_selectors'] = false;
 		$this->settings['discard_invalid_properties'] = false;
 		$this->settings['css_level'] = 'CSS3.0';
