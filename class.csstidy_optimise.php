@@ -101,6 +101,7 @@ class csstidy_optimise {
 			foreach ($this->css as $medium => $value) {
 				foreach ($value as $selector => $value1) {
 					$this->css[$medium][$selector] = $this->merge_4value_shorthands($this->css[$medium][$selector]);
+					$this->css[$medium][$selector] = $this->merge_4value_radius_shorthands($this->css[$medium][$selector]);
 
 					if ($this->parser->get_cfg('optimise_shorthands') < 2) {
 						continue;
@@ -536,12 +537,15 @@ class csstidy_optimise {
 	 * Dissolves properties like padding:10px 10px 10px to padding-top:10px;padding-bottom:10px;...
 	 * @param string $property
 	 * @param string $value
+	 * @param array|null $shorthands
 	 * @return array
 	 * @version 1.0
 	 * @see merge_4value_shorthands()
 	 */
-	public function dissolve_4value_shorthands($property, $value) {
-		$shorthands = & $this->parser->data['csstidy']['shorthands'];
+	public function dissolve_4value_shorthands($property, $value, $shorthands = null) {
+		if (is_null($shorthands)) {
+			$shorthands = & $this->parser->data['csstidy']['shorthands'];
+		}
 		if (!is_array($shorthands[$property])) {
 			$return[$property] = $value;
 			return $return;
@@ -575,6 +579,44 @@ class csstidy_optimise {
 			}
 		}
 
+		return $return;
+	}
+
+	/**
+	 * Dissolves radius properties like
+	 * border-radius:10px 10px 10px / 1px 2px
+	 * to border-top-left:10px 1px;border-top-right:10px 2x;...
+	 * @param string $property
+	 * @param string $value
+	 * @return array
+	 * @version 1.0
+	 * @use dissolve_4value_shorthands()
+	 * @see merge_4value_radius_shorthands()
+	 */
+	public function dissolve_4value_radius_shorthands($property, $value) {
+		$shorthands = & $this->parser->data['csstidy']['radius_shorthands'];
+		if (!is_array($shorthands[$property])) {
+			$return[$property] = $value;
+			return $return;
+		}
+
+		if (strpos($value, '/') !== false) {
+			$values = $this->explode_ws('/', $value);
+			if (count($values) == 2) {
+				$r[0] = $this->dissolve_4value_shorthands($property, $values[0], $shorthands);
+				$r[1] = $this->dissolve_4value_shorthands($property, $values[1], $shorthands);
+				$return = array();
+				foreach ($r[0] as $p=>$v) {
+					$return[$p] = $v;
+					if ($r[1][$p] !== $v) {
+						$return[$p] .= ' ' . $r[1][$p];
+					}
+				}
+				return $return;
+			}
+		}
+
+		$return = $this->dissolve_4value_shorthands($property, $value, $shorthands);
 		return $return;
 	}
 
@@ -623,17 +665,20 @@ class csstidy_optimise {
 	/**
 	 * Merges Shorthand properties again, the opposite of dissolve_4value_shorthands()
 	 * @param array $array
+	 * @param array|null $shorthands
 	 * @return array
 	 * @version 1.2
 	 * @see dissolve_4value_shorthands()
 	 */
-	public function merge_4value_shorthands($array) {
+	public function merge_4value_shorthands($array, $shorthands = null) {
 		$return = $array;
-		$shorthands = & $this->parser->data['csstidy']['shorthands'];
+		if (is_null($shorthands)) {
+			$shorthands = & $this->parser->data['csstidy']['shorthands'];
+		}
 
 		foreach ($shorthands as $key => $value) {
-			if (isset($array[$value[0]]) && isset($array[$value[1]])
-							&& isset($array[$value[2]]) && isset($array[$value[3]]) && $value !== 0) {
+			if ($value !== 0 && isset($array[$value[0]]) && isset($array[$value[1]])
+							&& isset($array[$value[2]]) && isset($array[$value[3]])) {
 				$return[$key] = '';
 
 				$important = '';
@@ -653,6 +698,45 @@ class csstidy_optimise {
 		return $return;
 	}
 
+	/**
+	 * Merges Shorthand properties again, the opposite of dissolve_4value_shorthands()
+	 * @param array $array
+	 * @return array
+	 * @version 1.2
+	 * @use merge_4value_shorthands()
+	 * @see dissolve_4value_radius_shorthands()
+	 */
+	public function merge_4value_radius_shorthands($array) {
+		$return = $array;
+		$shorthands = & $this->parser->data['csstidy']['radius_shorthands'];
+
+		foreach ($shorthands as $key => $value) {
+			if (isset($array[$value[0]]) && isset($array[$value[1]])
+							&& isset($array[$value[2]]) && isset($array[$value[3]]) && $value !== 0) {
+				$return[$key] = '';
+				$a = array();
+				for ($i = 0; $i < 4; $i++) {
+					$v = $this->explode_ws(' ', trim($array[$value[$i]]));
+					$a[0][$value[$i]] = reset($v);
+					$a[1][$value[$i]] = end($v);
+				}
+				$r = array();
+				$r[0] = $this->merge_4value_shorthands($a[0], $shorthands);
+				$r[1] = $this->merge_4value_shorthands($a[1], $shorthands);
+
+				if (isset($r[0][$key]) and isset($r[1][$key])) {
+					$return[$key] = $r[0][$key];
+					if ($r[1][$key] !== $r[0][$key]) {
+						$return[$key] .= ' / ' . $r[1][$key];
+					}
+					for ($i = 0; $i < 4; $i++) {
+						unset($return[$value[$i]]);
+					}
+				}
+			}
+		}
+		return $return;
+	}
 	/**
 	 * Dissolve background property
 	 * @param string $str_value

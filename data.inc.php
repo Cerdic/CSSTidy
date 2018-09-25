@@ -276,6 +276,8 @@ $data['csstidy']['shorthands']['margin'] = array('margin-top','margin-right','ma
 $data['csstidy']['shorthands']['padding'] = array('padding-top','padding-right','padding-bottom','padding-left');
 $data['csstidy']['shorthands']['-moz-border-radius'] = 0;
 
+$data['csstidy']['radius_shorthands']['border-radius'] = array('border-top-left-radius','border-top-right-radius','border-bottom-right-radius','border-bottom-left-radius');
+
 /**
  * All CSS Properties. Needed for csstidy::property_is_next()
  *
