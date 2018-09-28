@@ -7,6 +7,9 @@ a {
 b {
     float:right;
 }
+c {
+    filter: brightness(50%);
+}
 --EXPECT--
 array (
   'a' => 
@@ -16,6 +19,10 @@ array (
   'b' =>
   array (
     'float' => 'left',
+  ),
+  'c' =>
+  array (
+    'filter' => 'brightness(50%)',
   ),
 )
 --SETTINGS--

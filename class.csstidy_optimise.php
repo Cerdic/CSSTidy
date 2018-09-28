@@ -1074,7 +1074,13 @@ class csstidy_optimise {
 			// be careful for values, not modifying protected or quoted valued
 			foreach (array('left' => "\x1", 'right' => 'left', "\x1" => 'right') as $v => $r) {
 				if (strpos($value, $v) !== false) {
-					$value = str_replace($v, "\x0" , $value);
+					// attraper les left et right separes du reste (pas au milieu d'un mot)
+					if (in_array($v, array('left', 'right') )) {
+						$value = preg_replace(",\\b$v\\b,", "\x0" , $value);
+					}
+					else {
+						$value = str_replace($v, "\x0" , $value);
+					}
 					$value = $this->explode_ws("\x0", $value . ' ', true);
 					$value = rtrim(implode($r, $value));
 					$value = str_replace("\x0" , $v, $value);

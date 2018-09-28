@@ -2,7 +2,7 @@
 
 CSSTidy is a CSS minifier 
 
-* v1.6.1 :
+* v1.6.3 :
   border-radius shorthands optimisation, reverse_left_and_right option
 * v1.5.7 : 
   PHP 7 compatibility, composer update, Travis CI integration
