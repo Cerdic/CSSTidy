@@ -269,6 +269,7 @@ class csstidy_print {
 					$in_at_out = '';
 					break;
 
+				case IMPORTANT_COMMENT:
 				case COMMENT:
 					$out .= $template[11] . '/*' . $this->_htmlsp($token[1], $plain) . '*/' . $template[12];
 					break;
@@ -318,6 +319,12 @@ class csstidy_print {
 		$this->tokens = array();
 		$sort_selectors = $this->parser->get_cfg('sort_selectors');
 		$sort_properties = $this->parser->get_cfg('sort_properties');
+
+		// important comment section ?
+		if (isset($this->css['!'])) {
+			$this->parser->_add_token(IMPORTANT_COMMENT, rtrim($this->css['!']), true);
+			unset($this->css['!']);
+		}
 
 		foreach ($this->css as $medium => $val) {
 			if ($sort_selectors)

@@ -61,14 +61,15 @@ if (!function_exists('ctype_xdigit')){
  * Defines constants
  * @todo //TODO: make them class constants of csstidy
  */
-define('AT_START',    1);
-define('AT_END',      2);
-define('SEL_START',   3);
-define('SEL_END',     4);
-define('PROPERTY',    5);
-define('VALUE',       6);
-define('COMMENT',     7);
-define('DEFAULT_AT', 41);
+define('AT_START',         1);
+define('AT_END',           2);
+define('SEL_START',        3);
+define('SEL_END',          4);
+define('PROPERTY',         5);
+define('VALUE',            6);
+define('COMMENT',          7);
+define('IMPORTANT_COMMENT',8);
+define('DEFAULT_AT',      41);
 
 /**
  * Contains a class for printing CSS code
@@ -415,7 +416,7 @@ class csstidy {
 	 */
 	public function _add_token($type, $data, $do = false) {
 		if ($this->get_cfg('preserve_css') || $do) {
-			$this->tokens[] = array($type, ($type == COMMENT) ? $data : trim($data));
+			$this->tokens[] = array($type, ($type == COMMENT or $type == IMPORTANT_COMMENT) ? $data : trim($data));
 		}
 	}
 
@@ -951,7 +952,13 @@ class csstidy {
 					if ($string{$i} === '*' && $string{$i + 1} === '/') {
 						$this->status = array_pop($this->from);
 						$i++;
-						$this->_add_token(COMMENT, $cur_comment);
+						if (strlen($cur_comment) > 1 and strncmp($cur_comment, '!', 1) === 0) {
+							$this->_add_token(IMPORTANT_COMMENT, $cur_comment);
+							$this->css_add_important_comment($cur_comment);
+						}
+						else {
+							$this->_add_token(COMMENT, $cur_comment);
+						}
 						$cur_comment = '';
 					} else {
 						$cur_comment .= $string{$i};
@@ -1038,6 +1045,25 @@ class csstidy {
 	 */
 	static function escaped(&$string, $pos) {
 		return!(@($string{$pos - 1} !== '\\') || csstidy::escaped($string, $pos - 1));
+	}
+
+
+	/**
+	 * Add an important comment to the css code
+	 * (one we want to keep)
+	 * @param $comment
+	 */
+	public function css_add_important_comment($comment) {
+		if ($this->get_cfg('preserve_css') || trim($comment) == '') {
+			return;
+		}
+		if (!isset($this->css['!'])) {
+			$this->css['!'] = '';
+		}
+		else {
+			$this->css['!'] .= "\n";
+		}
+		$this->css['!'] .= $comment;
 	}
 
 	/**

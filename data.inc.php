@@ -615,7 +615,7 @@ $data['csstidy']['predefined_templates']['high_compression'][] = "\n";
 $data['csstidy']['predefined_templates']['high_compression'][] = "\n". '<span class="format">}'."\n".'</span>';
 $data['csstidy']['predefined_templates']['high_compression'][] = '';
 $data['csstidy']['predefined_templates']['high_compression'][] = '<span class="comment">'; // before comment
-$data['csstidy']['predefined_templates']['high_compression'][] = '</span>'; // after comment
+$data['csstidy']['predefined_templates']['high_compression'][] = '</span>'."\n"; // after comment
 $data['csstidy']['predefined_templates']['high_compression'][] = "\n";
 
 $data['csstidy']['predefined_templates']['highest_compression'][] = '<span class="at">';
