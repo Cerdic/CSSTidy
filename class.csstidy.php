@@ -888,7 +888,7 @@ class csstidy {
 						$this->str_char[] = $string{$i} === '(' ? ')' : $string{$i};
 						$this->from[] = 'instr';
 						$this->quoted_string[] = ($_str_char === ')' && $string{$i} !== '(' && trim($_cur_string)==='(')?$_quoted_string:!($string{$i} === '(');
-						continue;
+						continue 2;
 					}
 
 					if ($_str_char !== ")" && ($string{$i} === "\n" || $string{$i} === "\r") && !($string{$i - 1} === '\\' && !$this->escaped($string, $i - 1))) {
