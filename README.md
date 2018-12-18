@@ -2,6 +2,8 @@
 
 CSSTidy is a CSS minifier 
 
+* v1.6.5 :
+  fix warnings with PHP 7.3
 * v1.6.4 :
   preserve important comments (starting with !) in the minification /*! Credits/Licence */
 * v1.6.3 :
