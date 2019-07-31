@@ -603,6 +603,7 @@ class csstidy {
 		$this->print->input_css = $string;
 		$string = str_replace("\r\n", "\n", $string) . ' ';
 		$cur_comment = '';
+		$cur_at = '';
 
 		for ($i = 0, $size = strlen($string); $i < $size; $i++) {
 			if ($string{$i} === "\n" || $string{$i} === "\r") {
@@ -619,21 +620,21 @@ class csstidy {
 							$this->from[] = 'at';
 						} elseif ($string{$i} === '{') {
 							$this->status = 'is';
-							$this->at = $this->css_new_media_section($this->at);
+							$this->at = $this->css_new_media_section($cur_at);
 							$this->_add_token(AT_START, $this->at);
 						} elseif ($string{$i} === ',') {
-							$this->at = trim($this->at) . ',';
+							$cur_at = trim($cur_at) . ',';
 						} elseif ($string{$i} === '\\') {
-							$this->at .= $this->_unicode($string, $i);
+							$cur_at .= $this->_unicode($string, $i);
 						}
 						// fix for complicated media, i.e @media screen and (-webkit-min-device-pixel-ratio:1.5)
 						elseif (in_array($string{$i}, array('(', ')', ':', '.', '/'))) {
-							$this->at .= $string{$i};
+							$cur_at .= $string{$i};
 						}
 					} else {
-						$lastpos = strlen($this->at) - 1;
-						if (!( (ctype_space($this->at{$lastpos}) || $this->is_token($this->at, $lastpos) && $this->at{$lastpos} === ',') && ctype_space($string{$i}))) {
-							$this->at .= $string{$i};
+						$lastpos = strlen($cur_at) - 1;
+						if (!( (ctype_space($cur_at{$lastpos}) || $this->is_token($cur_at, $lastpos) && $cur_at{$lastpos} === ',') && ctype_space($string{$i}))) {
+							$cur_at .= $string{$i};
 						}
 					}
 					break;
@@ -650,7 +651,7 @@ class csstidy {
 							$this->invalid_at = true;
 							foreach ($at_rules as $name => $type) {
 								if (!strcasecmp(substr($string, $i + 1, strlen($name)), $name)) {
-									($type === 'at') ? $this->at = '@' . $name : $this->selector = '@' . $name;
+									($type === 'at') ? $cur_at = '@' . $name : $this->selector = '@' . $name;
 									if ($type === 'atis') {
 										$this->next_selector_at = ($this->next_selector_at?$this->next_selector_at:($this->at?$this->at:DEFAULT_AT));
 										$this->at = $this->css_new_media_section(' ');
@@ -659,6 +660,7 @@ class csstidy {
 									$this->status = $type;
 									$i += strlen($name);
 									$this->invalid_at = false;
+									break;
 								}
 							}
 
@@ -697,7 +699,7 @@ class csstidy {
 							$this->added = false;
 						} elseif ($string{$i} === '}') {
 							$this->_add_token(AT_END, $this->at);
-							$this->at = '';
+							$this->at = $this->css_close_media_section($this->at);
 							$this->selector = '';
 							$this->sel_separate = array();
 						} elseif ($string{$i} === ',') {
@@ -1103,12 +1105,13 @@ class csstidy {
 		if ($this->get_cfg('preserve_css')) {
 			return $media;
 		}
-
-		// if the last @media is the same as this
-		// keep it
+		// are we starting?
 		if (!$this->css || !is_array($this->css) || empty($this->css)) {
 			return $media;
 		}
+
+		// if the last @media is the same as this
+		// keep it
 		end($this->css);
 		$at = key($this->css);
 		if ($at == $media) {
@@ -1120,6 +1123,15 @@ class csstidy {
 			else
 				$media .= ' ';
 		return $media;
+	}
+
+	/**
+	 * Close a media section
+	 * Find the parent media we were in before or the root
+	 * @param $current_media
+	 */
+	public function css_close_media_section($current_media) {
+		return '';
 	}
 
 	/**
