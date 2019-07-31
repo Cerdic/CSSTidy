@@ -28,7 +28,7 @@
         ]
     },
     "require": {
-
+        "php": "^5.4.0 || ^7"
     },
     "require-dev": {
         "pear/text_diff": "^1.2",
