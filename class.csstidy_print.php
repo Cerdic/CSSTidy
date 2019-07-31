@@ -278,7 +278,14 @@ class csstidy_print {
 					else {
 						$out = & $output;
 					}
-					$out .= $template[10] . $in_at_out[$indent_level] . $template[9];
+					$out .= $template[10] . $in_at_out[$indent_level];
+					if ($this->_seeknocomment($key, 1) != AT_END) {
+						$out .= $template[9];
+					}
+					else {
+						$out .= rtrim($template[9]);
+					}
+
 					unset($in_at_out[$indent_level]);
 					$indent_level--;
 					break;
