@@ -620,7 +620,7 @@ class csstidy {
 							$this->from[] = 'at';
 						} elseif ($string{$i} === '{') {
 							$this->status = 'is';
-							$this->at = $this->css_new_media_section($cur_at);
+							$this->at = $this->css_new_media_section($this->at, $cur_at);
 							$this->_add_token(AT_START, $this->at);
 						} elseif ($string{$i} === ',') {
 							$cur_at = trim($cur_at) . ',';
@@ -654,7 +654,7 @@ class csstidy {
 									($type === 'at') ? $cur_at = '@' . $name : $this->selector = '@' . $name;
 									if ($type === 'atis') {
 										$this->next_selector_at = ($this->next_selector_at?$this->next_selector_at:($this->at?$this->at:DEFAULT_AT));
-										$this->at = $this->css_new_media_section(' ');
+										$this->at = $this->css_new_media_section($this->at, ' ', true);
 										$type = 'is';
 									}
 									$this->status = $type;
@@ -686,13 +686,14 @@ class csstidy {
 							$this->invalid_at = false;
 							$this->status = 'is';
 							if ($this->next_selector_at) {
-								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->at = $this->css_close_media_section($this->at);
+								$this->at = $this->css_new_media_section($this->at, $this->next_selector_at);
 								$this->next_selector_at = '';
 							}
 						} elseif ($string{$i} === '{') {
 							$this->status = 'ip';
 							if ($this->at == '') {
-								$this->at = $this->css_new_media_section(DEFAULT_AT);
+								$this->at = $this->css_new_media_section($this->at, DEFAULT_AT);
 							}
 							$this->selector = $this->css_new_selector($this->at,$this->selector);
 							$this->_add_token(SEL_START, $this->selector);
@@ -741,7 +742,8 @@ class csstidy {
 							$this->selector = '';
 							$this->property = '';
 							if ($this->next_selector_at) {
-								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->at = $this->css_close_media_section($this->at);
+								$this->at = $this->css_new_media_section($this->at, $this->next_selector_at);
 								$this->next_selector_at = '';
 							}
 						} elseif ($string{$i} === ';') {
@@ -806,7 +808,7 @@ class csstidy {
 						}
 						if (($string{$i} === '}' || $string{$i} === ';' || $pn) && !empty($this->selector)) {
 							if ($this->at == '') {
-								$this->at = $this->css_new_media_section(DEFAULT_AT);
+								$this->at = $this->css_new_media_section($this->at,DEFAULT_AT);
 							}
 
 							// case settings
@@ -859,7 +861,8 @@ class csstidy {
 							$this->invalid_at = false;
 							$this->selector = '';
 							if ($this->next_selector_at) {
-								$this->at = $this->css_new_media_section($this->next_selector_at);
+								$this->at = $this->css_close_media_section($this->at);
+								$this->at = $this->css_new_media_section($this->at, $this->next_selector_at);
 								$this->next_selector_at = '';
 							}
 						}
@@ -1093,18 +1096,13 @@ class csstidy {
 	}
 
 	/**
-	 * Start a new media section.
-	 * Check if the media is not already known,
-	 * else rename it with extra spaces
-	 * to avoid merging
+	 * Check if a current media section is the continuation of the last one
+	 * if not inc the name of the media section to avoid a merging
 	 *
-	 * @param string $media
-	 * @return string
+	 * @param int|string $media
+	 * @return int|string
 	 */
-	public function css_new_media_section($media) {
-		if ($this->get_cfg('preserve_css')) {
-			return $media;
-		}
+	public function css_check_last_media_section_or_inc($media) {
 		// are we starting?
 		if (!$this->css || !is_array($this->css) || empty($this->css)) {
 			return $media;
@@ -1117,6 +1115,8 @@ class csstidy {
 		if ($at == $media) {
 			return $media;
 		}
+
+		// else inc the section in the array
 		while (isset($this->css[$media]))
 			if (is_numeric($media))
 				$media++;
@@ -1126,11 +1126,52 @@ class csstidy {
 	}
 
 	/**
+	 * Start a new media section.
+	 * Check if the media is not already known,
+	 * else rename it with extra spaces
+	 * to avoid merging
+	 *
+	 * @param string $current_media
+	 * @param string $media
+	 * @param bool $at_root
+	 * @return string
+	 */
+	public function css_new_media_section($current_media, $new_media, $at_root = false) {
+		if ($this->get_cfg('preserve_css')) {
+			return $new_media;
+		}
+
+		// if we already are in a media and CSS level is 3, manage nested medias
+		if ($current_media
+			&& !$at_root
+			// numeric $current_media means DEFAULT_AT or inc
+			&& !is_numeric($current_media)
+			&& strncmp($this->get_cfg('css_level'), 'CSS3', 4) == 0) {
+
+			$new_media = rtrim($current_media) . "{" . rtrim($new_media);
+		}
+
+		return $this->css_check_last_media_section_or_inc($new_media);
+	}
+
+	/**
 	 * Close a media section
 	 * Find the parent media we were in before or the root
 	 * @param $current_media
+	 * @return string
 	 */
 	public function css_close_media_section($current_media) {
+		if ($this->get_cfg('preserve_css')) {
+			return '';
+		}
+
+		if (strpos($current_media, '{') !== false) {
+			$current_media = explode('{', $current_media);
+			array_pop($current_media);
+			$current_media = implode('{', $current_media);
+			return $current_media;
+		}
+
 		return '';
 	}
 
