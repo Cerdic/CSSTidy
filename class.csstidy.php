@@ -416,7 +416,17 @@ class csstidy {
 	 */
 	public function _add_token($type, $data, $do = false) {
 		if ($this->get_cfg('preserve_css') || $do) {
-			$this->tokens[] = array($type, ($type == COMMENT or $type == IMPORTANT_COMMENT) ? $data : trim($data));
+			// nested @... : if opening a new part we just closed, remove the previous closing instead of adding opening
+			if ($type === AT_START
+				and count($this->tokens)
+				and $last = end($this->tokens)
+				and $last[0] === AT_END
+				and $last[1] === trim($data)) {
+				array_pop($this->tokens);
+			}
+			else {
+				$this->tokens[] = array($type, ($type == COMMENT or $type == IMPORTANT_COMMENT) ? $data : trim($data));
+			}
 		}
 	}
 

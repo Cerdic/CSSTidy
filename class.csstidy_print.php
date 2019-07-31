@@ -332,7 +332,10 @@ class csstidy_print {
 			if (intval($medium) < DEFAULT_AT) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
 				if (strlen(trim($medium))) {
-					$this->parser->_add_token(AT_START, $medium, true);
+					$parts_to_open = explode('{', $medium);
+					foreach ($parts_to_open as $part) {
+						$this->parser->_add_token(AT_START, $part, true);
+					}
 				}
 			} elseif ($default_media) {
 				$this->parser->_add_token(AT_START, $default_media, true);
@@ -372,7 +375,10 @@ class csstidy_print {
 			if (intval($medium) < DEFAULT_AT) {
 				// un medium vide (contenant @font-face ou autre @) ne produit aucun conteneur
 				if (strlen(trim($medium))) {
-					$this->parser->_add_token(AT_END, $medium, true);
+					$parts_to_close = explode('{', $medium);
+					foreach (array_reverse($parts_to_close) as $part) {
+						$this->parser->_add_token(AT_END, $part, true);
+					}
 				}
 			} elseif ($default_media) {
 				$this->parser->_add_token(AT_END, $default_media, true);
