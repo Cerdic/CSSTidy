@@ -55,7 +55,7 @@ $data['csstidy']['units'] = array('in','cm','mm','pt','pc','px','rem','em','%','
  * @global array $data['csstidy']['at_rules']
  * @version 1.1
  */
-$data['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'atis','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at','keyframes' => 'at','-moz-keyframes' => 'at','-o-keyframes' => 'at','-webkit-keyframes' => 'at','-ms-keyframes' => 'at');
+$data['csstidy']['at_rules'] = array('page' => 'is','font-face' => 'atis','charset' => 'iv', 'import' => 'iv','namespace' => 'iv','media' => 'at', 'keyframes' => 'at','-moz-keyframes' => 'at','-o-keyframes' => 'at','-webkit-keyframes' => 'at','-ms-keyframes' => 'at');
 
  /**
  * Properties that need a value with unit
@@ -588,20 +588,20 @@ $data['csstidy']['multiple_properties'] = array('background', 'background-image'
  * @version 1.0
  * @see csstidy::load_template()
  */
-$data['csstidy']['predefined_templates']['default'][] = '<span class="at">'; //string before @rule
-$data['csstidy']['predefined_templates']['default'][] = '</span> <span class="format">{</span>'."\n"; //bracket after @-rule
-$data['csstidy']['predefined_templates']['default'][] = '<span class="selector">'; //string before selector
-$data['csstidy']['predefined_templates']['default'][] = '</span> <span class="format">{</span>'."\n"; //bracket after selector
-$data['csstidy']['predefined_templates']['default'][] = '<span class="property">'; //string before property
-$data['csstidy']['predefined_templates']['default'][] = '</span><span class="value">'; //string after property+before value
-$data['csstidy']['predefined_templates']['default'][] = '</span><span class="format">;</span>'."\n"; //string after value
-$data['csstidy']['predefined_templates']['default'][] = '<span class="format">}</span>'; //closing bracket - selector
-$data['csstidy']['predefined_templates']['default'][] = "\n\n"; //space between blocks {...}
-$data['csstidy']['predefined_templates']['default'][] = "\n".'<span class="format">}</span>'. "\n\n"; //closing bracket @-rule
-$data['csstidy']['predefined_templates']['default'][] = ''; //indent in @-rule
-$data['csstidy']['predefined_templates']['default'][] = '<span class="comment">'; // before comment
-$data['csstidy']['predefined_templates']['default'][] = '</span>'."\n"; // after comment
-$data['csstidy']['predefined_templates']['default'][] = "\n"; // after each line @-rule
+$data['csstidy']['predefined_templates']['default'][0]  = '<span class="at">'; //string before @rule
+$data['csstidy']['predefined_templates']['default'][1]  = '</span> <span class="format">{</span>'."\n"; //bracket after @-rule
+$data['csstidy']['predefined_templates']['default'][2]  = '<span class="selector">'; //string before selector
+$data['csstidy']['predefined_templates']['default'][3]  = '</span> <span class="format">{</span>'."\n"; //bracket after selector
+$data['csstidy']['predefined_templates']['default'][4]  = '<span class="property">'; //string before property
+$data['csstidy']['predefined_templates']['default'][5]  = '</span><span class="value">'; //string after property+before value
+$data['csstidy']['predefined_templates']['default'][6]  = '</span><span class="format">;</span>'."\n"; //string after value
+$data['csstidy']['predefined_templates']['default'][7]  = '<span class="format">}</span>'; //closing bracket - selector
+$data['csstidy']['predefined_templates']['default'][8]  = "\n\n"; //space between blocks {...}
+$data['csstidy']['predefined_templates']['default'][9]  = "\n".'<span class="format">}</span>'. "\n\n"; //closing bracket @-rule
+$data['csstidy']['predefined_templates']['default'][10] = ''; //indent in @-rule
+$data['csstidy']['predefined_templates']['default'][11] = '<span class="comment">'; // before comment
+$data['csstidy']['predefined_templates']['default'][12] = '</span>'."\n"; // after comment
+$data['csstidy']['predefined_templates']['default'][13] = "\n"; // after each line @-rule
 
 $data['csstidy']['predefined_templates']['high_compression'][] = '<span class="at">';
 $data['csstidy']['predefined_templates']['high_compression'][] = '</span> <span class="format">{</span>'."\n";
