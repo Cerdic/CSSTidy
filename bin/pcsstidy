@@ -43,6 +43,7 @@ if (version_compare(PHP_VERSION, '5.4')<0){
 include('class.csstidy.php');
 $csstidy = new csstidy();
 $dumpTree = false;
+$default_media = '';
 
 /**
  * Return the usage message to sdterr and exit with return code 1
@@ -64,6 +65,7 @@ Options include:
 --case_properties            [1|2|0]
 --compress_colors            [true|false]
 --compress_font-weight       [true|false]
+--default_media              Set the default media rule to apply to the CSS
 --css_level                  [CSS3.0|CSS2.1|CSS2.0|CSS1.0]
 --discard_invalid_properties [false|true]
 --discard_invalid_selectors  [false|true]
@@ -200,6 +202,14 @@ for ($i = 1; $i<$argc; $i++){
 	if ($argv[$i]==='-v' || $argv[$i]==='--version'){
 		exit($csstidy->version . "\n");
 	}
+	$value = parseArgument($i, ['--default_media']);
+	if (isset($value)) {
+		$value = castArgument($value, 'str');
+		$default_media = trim($value);
+		if (strpos($default_media, '@') === false) {
+			$default_media = '@media ' . $default_media;
+		}
+	}
 
 	foreach ($settings as $option_name => $desc) {
 		$value = parseArgument($i, $desc['options_list']);
@@ -246,6 +256,6 @@ if ($dumpTree){
 	var_dump($csstidy->css);
 } else {
 	// Optimize and output the CSS file
-	echo $csstidy->print->plain();
+	echo $csstidy->print->plain($default_media);
 	echo "\n";
 }
