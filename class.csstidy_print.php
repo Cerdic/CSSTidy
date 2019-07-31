@@ -219,14 +219,19 @@ class csstidy_print {
 			$output .= $template[0] . '@namespace ' . $template[5] . $this->namespace . $template[6] . $template[13];
 		}
 
-		$in_at_out = '';
+		$in_at_out = [];
 		$out = & $output;
+		$indent_level = 0;
 
 		foreach ($this->tokens as $key => $token) {
 			switch ($token[0]) {
 				case AT_START:
 					$out .= $template[0] . $this->_htmlsp($token[1], $plain) . $template[1];
-					$out = & $in_at_out;
+					$indent_level++;
+					if (!isset($in_at_out[$indent_level])) {
+						$in_at_out[$indent_level] = '';
+					}
+					$out = & $in_at_out[$indent_level];
 					break;
 
 				case SEL_START:
@@ -261,12 +266,21 @@ class csstidy_print {
 					break;
 
 				case AT_END:
-					$out = & $output;
-					$in_at_out = str_replace("\n\n", "\r\n", $in_at_out); // don't fill empty lines
-					$in_at_out = str_replace("\n", "\n" . $template[10], $in_at_out);
-					$in_at_out = str_replace("\r\n", "\n\n", $in_at_out);
-					$out .= $template[10] . $in_at_out . $template[9];
-					$in_at_out = '';
+					if (strlen($template[10])) {
+						// indent the bloc we are closing
+						$out = str_replace("\n\n", "\r\n", $out); // don't fill empty lines
+						$out = str_replace("\n", "\n" . $template[10], $out);
+						$out = str_replace("\r\n", "\n\n", $out);
+					}
+					if ($indent_level > 1) {
+						$out = & $in_at_out[$indent_level-1];
+					}
+					else {
+						$out = & $output;
+					}
+					$out .= $template[10] . $in_at_out[$indent_level] . $template[9];
+					unset($in_at_out[$indent_level]);
+					$indent_level--;
 					break;
 
 				case IMPORTANT_COMMENT:
