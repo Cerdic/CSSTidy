@@ -454,12 +454,12 @@ class csstidy {
 			$add = trim('\\' . $add);
 		}
 
-		if (@ctype_xdigit($string{$i + 1}) && ctype_space($string[$i])
+		if (@ctype_xdigit($string[$i + 1]) && ctype_space($string[$i])
 						&& !$replaced || !ctype_space($string[$i])) {
 			$i--;
 		}
 
-		if ($add !== '\\' || !$this->get_cfg('remove_bslash') || strpos($this->tokens_list, $string{$i + 1}) !== false) {
+		if ($add !== '\\' || !$this->get_cfg('remove_bslash') || strpos($this->tokens_list, $string[$i + 1]) !== false) {
 			return $add;
 		}
 
@@ -599,7 +599,7 @@ class csstidy {
 				/* Case in at-block */
 				case 'at':
 					if ($this->is_token($string, $i)) {
-						if ($string[$i] === '/' && @$string{$i + 1} === '*') {
+						if ($string[$i] === '/' && @$string[$i + 1] === '*') {
 							$this->status = 'ic';
 							++$i;
 							$this->from[] = 'at';
@@ -618,7 +618,7 @@ class csstidy {
 						}
 					} else {
 						$lastpos = strlen($cur_at) - 1;
-						if (!( (ctype_space($cur_at{$lastpos}) || $this->is_token($cur_at, $lastpos) && $cur_at{$lastpos} === ',') && ctype_space($string[$i]))) {
+						if (!( (ctype_space($cur_at[$lastpos]) || $this->is_token($cur_at, $lastpos) && $cur_at[$lastpos] === ',') && ctype_space($string[$i]))) {
 							$cur_at .= $string[$i];
 						}
 					}
@@ -627,7 +627,7 @@ class csstidy {
 				/* Case in-selector */
 				case 'is':
 					if ($this->is_token($string, $i)) {
-						if ($string[$i] === '/' && @$string{$i + 1} === '*' && trim($this->selector) == '') {
+						if ($string[$i] === '/' && @$string[$i + 1] === '*' && trim($this->selector) == '') {
 							$this->status = 'ic';
 							++$i;
 							$this->from[] = 'is';
@@ -653,10 +653,10 @@ class csstidy {
 								$this->selector = '@';
 								$invalid_at_name = '';
 								for ($j = $i + 1; $j < $size; ++$j) {
-									if (!ctype_alpha($string{$j})) {
+									if (!ctype_alpha($string[$j])) {
 										break;
 									}
-									$invalid_at_name .= $string{$j};
+									$invalid_at_name .= $string[$j];
 								}
 								$this->log('Invalid @-rule: ' . $invalid_at_name . ' (removed)', 'Warning');
 							}
@@ -666,7 +666,7 @@ class csstidy {
 							$this->str_char[] = $string[$i];
 							$this->from[] = 'is';
 							/* fixing CSS3 attribute selectors, i.e. a[href$=".mp3" */
-							$this->quoted_string[] = ($string{$i - 1} === '=' );
+							$this->quoted_string[] = ($string[$i - 1] === '=' );
 						} elseif ($this->invalid_at && $string[$i] === ';') {
 							$this->invalid_at = false;
 							$this->status = 'is';
@@ -693,14 +693,14 @@ class csstidy {
 							$this->sel_separate[] = strlen($this->selector);
 						} elseif ($string[$i] === '\\') {
 							$this->selector .= $this->_unicode($string, $i);
-						} elseif ($string[$i] === '*' && @in_array($string{$i + 1}, array('.', '#', '[', ':')) && ($i==0 OR $string{$i - 1}!=='/')) {
+						} elseif ($string[$i] === '*' && @in_array($string[$i + 1], array('.', '#', '[', ':')) && ($i==0 OR $string[$i - 1]!=='/')) {
 							// remove unnecessary universal selector, FS#147, but not comment in selector
 						} else {
 							$this->selector .= $string[$i];
 						}
 					} else {
 						$lastpos = strlen($this->selector) - 1;
-						if ($lastpos == -1 || !( (ctype_space($this->selector{$lastpos}) || $this->is_token($this->selector, $lastpos) && $this->selector{$lastpos} === ',') && ctype_space($string[$i]))) {
+						if ($lastpos == -1 || !( (ctype_space($this->selector[$lastpos]) || $this->is_token($this->selector, $lastpos) && $this->selector[$lastpos] === ',') && ctype_space($string[$i]))) {
 							$this->selector .= $string[$i];
 						}
 					}
@@ -715,7 +715,7 @@ class csstidy {
 								$this->property = $this->css_new_property($this->at,$this->selector,$this->property);
 								$this->_add_token(PROPERTY, $this->property);
 							}
-						} elseif ($string[$i] === '/' && @$string{$i + 1} === '*' && $this->property == '') {
+						} elseif ($string[$i] === '/' && @$string[$i + 1] === '*' && $this->property == '') {
 							$this->status = 'ic';
 							++$i;
 							$this->from[] = 'ip';
@@ -751,7 +751,7 @@ class csstidy {
 				case 'iv':
 					$pn = (($string[$i] === "\n" || $string[$i] === "\r") && $this->property_is_next($string, $i + 1) || $i == strlen($string) - 1);
 					if ($this->is_token($string, $i) || $pn) {
-						if ($string[$i] === '/' && @$string{$i + 1} === '*') {
+						if ($string[$i] === '/' && @$string[$i + 1] === '*') {
 							$this->status = 'ic';
 							++$i;
 							$this->from[] = 'iv';
@@ -881,7 +881,7 @@ class csstidy {
 						continue 2;
 					}
 
-					if ($_str_char !== ")" && ($string[$i] === "\n" || $string[$i] === "\r") && !($string{$i - 1} === '\\' && !$this->escaped($string, $i - 1))) {
+					if ($_str_char !== ")" && ($string[$i] === "\n" || $string[$i] === "\r") && !($string[$i - 1] === '\\' && !$this->escaped($string, $i - 1))) {
 						$temp_add = "\\A";
 						$this->log('Fixed incorrect newline in string', 'Warning');
 					}
@@ -939,7 +939,7 @@ class csstidy {
 
 				/* Case in-comment */
 				case 'ic':
-					if ($string[$i] === '*' && $string{$i + 1} === '/') {
+					if ($string[$i] === '*' && $string[$i + 1] === '/') {
 						$this->status = array_pop($this->from);
 						$i++;
 						if (strlen($cur_comment) > 1 and strncmp($cur_comment, '!', 1) === 0) {
@@ -1034,7 +1034,7 @@ class csstidy {
 	 * @version 1.02
 	 */
 	static function escaped(&$string, $pos) {
-		return!(@($string{$pos - 1} !== '\\') || csstidy::escaped($string, $pos - 1));
+		return!(@($string[$pos - 1] !== '\\') || csstidy::escaped($string, $pos - 1));
 	}
 
 
