@@ -123,7 +123,7 @@ class csstidy {
 	 * @var string
 	 * @access private
 	 */
-	public $version = '1.7.0';
+	public $version = '1.7.1';
 	/**
 	 * Stores the settings
 	 * @var array

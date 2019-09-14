@@ -33,5 +33,13 @@
     "require-dev": {
         "pear/text_diff": "^1.2",
         "simpletest/simpletest": "^1.1"
+    },
+    "bin": ["bin/pcsstidy"],
+    "archive": {
+        "exclude": [
+            "/.gitignore",
+            "/.travis.yml",
+            "/testing"
+        ]
     }
 }

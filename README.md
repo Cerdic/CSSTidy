@@ -32,6 +32,8 @@ $css_code_opt = $csstidy->print->plain();
 
 
 ## Changelog
+* v1.7.1 :
+  - fix deprecated with PHP 7.4
 * v1.7.0 :
   - provide bin/pcsstidy for command line usage
   - support nested @media and @supports rules
