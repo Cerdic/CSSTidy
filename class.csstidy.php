@@ -1293,7 +1293,7 @@ class csstidy {
 	/**
 	 * Checks if a property is valid
 	 * @param string $property
-	 * @return bool;
+	 * @return bool
 	 * @access public
 	 * @version 1.0
 	 */
@@ -1317,7 +1317,6 @@ class csstidy {
 	 * @param string
 	 * @return array
 	 */
-
 	public function parse_string_list($value) {
 		$value = trim($value);
 
