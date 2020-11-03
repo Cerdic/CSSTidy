@@ -1281,13 +1281,22 @@ class csstidy_optimise {
 			$values = array_filter($values);
 			$values = array_values($values);
 			if (count($values) == 1) {
+				if (in_array($value, array('center', 'top', 'bottom', 'inherit', 'initial', 'unset'))) {
+					return $value;
+				}
 				return "left $value";
 			}
 			if ($values[1] == 'top' or $values[1] == 'bottom') {
+				if ($values[0] === 'center') {
+					return $value;
+				}
 				return 'left ' . implode(' ', $values);
 			}
 			else {
 				$last = array_pop($values);
+				if ($last === 'center') {
+					return $value;
+				}
 				return implode(' ', $values) . ' left ' . $last;
 			}
 		}
