@@ -28,6 +28,9 @@ h {
 i {
     background-position: top;
 }
+j {
+    background-position: 0 0;
+}
 --EXPECT--
 array (
   'a' => 
@@ -65,6 +68,10 @@ array (
   'i' =>
   array (
     'background-position' => 'top',
+  ),
+  'j' =>
+  array (
+    'background-position' => '0 right 0',
   ),
 )
 --SETTINGS--

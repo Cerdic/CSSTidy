@@ -1278,7 +1278,7 @@ class csstidy_optimise {
 		if (stripos($value, 'left') === false and stripos($value, 'right') === false) {
 			$values = $this->explode_ws(' ', trim($value));
 			$values = array_map('trim', $values);
-			$values = array_filter($values);
+			$values = array_filter($values, function ($v) { return strlen($v);});
 			$values = array_values($values);
 			if (count($values) == 1) {
 				if (in_array($value, array('center', 'top', 'bottom', 'inherit', 'initial', 'unset'))) {
