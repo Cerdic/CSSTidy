@@ -32,6 +32,8 @@ $css_code_opt = $csstidy->print->plain();
 
 
 ## Changelog
+* v1.7.3 :
+  - fix bug and notice on reverse_left_and_right option
 * v1.7.1 :
   - fix deprecated with PHP 7.4
 * v1.7.0 :
