@@ -31,7 +31,7 @@ require('class.csstidy.php');
 require('lang.inc.php');
 
 
-if (get_magic_quotes_gpc()) {
+if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 	if (isset($_REQUEST['css_text'])) {
 		$_REQUEST['css_text'] = stripslashes($_REQUEST['css_text']);
 	}
