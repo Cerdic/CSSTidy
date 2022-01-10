@@ -4,7 +4,7 @@
  * Utility functions for unit testing
  */
 
-function globr($sDir, $sPattern, $nFlags = NULL) {
+function globr($sDir, $sPattern, $nFlags = 0) {
 	$aFiles = glob("$sDir/$sPattern", $nFlags);
 	$files = getDir($sDir);
 	if (is_array($files)) {
