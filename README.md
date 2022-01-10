@@ -1,4 +1,4 @@
-# CSSTidy [![Build Status](https://travis-ci.org/Cerdic/CSSTidy.svg?branch=master)](https://travis-ci.org/Cerdic/CSSTidy)
+# CSSTidy 
 
 CSSTidy is a CSS minifier 
 
@@ -32,6 +32,8 @@ $css_code_opt = $csstidy->print->plain();
 
 
 ## Changelog
+* v2.0.0 :
+  - PHP 7.1 is the minimal version. Compatible PHP 8.0 and 8.1
 * v1.7.3 :
   - fix bug and notice on reverse_left_and_right option
 * v1.7.1 :
