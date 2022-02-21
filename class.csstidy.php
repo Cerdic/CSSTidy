@@ -1298,7 +1298,12 @@ class csstidy {
 	 * @version 1.0
 	 */
 	public function property_is_valid($property) {
-		if (in_array(trim($property), $this->data['csstidy']['multiple_properties'])) $property = trim($property);
+		if (strpos($property, '--') === 0) {
+			$property = "--custom";
+		}
+		elseif (in_array(trim($property), $this->data['csstidy']['multiple_properties'])) {
+			$property = trim($property);
+		}
 		$all_properties = & $this->data['csstidy']['all_properties'];
 		return (isset($all_properties[$property]) && strpos($all_properties[$property], strtoupper($this->get_cfg('css_level'))) !== false );
 	}
