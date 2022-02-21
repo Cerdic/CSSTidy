@@ -1,0 +1,19 @@
+--TEST--
+Custom Properties
+--CSS--
+:root {
+  --color: red;
+  --blue: red;
+  --color: white;
+}
+--PRINT--
+:root
+{
+	--color:red;
+	--blue:red;
+	--color:#fff
+}
+--SETTINGS--
+template='low'
+discard_invalid_properties = 1
+css_level='CSS3.0'

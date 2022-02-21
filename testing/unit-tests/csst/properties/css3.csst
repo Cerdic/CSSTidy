@@ -8,6 +8,7 @@ a {
     qux:#f00;
     quux:blanchedalmond;
     quuux:rgb(0,0,1);
+    --color:1;
 		alignment-adjust:1;
 		alignment-baseline:1;
 		animation:1;
@@ -293,6 +294,7 @@ a {
 array (
 	'a' =>
 	array (
+		'--color' => '1',
 		'alignment-adjust' => '1',
 		'alignment-baseline' => '1',
 		'animation' => '1',
