@@ -566,6 +566,7 @@ $data['csstidy']['all_properties']['word-break'] = 'CSS3.0';
 $data['csstidy']['all_properties']['word-spacing'] = 'CSS1.0,CSS2.0,CSS2.1,CSS3.0';
 $data['csstidy']['all_properties']['word-wrap'] = 'CSS3.0';
 $data['csstidy']['all_properties']['z-index'] = 'CSS2.0,CSS2.1,CSS3.0';
+$data['csstidy']['all_properties']['--custom'] = 'CSS3.0';
 
 /**
  * An array containing all properties that can accept a quoted string as a value.
