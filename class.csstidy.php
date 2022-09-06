@@ -257,9 +257,9 @@ class csstidy {
 	 */
 	public $data = array();
 
-    private $template;
+	public $template;
 
-    /**
+	/**
 	 * Loads standard template and sets default settings
 	 * @access private
 	 * @version 1.3
