@@ -66,7 +66,19 @@ class csstidy_print {
 	 */
 	public $output_css_plain = '';
 
-	/**
+    private $css;
+
+    private $template;
+
+    private $tokens;
+
+    private $charset;
+
+    private $import;
+
+    private $namespace;
+
+    /**
 	 * Constructor
 	 * @param array $css contains the class csstidy
 	 * @access private
