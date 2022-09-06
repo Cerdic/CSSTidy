@@ -66,12 +66,12 @@ class csstidy_print {
 	 */
 	public $output_css_plain = '';
 
-    public $css;
-    public $template;
-    public $tokens;
-    public $charset;
-    public $import;
-    public $namespace;
+	public $css;
+	public $template;
+	public $tokens;
+	public $charset;
+	public $import;
+	public $namespace;
 
 	/**
 	 * Constructor
