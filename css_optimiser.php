@@ -30,6 +30,11 @@
 require('class.csstidy.php');
 require('lang.inc.php');
 
+if (!file_exists(__DIR__ . DIRECTORY_SEPARATOR . ".unlock_css_optimiser")) {
+		print 'Access Denied. Add a file `.unlock_css_optimiser` to the directory to unlock css_optimiser';
+		exit;
+}
+
 
 if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
 	if (isset($_REQUEST['css_text'])) {
