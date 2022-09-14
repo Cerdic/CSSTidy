@@ -51,14 +51,14 @@ define('DEFAULT_AT',      41);
  *
  * @version 1.1.0
  */
-require('class.csstidy_print.php');
+require(__DIR__ . DIRECTORY_SEPARATOR . 'class.csstidy_print.php');
 
 /**
  * Contains a class for optimising CSS code
  *
  * @version 1.0
  */
-require('class.csstidy_optimise.php');
+require(__DIR__ . DIRECTORY_SEPARATOR . 'class.csstidy_optimise.php');
 
 /**
  * CSS Parser class
@@ -264,7 +264,7 @@ class csstidy {
 	 */
 	public function __construct() {
 		$data = array();
-		include('data.inc.php');
+		include(__DIR__ . DIRECTORY_SEPARATOR . 'data.inc.php');
 		$this->data = $data;
 
 		$this->settings['remove_bslash'] = true;
