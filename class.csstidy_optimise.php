@@ -47,6 +47,12 @@ class csstidy_optimise {
 	 * @var object
 	 */
 	public $parser;
+	public $css;
+	public $sub_value;
+	public $at;
+	public $selector;
+	public $property;
+	public $value;
 
 	/**
 	 * Constructor
@@ -420,9 +426,9 @@ class csstidy_optimise {
 				if ($number[1] == '' && in_array($this->property, $unit_values, true)) {
 					$number[1] = 'px';
 				}
-                        } elseif ($number[1] != 's' && $number[1] != 'ms') {
-                                $number[1] = '';
-                        }
+			} elseif ($number[1] != 's' && $number[1] != 'ms') {
+				$number[1] = '';
+			}
 
 			$temp[$l] = $number[0] . $number[1];
 		}
