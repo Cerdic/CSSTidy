@@ -315,7 +315,7 @@ class csstidy_optimise {
 			return $color;
 
 		/* expressions complexes de type gradient */
-		if (strpos($color, '(') !== false && strncmp($color, 'rgb(' ,4) != 0) {
+		if (strpos($color, '(') !== false && strncasecmp($color, 'rgb(' ,4) != 0) {
 			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
 			if (stripos($color, 'progid:') !== false)
 				return $color;
