@@ -346,12 +346,14 @@ class csstidy_optimise {
 				if ($color_tmp[$i] > 255)
 					$color_tmp[$i] = 255;
 			}
-			$color = '#';
-			for ($i = 0; $i < 3; $i++) {
-				if ($color_tmp[$i] < 16) {
-					$color .= '0' . dechex($color_tmp[$i]);
-				} else {
-					$color .= dechex($color_tmp[$i]);
+			if (isset($color_tmp[$i])) {
+				$color = '#';
+				for ($i = 0; $i < 3; $i++) {
+					if ($color_tmp[$i] < 16) {
+						$color .= '0' . dechex($color_tmp[$i]);
+					} else {
+						$color .= dechex($color_tmp[$i]);
+					}
 				}
 			}
 		}
