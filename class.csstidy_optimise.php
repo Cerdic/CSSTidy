@@ -134,6 +134,13 @@ class csstidy_optimise {
 				}
 			}
 		}
+
+		// Custom fix for badly formatted comments that look like this: /*!* RESET STYLES *!*/
+		foreach ($this->css as $medium => $value) {
+			if (is_string($value)) {
+				unset($this->css[$medium]);
+			}
+		}
 	}
 
 	/**
