@@ -350,7 +350,9 @@ class csstidy_print {
 
 		// important comment section ?
 		if (isset($this->css['!'])) {
-			$this->parser->_add_token(IMPORTANT_COMMENT, rtrim($this->css['!']), true);
+			if (is_string($this->css['!'])) {
+				$this->parser->_add_token(IMPORTANT_COMMENT, rtrim($this->css['!']), true);
+			}
 			unset($this->css['!']);
 		}
 
