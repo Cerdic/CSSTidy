@@ -342,12 +342,21 @@ class csstidy_optimise {
 				$color_tmp[$i] = trim($color_tmp[$i]);
 				if (substr($color_tmp[$i], -1) === '%') {
 					$color_tmp[$i] = round((255 * $color_tmp[$i]) / 100);
+				} elseif ($i>2) {
+					// 4th argument is alpga layer between 0 and 1 (if not %)
+					$color_tmp[$i] = round((255 * floatval($color_tmp[$i])));
 				}
-				if ($color_tmp[$i] > 255)
+				if ($color_tmp[$i] > 255){
 					$color_tmp[$i] = 255;
+				}
 			}
 			$color = '#';
-			for ($i = 0; $i < 3; $i++) {
+			// 3 or 4 parts depending on alpha layer
+			$nb = min(max(count($color_tmp), 3),4);
+			for ($i = 0; $i < $nb; $i++) {
+				if (!isset($color_tmp[$i])) {
+					$color_tmp[$i] = 0;
+				}
 				if ($color_tmp[$i] < 16) {
 					$color .= '0' . dechex($color_tmp[$i]);
 				} else {
