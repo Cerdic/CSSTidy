@@ -341,11 +341,12 @@ class csstidy_optimise {
 			for ($i = 0; $i < count($color_tmp); $i++) {
 				$color_tmp[$i] = trim($color_tmp[$i]);
 				if (substr($color_tmp[$i], -1) === '%') {
-					$color_tmp[$i] = round((255 * $color_tmp[$i]) / 100);
+					$color_tmp[$i] = round((255 * intval($color_tmp[$i])) / 100);
 				} elseif ($i>2) {
 					// 4th argument is alpga layer between 0 and 1 (if not %)
 					$color_tmp[$i] = round((255 * floatval($color_tmp[$i])));
 				}
+				$color_tmp[$i] = intval($color_tmp[$i]);
 				if ($color_tmp[$i] > 255){
 					$color_tmp[$i] = 255;
 				}
