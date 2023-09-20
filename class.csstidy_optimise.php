@@ -335,7 +335,10 @@ class csstidy_optimise {
 		}
 
 		// rgb(0,0,0) -> #000000 (or #000 in this case later)
-		if (strncasecmp($color, 'rgb(', 4)==0) {
+		if (strncasecmp($color, 'rgb(', 4)==0
+		  // be sure to not corrupt a CSS4 rgb value
+		  and strpos($color, ',') !== false and strpos($color, '/') === false
+		) {
 			$color_tmp = substr($color, 4, strlen($color) - 5);
 			$color_tmp = explode(',', $color_tmp);
 			for ($i = 0; $i < count($color_tmp); $i++) {
