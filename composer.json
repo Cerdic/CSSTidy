@@ -32,7 +32,7 @@
     },
     "require-dev": {
         "pear/text_diff": "^1.2",
-        "simpletest/simpletest": "dev-master"
+        "simpletest/simpletest": "dev-main"
     },
     "bin": ["bin/pcsstidy"],
     "archive": {
