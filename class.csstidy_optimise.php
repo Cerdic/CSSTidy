@@ -381,6 +381,13 @@ class csstidy_optimise {
 				$color = '#' . $color[1] . $color[3] . $color[5];
 			}
 		}
+		// #aabbccdd -> #abcd
+		elseif (strlen($color) == 9) {
+			$color_temp = strtolower($color);
+			if ($color_temp[0] === '#' && $color_temp[1] == $color_temp[2] && $color_temp[3] == $color_temp[4] && $color_temp[5] == $color_temp[6] && $color_temp[7] == $color_temp[8]) {
+				$color = '#' . $color[1] . $color[3] . $color[5] . $color[7];
+			}
+		}
 
 		switch (strtolower($color)) {
 			/* color name -> hex code */
