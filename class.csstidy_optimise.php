@@ -320,7 +320,7 @@ class csstidy_optimise {
 			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
 			if (stripos($color, 'progid:') !== false)
 				return $color;
-			preg_match_all(",rgb\([^)]+\),i", $color, $matches, PREG_SET_ORDER);
+			preg_match_all(",rgba?\([^)]+\),i", $color, $matches, PREG_SET_ORDER);
 			if (count($matches)) {
 				foreach ($matches as $m) {
 					$color = str_replace($m[0], $this->cut_color($m[0]), $color);

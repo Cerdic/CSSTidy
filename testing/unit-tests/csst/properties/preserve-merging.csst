@@ -18,8 +18,8 @@ array (
   ),
   '.gradient' => 
   array (
-    'background-image' => '-webkit-gradient(linear,left bottom,left top,color-stop(0.15,rgba(215,240,240,0.9)),color-stop(0.5,rgba(235,250,250,0)))',
-    'background-image ' => '-moz-linear-gradient(bottom,rgba(215,240,240,0.9),rgba(235,250,250,0)) #ebf7f9',
+    'background-image' => '-webkit-gradient(linear,left bottom,left top,color-stop(0.15,#d7f0f0e6),color-stop(0.5,#ebfafa00))',
+    'background-image ' => '-moz-linear-gradient(bottom,#d7f0f0e6,#ebfafa00) #ebf7f9',
   ),
 )
 --SETTINGS--
