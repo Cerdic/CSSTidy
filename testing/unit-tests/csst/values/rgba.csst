@@ -1,0 +1,24 @@
+--TEST--
+Test rgb variants
+--CSS--
+white { color: rgba(255, 255, 255); }
+white10 { color: rgba(255, 255, 255, 10%); }
+white20 { color: rgba(255, 255, 255, 20%);   }
+white30 { color: rgba(255 255 255 / 30%);   }
+--EXPECT--
+array(
+	'white' => array(
+		'color' => '#fff'
+	),
+	'white10' => array(
+		'color' => '#ffffff1a'
+	),
+	'white20' => array(
+		'color' => '#fff3'
+	),
+	'white30' => array(
+		'color' => '#ffffff4d'
+	),
+)
+--SETTINGS--
+compress_colors=1

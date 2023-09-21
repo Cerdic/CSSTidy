@@ -315,7 +315,8 @@ class csstidy_optimise {
 			return $color;
 
 		/* expressions complexes de type gradient */
-		if (strpos($color, '(') !== false && strncasecmp($color, 'rgb(' ,4) != 0) {
+		if (strpos($color, '(') !== false
+			&& (strncasecmp($color, 'rgb(' ,4) !== 0 and strncasecmp($color, 'rgba(' ,5) !== 0)) {
 			// on ne touche pas aux couleurs dans les expression ms, c'est trop sensible
 			if (stripos($color, 'progid:') !== false)
 				return $color;
@@ -335,10 +336,13 @@ class csstidy_optimise {
 		}
 
 		// rgb(0,0,0) -> #000000 (or #000 in this case later)
-		if (strncasecmp($color, 'rgb(', 4)==0
-		  // be sure to not corrupt a rgb with calc() value
-		  and strpos($color, '(', 4) === false) {
-			$color_tmp = substr($color, 4, strlen($color) - 5);
+		if (
+			// be sure to not corrupt a rgb with calc() value
+			(strncasecmp($color, 'rgb(', 4)==0 and strpos($color, '(', 4) === false)
+			or (strncasecmp($color, 'rgba(', 5)==0 and strpos($color, '(', 5) === false)
+		){
+			$color_tmp = explode('(', $color, 2);
+			$color_tmp = rtrim(end($color_tmp), ')');
 			if (strpos($color_tmp, '/') !== false) {
 				$color_tmp = explode('/', $color_tmp, 2);
 				$color_parts = explode(' ', trim(reset($color_tmp)), 3);
