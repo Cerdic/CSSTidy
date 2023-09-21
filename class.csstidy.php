@@ -70,7 +70,7 @@ require(__DIR__ . DIRECTORY_SEPARATOR . 'class.csstidy_optimise.php');
  * An online version should be available here: http://cdburnerxp.se/cssparse/css_optimiser.php
  * @package csstidy
  * @author Florian Schmitz (floele at gmail dot com) 2005-2006
- * @version 2.0.3
+ * @version 2.1.0
  */
 class csstidy {
 
