@@ -15,7 +15,7 @@ array (
 	),
 	'.radial' =>
 	array (
-		'background' => '-webkit-gradient(radial,45 45,10,52 50,30,from(#A7D30C),to(rgba(1,159,98,0)),color-stop(90%,#019F62))',
+		'background' => '-webkit-gradient(radial,45 45,10,52 50,30,from(#A7D30C),to(#019f6200),color-stop(90%,#019F62))',
 	),
 )
 --SETTINGS--
