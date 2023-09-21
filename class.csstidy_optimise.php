@@ -336,11 +336,20 @@ class csstidy_optimise {
 
 		// rgb(0,0,0) -> #000000 (or #000 in this case later)
 		if (strncasecmp($color, 'rgb(', 4)==0
-		  // be sure to not corrupt a CSS4 rgb value
-		  and strpos($color, ',') !== false and strpos($color, '/') === false
-		) {
+		  // be sure to not corrupt a rgb with calc() value
+		  and strpos($color, '(', 4) === false) {
 			$color_tmp = substr($color, 4, strlen($color) - 5);
-			$color_parts = explode(',', $color_tmp);
+			if (strpos($color_tmp, '/') !== false) {
+				$color_tmp = explode('/', $color_tmp, 2);
+				$color_parts = explode(' ', trim(reset($color_tmp)), 3);
+				while (count($color_parts) < 3) {
+					$color_parts[] = 0;
+				}
+				$color_parts[] = end($color_tmp);
+			}
+			else {
+				$color_parts = explode(',', $color_tmp, 4);
+			}
 			for ($i = 0; $i < count($color_parts); $i++) {
 				$color_parts[$i] = trim($color_parts[$i]);
 				if (substr($color_parts[$i], -1) === '%') {
