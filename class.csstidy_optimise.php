@@ -340,31 +340,31 @@ class csstidy_optimise {
 		  and strpos($color, ',') !== false and strpos($color, '/') === false
 		) {
 			$color_tmp = substr($color, 4, strlen($color) - 5);
-			$color_tmp = explode(',', $color_tmp);
-			for ($i = 0; $i < count($color_tmp); $i++) {
-				$color_tmp[$i] = trim($color_tmp[$i]);
-				if (substr($color_tmp[$i], -1) === '%') {
-					$color_tmp[$i] = round((255 * intval($color_tmp[$i])) / 100);
+			$color_parts = explode(',', $color_tmp);
+			for ($i = 0; $i < count($color_parts); $i++) {
+				$color_parts[$i] = trim($color_parts[$i]);
+				if (substr($color_parts[$i], -1) === '%') {
+					$color_parts[$i] = round((255 * intval($color_parts[$i])) / 100);
 				} elseif ($i>2) {
 					// 4th argument is alpga layer between 0 and 1 (if not %)
-					$color_tmp[$i] = round((255 * floatval($color_tmp[$i])));
+					$color_parts[$i] = round((255 * floatval($color_parts[$i])));
 				}
-				$color_tmp[$i] = intval($color_tmp[$i]);
-				if ($color_tmp[$i] > 255){
-					$color_tmp[$i] = 255;
+				$color_parts[$i] = intval($color_parts[$i]);
+				if ($color_parts[$i] > 255){
+					$color_parts[$i] = 255;
 				}
 			}
 			$color = '#';
 			// 3 or 4 parts depending on alpha layer
-			$nb = min(max(count($color_tmp), 3),4);
+			$nb = min(max(count($color_parts), 3),4);
 			for ($i = 0; $i < $nb; $i++) {
-				if (!isset($color_tmp[$i])) {
-					$color_tmp[$i] = 0;
+				if (!isset($color_parts[$i])) {
+					$color_parts[$i] = 0;
 				}
-				if ($color_tmp[$i] < 16) {
-					$color .= '0' . dechex($color_tmp[$i]);
+				if ($color_parts[$i] < 16) {
+					$color .= '0' . dechex($color_parts[$i]);
 				} else {
-					$color .= dechex($color_tmp[$i]);
+					$color .= dechex($color_parts[$i]);
 				}
 			}
 		}
