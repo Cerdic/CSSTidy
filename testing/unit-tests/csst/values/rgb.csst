@@ -17,7 +17,7 @@ array(
 		'color' => '#fff3'
 	),
 	'white30' => array(
-		'color' => 'rgb(255 255 255 / 30%)'
+		'color' => '#ffffff4d'
 	),
 )
 --SETTINGS--
