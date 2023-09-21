@@ -3,8 +3,11 @@ Test rgb variants
 --CSS--
 white { color: rgb(255, 255, 255); }
 white10 { color: rgb(255, 255, 255, 10%); }
+white10d { color: rgb(255, 255, 255, 0.1); }
 white20 { color: rgb(255, 255, 255, 20%);   }
+white20d { color: rgb(255, 255, 255, 0.2);   }
 white30 { color: rgb(255 255 255 / 30%);   }
+white30d { color: rgb(255 255 255 / 0.3);   }
 --EXPECT--
 array(
 	'white' => array(
@@ -13,10 +16,19 @@ array(
 	'white10' => array(
 		'color' => '#ffffff1a'
 	),
+	'white10d' => array(
+		'color' => '#ffffff1a'
+	),
 	'white20' => array(
 		'color' => '#fff3'
 	),
+	'white20d' => array(
+		'color' => '#fff3'
+	),
 	'white30' => array(
+		'color' => '#ffffff4d'
+	),
+	'white30d' => array(
 		'color' => '#ffffff4d'
 	),
 )
