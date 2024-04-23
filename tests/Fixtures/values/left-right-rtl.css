@@ -1,0 +1,30 @@
+a { 
+    float:left;
+}
+b {
+    float:right;
+}
+c {
+    filter: brightness(50%);
+}
+d {
+    background-position: center center;
+}
+e {
+    background-position: center 10px;
+}
+f {
+    background-position: center right 10px;
+}
+g {
+    background-position: center;
+}
+h {
+    background-position: 10px;
+}
+i {
+    background-position: top;
+}
+j {
+    background-position: 0 0;
+}

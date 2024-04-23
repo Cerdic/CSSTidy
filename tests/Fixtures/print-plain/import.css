@@ -1,0 +1,5 @@
+@import url("my.css");
+@import url('my.css');
+@import url(my.css);
+@import "my.css";
+@import 'my.css';

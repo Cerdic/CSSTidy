@@ -1,0 +1,16 @@
+BODY {
+color: black;
+}
+@media screen, tv, projection {
+BODY {
+background-color: red;
+}
+}
+@media screen, tv, projection {
+BODY {
+color: green;
+}
+}
+BODY {
+background-color: white;
+}

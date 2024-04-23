@@ -1,0 +1,6 @@
+@charset "Shift-JIS";
+@import "../thematic/library/styles/reset.css";
+@namespace foo "http://www.example.com/";
+@media screen {
+.float-l{float:left}
+}

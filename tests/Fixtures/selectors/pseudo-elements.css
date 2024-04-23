@@ -1,0 +1,4 @@
+P:first-line { display: inherit; }
+P:first-letter { font-size: inherit; }
+H1:before { font-family: inherit; }
+H1:after { font-weight: inherit; }

@@ -8,13 +8,12 @@
             "email": "changeme@mailinator.com"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/pear/Text_Diff",
-            "no-api": true
-        }
-    ],
+    "require": {
+        "php": "^7.1 || ^8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5 || ^8.5 || ^9.5 || ^10.5"
+    },
     "autoload": {
         "classmap": [
             "class.csstidy_optimise.php",
@@ -23,23 +22,11 @@
         ]
     },
     "autoload-dev": {
-        "classmap": [
-            "testing"
-        ]
+        "psr-4": {
+            "Cerdic\\CssTidy\\Test\\": "tests/"
+        }
     },
-    "require": {
-        "php": "^7.1 || ^8"
-    },
-    "require-dev": {
-        "pear/text_diff": "^1.2",
-        "simpletest/simpletest": "dev-main"
-    },
-    "bin": ["bin/pcsstidy"],
-    "archive": {
-        "exclude": [
-            "/.gitignore",
-            "/.travis.yml",
-            "/testing"
-        ]
-    }
+    "bin": [
+        "bin/pcsstidy"
+    ]
 }
