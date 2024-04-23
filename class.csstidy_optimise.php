@@ -56,7 +56,7 @@ class csstidy_optimise {
 
 	/**
 	 * Constructor
-	 * @param array $css contains the class csstidy
+	 * @param csstidy $css contains the class csstidy
 	 * @access private
 	 * @version 1.0
 	 */
@@ -473,7 +473,7 @@ class csstidy_optimise {
 	 * Checks if a given string is a CSS valid number. If it is,
 	 * an array containing the value and unit is returned
 	 * @param string $string
-	 * @return array ('unit' if unit is found or '' if no unit exists, number value) or false if no number
+	 * @return array|false ('unit' if unit is found or '' if no unit exists, number value) or false if no number
 	 */
 	public function AnalyseCssNumber($string) {
 		// most simple checks first
@@ -516,7 +516,7 @@ class csstidy_optimise {
 	 * Merges selectors with same properties. Example: a{color:red} b{color:red} -> a,b{color:red}
 	 * Very basic and has at least one bug. Hopefully there is a replacement soon.
 	 * @param array $array
-	 * @return array
+	 * @return void
 	 * @access public
 	 * @version 1.2
 	 */
@@ -637,7 +637,7 @@ class csstidy_optimise {
 	 * @param string $value
 	 * @return array
 	 * @version 1.0
-	 * @use dissolve_4value_shorthands()
+	 * @uses dissolve_4value_shorthands()
 	 * @see merge_4value_radius_shorthands()
 	 */
 	public function dissolve_4value_radius_shorthands($property, $value) {
@@ -750,7 +750,7 @@ class csstidy_optimise {
 	 * @param array $array
 	 * @return array
 	 * @version 1.2
-	 * @use merge_4value_shorthands()
+	 * @uses merge_4value_shorthands()
 	 * @see dissolve_4value_radius_shorthands()
 	 */
 	public function merge_4value_radius_shorthands($array) {
@@ -1043,6 +1043,7 @@ class csstidy_optimise {
 		// Skip if not font-family and font-size set
 		if (isset($input_css['font-family']) && isset($input_css['font-size']) && $input_css['font-family'] != 'inherit') {
 			// fix several words in font-family - add quotes
+			// @phpstan-ignore-next-line
 			if (isset($input_css['font-family'])) {
 				$families = explode(',', $input_css['font-family']);
 				$result_families = array();

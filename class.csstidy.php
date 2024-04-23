@@ -213,7 +213,7 @@ class csstidy {
 	 * @access private
 	 */
 	public $from = array();
-	/**
+
 	/**
 	 * =true if in invalid at-rule
 	 * @var bool
@@ -254,8 +254,10 @@ class csstidy {
 	/**
 	 * Various CSS Data for CSSTidy
 	 * @var array
+	 * 
+	 * @todo array{csstidy:array<string,mixed>}
 	 */
-	public $data = array();
+	public $data;
 
 	public $template;
 
@@ -266,6 +268,7 @@ class csstidy {
 	 */
 	public function __construct() {
 		$data = array();
+		// $data = ['csstidy' => []];
 		include(__DIR__ . DIRECTORY_SEPARATOR . 'data.inc.php');
 		$this->data = $data;
 
@@ -309,6 +312,7 @@ class csstidy {
 		$this->set_cfg('template','default'); // call load_template
 		$this->optimise = new csstidy_optimise($this);
 
+		// @phpstan-ignore-next-line
 		$this->tokens_list = & $this->data['csstidy']['tokens'];
 	}
 
@@ -358,7 +362,7 @@ class csstidy {
 
 	/**
 	 * Set the value of a setting.
-	 * @param string $setting
+	 * @param array|string $setting
 	 * @param mixed $value
 	 * @access public
 	 * @return bool
@@ -575,6 +579,8 @@ class csstidy {
 	 */
 	public function parse($string) {
 		// Temporarily set locale to en_US in order to handle floats properly
+		// @todo Something $old = @setlocale(LC_ALL, '0');
+		// @see https://www.php.net/manual/en/function.setlocale.php#locales
 		$old = @setlocale(LC_ALL, 0);
 		@setlocale(LC_ALL, 'C');
 
@@ -1091,6 +1097,7 @@ class csstidy {
 	 */
 	public function css_check_last_media_section_or_inc($media) {
 		// are we starting?
+		// @phpstan-ignore-next-line
 		if (!$this->css || !is_array($this->css) || empty($this->css)) {
 			return $media;
 		}
@@ -1119,7 +1126,7 @@ class csstidy {
 	 * to avoid merging
 	 *
 	 * @param string $current_media
-	 * @param string $media
+	 * @param string $new_media
 	 * @param bool $at_root
 	 * @return string
 	 */
@@ -1233,6 +1240,7 @@ class csstidy {
 	 */
 	public function merge_css_blocks($media, $selector, $css_add) {
 		foreach ($css_add as $property => $value) {
+			// @phpstan-ignore-next-line
 			$this->css_add_property($media, $selector, $property, $value, false);
 		}
 	}
@@ -1321,7 +1329,7 @@ class csstidy {
 	 * format("abc",'def') => format("abc","def")
 	 * format("abc, def, ghi") => format("abc, def, ghi")
 	 *
-	 * @param string
+	 * @param string $value
 	 * @return array
 	 */
 	public function parse_string_list($value) {

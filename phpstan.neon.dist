@@ -1,0 +1,10 @@
+includes:
+  - phpstan-baseline.neon
+
+parameters:
+  phpVersion: 70100
+  paths:
+    - class.csstidy.php
+    - class.csstidy_optimise.php
+    - class.csstidy_print.php
+  level: 4
