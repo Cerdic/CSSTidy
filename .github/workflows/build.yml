@@ -8,13 +8,12 @@ on:
             - master
 jobs:
     build:
-        name: PHP ${{ matrix.php-versions }} ${{ matrix.composer-args }}
+        name: PHP ${{ matrix.php-versions }}
         strategy:
             fail-fast: false
             matrix:
                 operating-system: [ubuntu-latest]
-                php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
-                composer-args: ['', '--prefer-lowest']
+                php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
         runs-on: ${{ matrix.operating-system }}
         steps:
             - name: Checkout
@@ -25,6 +24,11 @@ jobs:
                   php-version: ${{ matrix.php-versions }}
             - name: Install Dependencies
               run: |
-                  composer update --no-progress --no-suggest --prefer-stable --optimize-autoloader ${{ matrix.composer-args }}
+                  composer update --no-progress --no-suggest --prefer-stable --optimize-autoloader
             - name: Test
-              run: cd testing && php unit-tests.php
+              run: |
+                if [ "${{ matrix.php-versions }}" -lt "8.1" ]; then
+                    vendor/bin/phpunit --configuration phpunit.7.5.xml
+                else
+                    vendor/bin/phpunit
+                fi

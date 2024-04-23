@@ -1,0 +1,7 @@
+white { color: rgb(255, 255, 255); }
+white10 { color: rgb(255, 255, 255, 10%); }
+white10d { color: rgb(255, 255, 255, 0.1); }
+white20 { color: rgb(255, 255, 255, 20%);   }
+white20d { color: rgb(255, 255, 255, 0.2);   }
+white30 { color: rgb(255 255 255 / 30%);   }
+white30d { color: rgb(255 255 255 / 0.3);   }

@@ -1,0 +1,6 @@
+.to-be-reversed {
+	background-image: url(bg-arrow-left.png)
+}
+.to-be-reversed-also {
+	background-image: url("bg-arrow-left.png")
+}

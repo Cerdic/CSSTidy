@@ -1,0 +1,9 @@
+a { 
+    border-top-color: red;
+    border-right-color: yellow;
+    border-bottom-color: green;
+    border-left-color: hsl(60, 90%, 50%, .8);
+}
+b {
+    border-color: red #ff0 green hsl(60,90%,50%,.8);
+}

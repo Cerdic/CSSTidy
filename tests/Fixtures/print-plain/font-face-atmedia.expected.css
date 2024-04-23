@@ -1,0 +1,13 @@
+@media screen {
+.float-l{float:left}
+}
+@font-face{font-family:GillSans;src:url(/generic/fonts/GillSansC.otf) format("opentype");font-style:normal;font-weight:700}
+@media screen {
+.font-9{font-size:11px}
+}
+@media print {
+.font-9{font-size:9px}
+}
+@media screen {
+.form-suggest{height:200px;background:#DEE2D0;vertical-align:top}
+}

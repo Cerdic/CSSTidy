@@ -1,0 +1,10 @@
+fakeList a {
+width: 100%;
+display: block;
+height: 30px;
+padding-top: 2px;
+line-height:18px;
+*line-height:17;
+/line-height:none;
+_background-image: url(/ttt/gf.gif);
+}

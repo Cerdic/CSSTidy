@@ -1,7 +1,7 @@
-testing/simpletest*
-testing/Text*
 nbproject*
 .idea
-vendor/
-composer.lock
+/vendor/
+/composer.lock
+/phpunit.xml
+/.phpunit.cache/
 .unlock_css_optimiser

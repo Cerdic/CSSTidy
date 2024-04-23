@@ -1,0 +1,7 @@
+body {
+	background: linear-gradient(bottom, rgb(153,102,51) 0%, rgb(51,153,102) 30%, rgb(102,51,153) 100%);
+	background: -o-linear-gradient(bottom, rgb(153,102,51) 0%, rgb(51,153,102) 30%, rgb(102,51,153) 100%);
+	background: -moz-linear-gradient(bottom, rgb(153,102,51) 0%, rgb(51,153,102) 30%, rgb(102,51,153) 100%);
+	background: -webkit-linear-gradient(bottom, rgb(153,102,51) 0%, rgb(51,153,102) 30%, rgb(102,51,153) 100%);
+	background: -ms-linear-gradient(bottom, rgb(153,102,51) 0%, rgb(51,153,102) 30%, rgb(102,51,153) 100%);
+}
