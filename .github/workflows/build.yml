@@ -13,7 +13,7 @@ jobs:
             fail-fast: false
             matrix:
                 operating-system: [ubuntu-latest]
-                php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3']
+                php-versions: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1', '8.2', '8.3', '8.4']
         runs-on: ${{ matrix.operating-system }}
         steps:
             - name: Checkout
@@ -31,4 +31,9 @@ jobs:
                     vendor/bin/phpunit --configuration phpunit.7.5.xml
                 else
                     vendor/bin/phpunit
+                fi
+            - name: Phpstan
+              run: |
+                if [ 1 -eq "$(echo "${{ matrix.php-versions }} > 7.1" | bc)" ]; then
+                    vendor/bin/phpstan
                 fi

@@ -75,7 +75,7 @@ class csstidy_print {
 
 	/**
 	 * Constructor
-	 * @param array $css contains the class csstidy
+	 * @param csstidy $css contains the class csstidy
 	 * @access private
 	 * @version 1.0
 	 */
@@ -446,7 +446,7 @@ class csstidy_print {
 	/**
 	 * Get difference between the old and new code in bytes and prints the code if necessary.
 	 * @access public
-	 * @return string
+	 * @return int|string
 	 * @version 1.1
 	 */
 	public function get_diff() {
