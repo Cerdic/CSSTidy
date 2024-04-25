@@ -27,7 +27,7 @@ jobs:
                   composer update --no-progress --no-suggest --prefer-stable --optimize-autoloader
             - name: Test
               run: |
-                if [ 1 -eq "$(echo "${{ matrix.php-versions }} < "8.1" | bc)" ]; then
+                if [ 1 -eq "$(echo "${{ matrix.php-versions }} < 8.1" | bc)" ]; then
                     vendor/bin/phpunit --configuration phpunit.7.5.xml
                 else
                     vendor/bin/phpunit
