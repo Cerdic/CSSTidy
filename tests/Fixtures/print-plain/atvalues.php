@@ -2,7 +2,6 @@
 
 return [
 	'test' => '@import directive',
-	'expectedReturnValue' => true,
 	'settings' => [
 		'template' => 'high',
 		'sort_properties' => false,
