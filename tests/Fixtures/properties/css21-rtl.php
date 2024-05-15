@@ -2,7 +2,6 @@
 
 return [
 	'test' => 'CSS2.1 properties RTL',
-	'expectedReturnValue' => true,
 	'settings' => [
 		'discard_invalid_properties' => true,
 		'reverse_left_and_right' => true,

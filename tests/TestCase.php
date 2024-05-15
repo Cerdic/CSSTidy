@@ -25,7 +25,7 @@ class TestCase extends FrameworkTestCase {
 			}
 
 			$fixtures[$settings['test']] = [
-				'expectedReturnValue' => $settings['expectedReturnValue'],
+				'expectedReturnValue' => $settings['expectedReturnValue'] ?? true,
 				'expected' => \file_get_contents($expectedFile),
 				'setting' => $settings['settings'],
 				'cssCode' => $cssCode,
@@ -54,7 +54,7 @@ class TestCase extends FrameworkTestCase {
 			}
 
 			$fixtures[$settings['test']] = [
-				'expectedReturnValue' => $settings['expectedReturnValue'],
+				'expectedReturnValue' => $settings['expectedReturnValue'] ?? true,
 				'expected' => [41 => require $expectedFile],
 				'setting' => $settings['settings'],
 				'cssCode' => $cssCode,
@@ -83,7 +83,7 @@ class TestCase extends FrameworkTestCase {
 			}
 
 			$fixtures[$settings['test']] = [
-				'expectedReturnValue' => $settings['expectedReturnValue'],
+				'expectedReturnValue' => $settings['expectedReturnValue'] ?? true,
 				'expected' => require $expectedFile,
 				'setting' => $settings['settings'],
 				'cssCode' => $cssCode,

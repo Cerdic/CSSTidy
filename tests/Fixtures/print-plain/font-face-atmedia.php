@@ -2,7 +2,6 @@
 
 return [
 	'test' => 'simple CSS print',
-	'expectedReturnValue' => true,
 	'settings' => [
 		'template' => 'high',
 		'sort_properties' => false,

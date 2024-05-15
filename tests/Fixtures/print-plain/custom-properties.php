@@ -2,7 +2,6 @@
 
 return [
 	'test' => 'Custom Properties',
-	'expectedReturnValue' => true,
 	'settings' => [
 		'template' => 'low',
 		'discard_invalid_properties'=> 1,

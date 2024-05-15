@@ -2,7 +2,6 @@
 
 return [
 	'test' => 'general font optimization 1',
-	'expectedReturnValue' => true,
 	'settings' => [
 		'optimise_shorthands' => 1,
 		'sort_selectors' => 0,
