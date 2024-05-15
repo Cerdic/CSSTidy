@@ -6,8 +6,6 @@ use csstidy;
 
 /**
  * @covers csstidy
- * @covers csstidy_optimise
- * @covers csstidy_print
  */
 class CssTidyTest extends TestCase {
 	private $csstidy;
@@ -35,6 +33,8 @@ class CssTidyTest extends TestCase {
 
 	/**
 	 * @dataProvider dataGetSetCfg
+	 *
+	 * @covers csstidy_optimise
 	 */
 	public function testGetSetCfg($expected, $expected_success, $setting, $value) {
 		// Given
@@ -50,6 +50,10 @@ class CssTidyTest extends TestCase {
 		$this->assertEquals($expected_value, $this->csstidy->get_cfg($setting));
 	}
 
+	/**
+	 * @covers csstidy_optimise
+	 * @covers csstidy_print
+	 */
 	public function testGetSetCfgByArray() {
 		// Given
 		// When
@@ -77,6 +81,9 @@ class CssTidyTest extends TestCase {
 
 	/**
 	 * @dataProvider dataParse
+	 *
+	 * @covers csstidy_optimise
+	 * @covers csstidy_print
 	 */
 	public function testParse($expectedReturnValue, $expected, $setting, $cssCode) {
 		// Given
