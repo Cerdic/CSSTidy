@@ -2,6 +2,11 @@
     "name": "cerdic/css-tidy",
     "description": "CSSTidy is a CSS minifier",
     "license": "LGPL-2.1-or-later",
+    "keywords": [
+        "css",
+        "tidy",
+        "minifier"
+    ],
     "authors": [
         {
             "name": "Cédric MORIN",
