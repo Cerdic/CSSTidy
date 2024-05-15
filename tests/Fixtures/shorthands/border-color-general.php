@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'test' => 'general background optimization',
+	'test' => 'general border-color optimization',
 	'expectedReturnValue' => true,
 	'settings' => [
 		'optimise_shorthands' => 1,

@@ -3,6 +3,7 @@ width: 100%;
 display: block;
 height: 30px;
 padding-top: 2px;
+-padding-top: 0;
 line-height:18px;
 *line-height:17;
 /line-height:none;

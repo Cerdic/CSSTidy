@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'test' => '@import directive',
+	'test' => '@import directive 2',
 	'expectedReturnValue' => true,
 	'settings' => [
 		'template' => 'low',
