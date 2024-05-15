@@ -2,4 +2,4 @@
 /.gitattributes export-ignore
 /phpunit.xml.dist export-ignore
 /phpunit.7.5.xml export-ignore
-/tests/
+/tests/ export-ignore
