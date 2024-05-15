@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'test' => 'margin optimization',
+	'test' => 'margin optimization general',
 	'expectedReturnValue' => true,
 	'settings' => [],
 ];

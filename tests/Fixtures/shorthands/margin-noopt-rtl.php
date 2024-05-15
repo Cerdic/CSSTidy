@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'test' => 'margin optimization rtl',
+	'test' => 'margin optimization noopt rtl',
 	'expectedReturnValue' => true,
 	'settings' => [
 		'optimise_shorthands' => 0,
