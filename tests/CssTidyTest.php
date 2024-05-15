@@ -84,7 +84,7 @@ class CssTidyTest extends TestCase {
 		$this->csstidy->set_cfg($setting);
 		$actualReturnValue = $this->csstidy->parse($cssCode);
 
-		$actual = \is_array($expected) ? $this->csstidy->css : $this->csstidy->print->plain('');
+		$actual = \is_array($expected) ? $this->csstidy->css : $this->csstidy->print->plain($setting['default_media'] ?? '');
 
 		// Then
 		$this->assertEquals($expectedReturnValue, $actualReturnValue);
