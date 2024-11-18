@@ -31,6 +31,10 @@ $css_code_opt = $csstidy->print->plain();
 
 ## Changelog
 
+* v2.2.0 :
+  * test suite switch to phpunit
+* v2.1.0 :
+  * fix issues with css4 colors
 * v2.0.0 :
   * PHP 7.1 is the minimal version. Compatible PHP 8.0 and 8.1
 * v1.7.3 :
