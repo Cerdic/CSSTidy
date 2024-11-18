@@ -1,0 +1,5 @@
+@container myContainer (width < 500px) {
+  .child {
+    width: 50%;
+  }
+}
