@@ -3,3 +3,5 @@
 /phpunit.xml.dist export-ignore
 /phpunit.7.5.xml export-ignore
 /tests/ export-ignore
+/.github/ export-ignore
+/Docs/ export-ignore
